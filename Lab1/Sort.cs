@@ -29,7 +29,7 @@ namespace Lab1
         {
             var list = new LinkedList<double>();
             var rand = new Random(seed);
-            
+
             for (var i = 0; i < count; i++)
             {
                 list.AddLast(rand.NextDouble());
@@ -37,7 +37,7 @@ namespace Lab1
 
             return list;
         }
-        
+
         /// <summary>
         /// Draws progress bar in current console line.
         /// Author - smr5 @ Stack Overflow.
@@ -96,6 +96,7 @@ namespace Lab1
                 algorithm(myArray);
                 _stopwatch.Stop();
 
+                DrawTextProgressBar(count, count);
                 Console.WriteLine();
 
                 count *= step;
@@ -120,12 +121,13 @@ namespace Lab1
                 algorithm(myList);
                 _stopwatch.Stop();
 
+                DrawTextProgressBar(count, count);
                 Console.WriteLine();
 
                 count *= step;
             }
         }
-        
+
         public static void DebugArray(int seed)
         {
             var myDataArray = CreateArray(10, seed);

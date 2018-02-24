@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 // ReSharper disable LoopVariableIsNeverChangedInsideLoop
 
 namespace Lab1
@@ -13,7 +14,7 @@ namespace Lab1
             // temporary items and the items of converted doubles to longs
             var t = new long[length];
             var a = new long[length];
-            
+
             for (var i = 0; i < length; i++)
             {
                 a[i] = BitConverter.ToInt64(BitConverter.GetBytes(items[i]), 0);
@@ -84,8 +85,6 @@ namespace Lab1
 //                DrawTextProgressBar(i + 1, length);
                 items[i] = BitConverter.ToDouble(BitConverter.GetBytes(a[i]), 0);
             }
-            
-            DrawTextProgressBar(length, length);
         }
 
         public static void Sort(LinkedList<double> items)
@@ -97,10 +96,10 @@ namespace Lab1
             var a = new long[length];
 
             var o = 0;
-            
+
             foreach (var item in items)
             {
-                a[o++] = BitConverter.ToInt64(BitConverter.GetBytes(item), 0);   
+                a[o++] = BitConverter.ToInt64(BitConverter.GetBytes(item), 0);
             }
 
             const int groupLength = 4;
@@ -166,13 +165,11 @@ namespace Lab1
             // Convert back the longs to the double items
             for (var current = items.First; current != null; current = current.Next)
             {
-//                DrawTextProgressBar(i + 1, length);4
+//                DrawTextProgressBar(o + 1, length);
                 current.Value = BitConverter.ToDouble(BitConverter.GetBytes(a[o++]), 0);
             }
-            
-            DrawTextProgressBar(length, length);
         }
-        
+
 //        public static void Sort(DataList items)
 //        {
 //            var isFinished = false;

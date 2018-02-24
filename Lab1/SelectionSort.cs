@@ -9,7 +9,7 @@ namespace Lab1
         public static void Sort(double[] items)
         {
             var length = items.Length;
-            
+
             for (var i = 0; i < length - 1; i++)
             {
                 var indexOfMin = i;
@@ -23,7 +23,7 @@ namespace Lab1
                         indexOfMin = j;
                     }
                 }
-                
+
                 if (indexOfMin != i)
                 {
                     SwapCount++;
@@ -34,8 +34,6 @@ namespace Lab1
 
 //                DrawTextProgressBar(i + 2, length);
             }
-            
-            DrawTextProgressBar(length, length);
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
@@ -70,8 +68,6 @@ namespace Lab1
 
 //                DrawTextProgressBar(i + 2, length);
             }
-            
-            DrawTextProgressBar(length, length);
         }
     }
 }
