@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
-// ReSharper disable InconsistentNaming
 
 namespace Lab1
 {
@@ -87,7 +84,7 @@ namespace Lab1
             }
         }
 
-        public static void SortRAM(LinkedList<double> items)
+        public static void SortRAM(LinkedListRAM items)
         {
             var length = items.Count;
 

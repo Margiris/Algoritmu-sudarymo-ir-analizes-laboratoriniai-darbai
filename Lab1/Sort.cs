@@ -12,24 +12,12 @@ namespace Lab1
         protected static long SwapCount;
         private const int RunCount = 8;
 
-        private static LinkedList<double> CreateList(int count, int seed)
-        {
-            var list = new LinkedList<double>();
-            var rand = new Random(seed);
-
-            for (var i = 0; i < count; i++)
-            {
-                list.AddLast(rand.NextDouble());
-            }
-
-            return list;
-        }
-
         /// <summary>
         /// Draws progress bar in current console line.
         /// Author - smr5 @ Stack Overflow.
         /// Edited by me to display comparisons & swaps.
         /// </summary>
+        // ReSharper disable once MemberCanBePrivate.Global
         protected static void DrawTextProgressBar(int progress, int total)
         {
             //draw empty progress bar
@@ -90,7 +78,7 @@ namespace Lab1
             }
         }
 
-        public static void TestList(int count, int step, int seed, Action<LinkedList<double>> algorithm)
+        public static void TestList(int count, int step, int seed, Action<LinkedListRAM> algorithm)
         {
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
@@ -102,7 +90,7 @@ namespace Lab1
             {
                 ComparisonCount = 0;
                 SwapCount = 0;
-                var myList = CreateList(count, seed);
+                var myList = new LinkedListRAM(count, seed);
 
                 _stopwatch = Stopwatch.StartNew();
                 algorithm(myList);
@@ -117,24 +105,24 @@ namespace Lab1
 
         public static void DebugArray(int seed)
         {
-            var myDataArray = new ArrayRAM(10, seed);
+            var arrayRAM = new ArrayRAM(10, seed);
 
-            Console.WriteLine(myDataArray.ToString());
+            arrayRAM.Print();
 
-            RadixSort.SortRAM(myDataArray);
+            RadixSort.SortRAM(arrayRAM);
 
-            Console.WriteLine(myDataArray.ToString());
+            arrayRAM.Print();
         }
 
         public static void DebugList(int seed)
         {
-            var myDataList = CreateList(10, seed);
+            var listRAM = new LinkedListRAM(10, seed);
 
-            Console.WriteLine(myDataList.ToString());
+            listRAM.Print();
 
-            RadixSort.SortRAM(myDataList);
-
-            Console.WriteLine(myDataList.ToString());
+            RadixSort.SortRAM(listRAM);
+            
+            listRAM.Print();
         }
     }
 }

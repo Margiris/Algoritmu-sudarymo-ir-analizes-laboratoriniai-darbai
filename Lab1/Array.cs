@@ -6,10 +6,14 @@ namespace Lab1
     {
         public int Length;
         public abstract double this[int intex] { get; set; }
-        public void Print(int n)
+
+        public void Print()
         {
-            for (var i = 0; i < n; i++)
+            for (var i = 0; i < Length; i++)
+            {
                 Console.Write(" {0:F5} ", this[i]);
+            }
+
             Console.WriteLine();
         }
     }

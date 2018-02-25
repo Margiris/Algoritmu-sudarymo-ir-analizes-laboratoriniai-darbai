@@ -2,7 +2,6 @@
 
 namespace Lab1
 {
-    // ReSharper disable once InconsistentNaming
     internal class ArrayRAM : Array
     {
         private double[] data;

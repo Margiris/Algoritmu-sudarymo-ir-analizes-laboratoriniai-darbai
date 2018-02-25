@@ -39,7 +39,7 @@ namespace Lab1
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public static void SortRAM(LinkedList<double> items)
+        public static void SortRAM(LinkedListRAM items)
         {
             var length = items.Count;
             var currentOuter = items.First;

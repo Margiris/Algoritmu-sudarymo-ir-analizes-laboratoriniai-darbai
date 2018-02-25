@@ -5,8 +5,8 @@ namespace Lab1
     internal static class Program
     {
         private static void Main()
-        {
-            const int count = 8;
+        {    
+            const int count = 4;
             const int step = 4;
             var seed = (int) DateTime.Now.Ticks;
             var isRunning = true;
@@ -29,12 +29,12 @@ namespace Lab1
                         Sort.TestList(count, step, seed, SelectionSort.SortRAM);
                         break;
                     case "3":
-                        Sort.TestArray(count, step, seed, RadixSort.SortRAM);
-//                        Sort.DebugArray(seed + (int)DateTime.Now.Ticks);
+//                        Sort.TestArray(count, step, seed, RadixSort.SortRAM);
+                        Sort.DebugArray(seed + (int)DateTime.Now.Ticks);
                         break;
                     case "4":
-                        Sort.TestList(count, step, seed, RadixSort.SortRAM);
-//                        Sort.DebugList(seed + (int)DateTime.Now.Ticks);
+//                        Sort.TestList(count, step, seed, RadixSort.SortRAM);
+                        Sort.DebugList(seed + (int)DateTime.Now.Ticks);
                         break;
                     case "11":
                         Sort.TestArray(count, step, seed, SelectionSort.SortRAM);
