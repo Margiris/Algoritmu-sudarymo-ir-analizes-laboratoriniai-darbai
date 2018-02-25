@@ -12,19 +12,6 @@ namespace Lab1
         protected static long SwapCount;
         private const int RunCount = 8;
 
-        private static double[] CreateArray(int count, int seed)
-        {
-            var array = new double[count];
-            var rand = new Random(seed);
-
-            for (var i = 0; i < count; i++)
-            {
-                array[i] = rand.NextDouble();
-            }
-
-            return array;
-        }
-
         private static LinkedList<double> CreateList(int count, int seed)
         {
             var list = new LinkedList<double>();
@@ -78,9 +65,9 @@ namespace Lab1
                 progress, total, ComparisonCount, SwapCount, _stopwatch.ElapsedMilliseconds);
         }
 
-        public static void TestArray(int count, int step, int seed, Action<double[]> algorithm)
+        public static void TestArray(int count, int step, int seed, Action<Array> algorithm)
         {
-            Console.WriteLine(new String('_', 119));
+            Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
                 // ReSharper disable once PossibleNullReferenceException
                 " " + algorithm.Method.DeclaringType.Name + ": Array", " Progress",
@@ -90,7 +77,7 @@ namespace Lab1
             {
                 ComparisonCount = 0;
                 SwapCount = 0;
-                var myArray = CreateArray(count, seed);
+                var myArray = new ArrayRAM(count, seed);
 
                 _stopwatch = Stopwatch.StartNew();
                 algorithm(myArray);
@@ -130,11 +117,11 @@ namespace Lab1
 
         public static void DebugArray(int seed)
         {
-            var myDataArray = CreateArray(10, seed);
+            var myDataArray = new ArrayRAM(10, seed);
 
             Console.WriteLine(myDataArray.ToString());
 
-            RadixSort.Sort(myDataArray);
+            RadixSort.SortRAM(myDataArray);
 
             Console.WriteLine(myDataArray.ToString());
         }
@@ -145,7 +132,7 @@ namespace Lab1
 
             Console.WriteLine(myDataList.ToString());
 
-            RadixSort.Sort(myDataList);
+            RadixSort.SortRAM(myDataList);
 
             Console.WriteLine(myDataList.ToString());
         }

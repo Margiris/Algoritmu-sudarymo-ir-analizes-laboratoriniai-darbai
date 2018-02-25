@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-// ReSharper disable LoopVariableIsNeverChangedInsideLoop
+// ReSharper disable InconsistentNaming
 
 namespace Lab1
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     internal class RadixSort : Sort
     {
-        public static void Sort(double[] items)
+        public static void SortRAM(Array items)
         {
             var length = items.Length;
             // temporary items and the items of converted doubles to longs
@@ -87,7 +87,7 @@ namespace Lab1
             }
         }
 
-        public static void Sort(LinkedList<double> items)
+        public static void SortRAM(LinkedList<double> items)
         {
             var length = items.Count;
 

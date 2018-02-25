@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
+// ReSharper disable InconsistentNaming
+
 namespace Lab1
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     internal class SelectionSort : Sort
     {
-        public static void Sort(double[] items)
+        public static void SortRAM(Array items)
         {
             var length = items.Length;
 
@@ -37,7 +39,7 @@ namespace Lab1
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public static void Sort(LinkedList<double> items)
+        public static void SortRAM(LinkedList<double> items)
         {
             var length = items.Count;
             var currentOuter = items.First;
