@@ -1,6 +1,0 @@
-C:\Users\zippe\Desktop\2 k. 2 s\Algoritmų sudarymas ir analizė\Laboratoriniai\Algoritmų sudarymo ir analizės laboratoriniai darbai\Lab1\bin\Debug\Lab1.exe
-C:\Users\zippe\Desktop\2 k. 2 s\Algoritmų sudarymas ir analizė\Laboratoriniai\Algoritmų sudarymo ir analizės laboratoriniai darbai\Lab1\bin\Debug\Lab1.pdb
-C:\Users\zippe\Desktop\2 k. 2 s\Algoritmų sudarymas ir analizė\Laboratoriniai\Algoritmų sudarymo ir analizės laboratoriniai darbai\Lab1\obj\Debug\Lab1.csprojResolveAssemblyReference.cache
-C:\Users\zippe\Desktop\2 k. 2 s\Algoritmų sudarymas ir analizė\Laboratoriniai\Algoritmų sudarymo ir analizės laboratoriniai darbai\Lab1\obj\Debug\Lab1.csproj.CoreCompileInputs.cache
-C:\Users\zippe\Desktop\2 k. 2 s\Algoritmų sudarymas ir analizė\Laboratoriniai\Algoritmų sudarymo ir analizės laboratoriniai darbai\Lab1\obj\Debug\Lab1.exe
-C:\Users\zippe\Desktop\2 k. 2 s\Algoritmų sudarymas ir analizė\Laboratoriniai\Algoritmų sudarymo ir analizės laboratoriniai darbai\Lab1\obj\Debug\Lab1.pdb
