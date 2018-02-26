@@ -23,24 +23,27 @@ namespace Lab1
                         PrintMenu();
                         break;
                     case "1":
-                        Sort.TestArray(count, step, seed, SelectionSort.SortRAM);
+                        Sort.TestArrayRAM(count, step, seed, SelectionSort.Sort);
                         break;
                     case "2":
-                        Sort.TestList(count, step, seed, SelectionSort.SortRAM);
+                        Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
                         break;
                     case "3":
-//                        Sort.TestArray(count, step, seed, RadixSort.SortRAM);
-                        Sort.DebugArray(seed + (int)DateTime.Now.Ticks);
+                        Sort.TestArrayRAM(count, step, seed, RadixSort.SortRAM);
+                        //Sort.DebugArray(seed + (int)DateTime.Now.Ticks);
                         break;
                     case "4":
-//                        Sort.TestList(count, step, seed, RadixSort.SortRAM);
-                        Sort.DebugList(seed + (int)DateTime.Now.Ticks);
+                        Sort.TestListRAM(count, step, seed, RadixSort.SortRAM);
+                        //Sort.DebugList(seed + (int)DateTime.Now.Ticks);
+                        break;
+                    case "6":
+                        Sort.TestArrayDisk(count, step, seed, SelectionSort.Sort);
                         break;
                     case "11":
-                        Sort.TestArray(count, step, seed, SelectionSort.SortRAM);
-                        Sort.TestList(count, step, seed, SelectionSort.SortRAM);
-                        Sort.TestArray(count, step, seed, RadixSort.SortRAM);
-                        Sort.TestList(count, step, seed, RadixSort.SortRAM);
+                        Sort.TestArrayRAM(count, step, seed, SelectionSort.Sort);
+                        Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
+                        Sort.TestArrayRAM(count, step, seed, RadixSort.SortRAM);
+                        Sort.TestListRAM(count, step, seed, RadixSort.SortRAM);
                         break;
                     case "x":
                         isRunning = false;

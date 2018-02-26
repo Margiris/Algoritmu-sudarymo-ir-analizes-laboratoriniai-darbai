@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 namespace Lab1
 {
@@ -53,12 +53,12 @@ namespace Lab1
                 progress, total, ComparisonCount, SwapCount, _stopwatch.ElapsedMilliseconds);
         }
 
-        public static void TestArray(int count, int step, int seed, Action<Array> algorithm)
+        public static void TestArrayRAM(int count, int step, int seed, Action<Array> algorithm)
         {
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
                 // ReSharper disable once PossibleNullReferenceException
-                " " + algorithm.Method.DeclaringType.Name + ": Array", " Progress",
+                " " + algorithm.Method.DeclaringType.Name + ": Array in RAM", " Progress",
                 "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
 
             for (var i = 0; i < RunCount; i++)
@@ -78,12 +78,12 @@ namespace Lab1
             }
         }
 
-        public static void TestList(int count, int step, int seed, Action<LinkedListRAM> algorithm)
+        public static void TestListRAM(int count, int step, int seed, Action<LinkedListRAM> algorithm)
         {
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
                 // ReSharper disable once PossibleNullReferenceException
-                " " + algorithm.Method.DeclaringType.Name + ": List", " Progress",
+                " " + algorithm.Method.DeclaringType.Name + ": List in RAM", " Progress",
                 "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
 
             for (var i = 0; i < RunCount; i++)
@@ -95,6 +95,35 @@ namespace Lab1
                 _stopwatch = Stopwatch.StartNew();
                 algorithm(myList);
                 _stopwatch.Stop();
+
+                DrawTextProgressBar(count, count);
+                Console.WriteLine();
+
+                count *= step;
+            }
+        }
+
+        public static void TestArrayDisk(int count, int step, int seed, Action<Array> algorithm)
+        {
+            Console.WriteLine(new string('_', 119));
+            Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
+                // ReSharper disable once PossibleNullReferenceException
+                " " + algorithm.Method.DeclaringType.Name + ": Array in disk", " Progress",
+                "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
+
+            for (var i = 0; i < RunCount; i++)
+            {
+                const string filename = @"file.dat";
+                ComparisonCount = 0;
+                SwapCount = 0;
+                var arrayDisk = new ArrayDisk(filename, count, seed);
+                
+                using (arrayDisk.FileStream = new FileStream(filename, FileMode.Open, FileAccess.ReadWrite))
+                {
+                    _stopwatch = Stopwatch.StartNew();
+                    algorithm(arrayDisk);
+                    _stopwatch.Stop();
+                }
 
                 DrawTextProgressBar(count, count);
                 Console.WriteLine();
@@ -121,7 +150,7 @@ namespace Lab1
             listRAM.Print();
 
             RadixSort.SortRAM(listRAM);
-            
+
             listRAM.Print();
         }
     }

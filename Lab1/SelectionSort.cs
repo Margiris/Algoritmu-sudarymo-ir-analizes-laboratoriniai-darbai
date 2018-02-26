@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable InconsistentNaming
 
@@ -8,15 +7,13 @@ namespace Lab1
     // ReSharper disable once ClassNeverInstantiated.Global
     internal class SelectionSort : Sort
     {
-        public static void SortRAM(Array items)
+        public static void Sort(Array items)
         {
-            var length = items.Length;
-
-            for (var i = 0; i < length - 1; i++)
+            for (var i = 0; i < items.Length - 1; i++)
             {
                 var indexOfMin = i;
 
-                for (var j = i + 1; j < length; j++)
+                for (var j = i + 1; j < items.Length; j++)
                 {
                     ComparisonCount++;
 
@@ -29,17 +26,15 @@ namespace Lab1
                 if (indexOfMin != i)
                 {
                     SwapCount++;
-                    var temp = items[i];
-                    items[i] = items[indexOfMin];
-                    items[indexOfMin] = temp;
+                    items.Swap(i, indexOfMin);
                 }
 
-//                DrawTextProgressBar(i + 2, length);
+                DrawTextProgressBar(i + 2, items.Length);
             }
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public static void SortRAM(LinkedListRAM items)
+        public static void Sort(LinkedListRAM items)
         {
             var length = items.Count;
             var currentOuter = items.First;

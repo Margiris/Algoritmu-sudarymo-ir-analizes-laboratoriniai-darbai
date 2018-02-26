@@ -5,13 +5,20 @@ namespace Lab1
     internal abstract class Array
     {
         public int Length;
-        public abstract double this[int intex] { get; set; }
+        public abstract double this[int index] { get; set; }
+        
+        public void Swap(int index1, int index2)
+        {
+            var temp = this[index1];
+            this[index1] = this[index2];
+            this[index2] = temp;
+        }
 
         public void Print()
         {
             for (var i = 0; i < Length; i++)
             {
-                Console.Write(" {0:F5} ", this[i]);
+                Console.Write("{0:F5} ", this[i]);
             }
 
             Console.WriteLine();

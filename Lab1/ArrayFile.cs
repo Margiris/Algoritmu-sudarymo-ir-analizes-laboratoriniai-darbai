@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Lab1
 {
-    internal class ArrayFile : Array
+    internal class ArrayFile
     {
         private int length;
 
@@ -35,7 +35,7 @@ namespace Lab1
 
         public FileStream fs { get; set; }
 
-        public override double this[int index]
+        public double this[int index]
         {
             get
             {

@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Array.cs" />
+    <Compile Include="ArrayDisk.cs" />
     <Compile Include="ArrayFile.cs" />
     <Compile Include="ArrayRAM.cs" />
     <Compile Include="LinkedListRAM.cs" />
