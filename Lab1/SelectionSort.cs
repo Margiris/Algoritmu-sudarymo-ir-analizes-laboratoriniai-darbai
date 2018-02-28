@@ -1,10 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-// ReSharper disable InconsistentNaming
-
 namespace Lab1
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     internal class SelectionSort : Sort
     {
         public static void Sort(Array items)
@@ -34,7 +31,7 @@ namespace Lab1
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public static void Sort(LinkedListRAM items)
+        public static void Sort(LinkedListDisk items)
         {
             var length = items.Count;
             var currentOuter = items.First;
@@ -63,7 +60,7 @@ namespace Lab1
 
                 currentOuter = currentOuter.Next;
 
-//                DrawTextProgressBar(i + 2, length);
+                DrawTextProgressBar(i + 2, length);
             }
         }
     }

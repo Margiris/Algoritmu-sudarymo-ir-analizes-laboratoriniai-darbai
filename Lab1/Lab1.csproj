@@ -40,8 +40,9 @@
   <ItemGroup>
     <Compile Include="Array.cs" />
     <Compile Include="ArrayDisk.cs" />
-    <Compile Include="ArrayFile.cs" />
     <Compile Include="ArrayRAM.cs" />
+    <Compile Include="LinkedList.cs" />
+    <Compile Include="LinkedListDisk.cs" />
     <Compile Include="LinkedListRAM.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

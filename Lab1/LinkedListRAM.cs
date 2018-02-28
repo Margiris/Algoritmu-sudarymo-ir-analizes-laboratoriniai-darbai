@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Lab1
 {
-    public class LinkedListRAM : LinkedList<double>
+    internal class LinkedListRAM : LinkedList
     {
         public LinkedListRAM(int count, int seed)
         {
+            Count = count;
             var rand = new Random(seed);
 
             for (var i = 0; i < count; i++)
@@ -15,14 +15,28 @@ namespace Lab1
             }
         }
 
-        public void Print()
+        public sealed override void AddLast(double data)
         {
-            foreach (var number in this)
+            if (Last == null)
             {
-                Console.Write(" {0:F5} ", number);
+                First = new LinkedListNode
+                {
+                    Value = data
+                };
+
+                Last = First;
             }
-            
-            Console.WriteLine();
+            else
+            {
+                var toAdd = new LinkedListNode
+                {
+                    Value = data,
+                    Previous = Last
+                };
+
+                Last.Next = toAdd;
+                Last = toAdd;
+            }
         }
     }
 }

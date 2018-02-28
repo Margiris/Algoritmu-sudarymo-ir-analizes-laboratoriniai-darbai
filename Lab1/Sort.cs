@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -65,20 +66,23 @@ namespace Lab1
             {
                 ComparisonCount = 0;
                 SwapCount = 0;
-                var myArray = new ArrayRAM(count, seed);
+                var sample = new ArrayRAM(count, seed);
 
                 _stopwatch = Stopwatch.StartNew();
-                algorithm(myArray);
+                algorithm(sample);
                 _stopwatch.Stop();
+
+                //sample.Print();
 
                 DrawTextProgressBar(count, count);
                 Console.WriteLine();
+
 
                 count *= step;
             }
         }
 
-        public static void TestListRAM(int count, int step, int seed, Action<LinkedListRAM> algorithm)
+        public static void TestListRAM(int count, int step, int seed, Action<LinkedList> algorithm)
         {
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
@@ -90,11 +94,13 @@ namespace Lab1
             {
                 ComparisonCount = 0;
                 SwapCount = 0;
-                var myList = new LinkedListRAM(count, seed);
+                var sample = new LinkedListRAM(count, seed);
 
                 _stopwatch = Stopwatch.StartNew();
-                algorithm(myList);
+                algorithm(sample);
                 _stopwatch.Stop();
+
+                //sample.Print();
 
                 DrawTextProgressBar(count, count);
                 Console.WriteLine();
@@ -116,13 +122,15 @@ namespace Lab1
                 const string filename = @"file.dat";
                 ComparisonCount = 0;
                 SwapCount = 0;
-                var arrayDisk = new ArrayDisk(filename, count, seed);
-                
-                using (arrayDisk.FileStream = new FileStream(filename, FileMode.Open, FileAccess.ReadWrite))
+                var sample = new ArrayDisk(filename, count, seed);
+
+                using (sample.FileStream = new FileStream(filename, FileMode.Open, FileAccess.ReadWrite))
                 {
                     _stopwatch = Stopwatch.StartNew();
-                    algorithm(arrayDisk);
+                    algorithm(sample);
                     _stopwatch.Stop();
+
+                    //sample.Print();
                 }
 
                 DrawTextProgressBar(count, count);
@@ -132,26 +140,35 @@ namespace Lab1
             }
         }
 
-        public static void DebugArray(int seed)
+        public static void TestListDisk(int count, int step, int seed, Action<LinkedListDisk> algorithm)
         {
-            var arrayRAM = new ArrayRAM(10, seed);
+            Console.WriteLine(new string('_', 119));
+            Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
+                // ReSharper disable once PossibleNullReferenceException
+                " " + algorithm.Method.DeclaringType.Name + ": Linked list in disk", " Progress",
+                "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
 
-            arrayRAM.Print();
+            for (var i = 0; i < RunCount; i++)
+            {
+                const string filename = @"file.dat";
+                ComparisonCount = 0;
+                SwapCount = 0;
+                var sample = new LinkedListDisk(filename, count, seed);
 
-            RadixSort.SortRAM(arrayRAM);
+                using (sample.fileStream = new FileStream(filename, FileMode.Open, FileAccess.ReadWrite))
+                {
+                    _stopwatch = Stopwatch.StartNew();
+                    algorithm(sample);
+                    _stopwatch.Stop();
 
-            arrayRAM.Print();
-        }
+                    sample.Print();
+                }
 
-        public static void DebugList(int seed)
-        {
-            var listRAM = new LinkedListRAM(10, seed);
+                DrawTextProgressBar(count, count);
+                Console.WriteLine();
 
-            listRAM.Print();
-
-            RadixSort.SortRAM(listRAM);
-
-            listRAM.Print();
+                count *= step;
+            }
         }
     }
 }

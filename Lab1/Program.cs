@@ -5,9 +5,9 @@ namespace Lab1
     internal static class Program
     {
         private static void Main()
-        {    
-            const int count = 4;
-            const int step = 4;
+        {
+            const int count = 400;
+            const int step = 8;
             var seed = (int) DateTime.Now.Ticks;
             var isRunning = true;
 
@@ -26,24 +26,33 @@ namespace Lab1
                         Sort.TestArrayRAM(count, step, seed, SelectionSort.Sort);
                         break;
                     case "2":
-                        Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
+//                        Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
                         break;
                     case "3":
                         Sort.TestArrayRAM(count, step, seed, RadixSort.SortRAM);
-                        //Sort.DebugArray(seed + (int)DateTime.Now.Ticks);
                         break;
                     case "4":
                         Sort.TestListRAM(count, step, seed, RadixSort.SortRAM);
-                        //Sort.DebugList(seed + (int)DateTime.Now.Ticks);
                         break;
                     case "6":
                         Sort.TestArrayDisk(count, step, seed, SelectionSort.Sort);
                         break;
+                    case "7":
+                        Sort.TestListDisk(count, step, seed, SelectionSort.Sort);
+                        break;
+                    case "8":
+                        //Sort.TestArrayDisk(count, step, seed, RadixSort.Sort);
+                        break;
+                    case "9":
+                        //Sort.TestListDisk(count, step, seed, RadixSort.Sort);
+                        break;
                     case "11":
                         Sort.TestArrayRAM(count, step, seed, SelectionSort.Sort);
-                        Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
+//                        Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
                         Sort.TestArrayRAM(count, step, seed, RadixSort.SortRAM);
                         Sort.TestListRAM(count, step, seed, RadixSort.SortRAM);
+                        Sort.TestArrayDisk(count, step, seed, SelectionSort.Sort);
+                        Sort.TestListDisk(count, step, seed, SelectionSort.Sort);
                         break;
                     case "x":
                         isRunning = false;

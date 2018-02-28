@@ -84,7 +84,7 @@ namespace Lab1
             }
         }
 
-        public static void SortRAM(LinkedListRAM items)
+        public static void SortRAM(LinkedList items)
         {
             var length = items.Count;
 
@@ -94,9 +94,9 @@ namespace Lab1
 
             var o = 0;
 
-            foreach (var item in items)
+            for (var current = items.First; current != null; current = current.Next)
             {
-                a[o++] = BitConverter.ToInt64(BitConverter.GetBytes(item), 0);
+                a[o++] = BitConverter.ToInt64(BitConverter.GetBytes(current.Value), 0);
             }
 
             const int groupLength = 4;
@@ -162,7 +162,7 @@ namespace Lab1
             // Convert back the longs to the double items
             for (var current = items.First; current != null; current = current.Next)
             {
-//                DrawTextProgressBar(o + 1, length);
+                DrawTextProgressBar(o + 1, length);
                 current.Value = BitConverter.ToDouble(BitConverter.GetBytes(a[o++]), 0);
             }
         }
