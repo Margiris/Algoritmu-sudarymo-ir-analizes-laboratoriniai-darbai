@@ -15,7 +15,7 @@ namespace Lab1
             }
         }
 
-        public sealed override void AddLast(double data)
+        public void AddLast(double data)
         {
             if (Last == null)
             {
@@ -31,12 +31,33 @@ namespace Lab1
                 var toAdd = new LinkedListNode
                 {
                     Value = data,
-                    Previous = Last
                 };
 
-                Last.Next = toAdd;
-                Last = toAdd;
+                Last.AddNext(toAdd);
+                Last = NextOf(Last);
             }
+        }
+
+        public override LinkedListNode GetFirstNode()
+        {
+            return First;
+        }
+
+        public override LinkedListNode GetNode(int index)
+        {
+            Current = First;
+            
+            for (var i = 0; i < index; i++)
+            {
+                Current = NextOf(Current);
+            }
+
+            return Current;
+        }
+
+        public override LinkedListNode NextOf(LinkedListNode node)
+        {
+            return node.Next;
         }
     }
 }

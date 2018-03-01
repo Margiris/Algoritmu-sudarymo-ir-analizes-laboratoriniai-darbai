@@ -2,29 +2,39 @@
 
 namespace Lab1
 {
-    internal abstract class LinkedList
+    public abstract class LinkedList
     {
         public class LinkedListNode
         {
-            public LinkedListNode Previous;
             public LinkedListNode Next;
             public double Value;
-        }
 
+            public int CurrentIndex;
+            public int NextIndex;
+
+            public void AddNext(LinkedListNode node)
+            {
+                Next = node;
+            }
+        }
+        
         public int Count;
         public LinkedListNode First { get; protected set; }
-        public LinkedListNode Last { get; set; }
+        protected LinkedListNode Current { get; set; }
+        protected LinkedListNode Last { get; set; }
 
-        public abstract void AddLast(double data);
-        
+        public abstract LinkedListNode GetFirstNode();
+        public abstract LinkedListNode GetNode(int index);
+        public abstract LinkedListNode NextOf(LinkedListNode node);
+
         public void Print()
         {
-            var current = First;
+            var current = GetFirstNode();
 
-            while (current != null)
+            for (var i = 0; i < Count; i++)
             {
                 Console.Write("{0:F5} ", current.Value);
-                current = (LinkedListNode)current.Next;
+                current = NextOf(current);
             }
 
             Console.WriteLine();

@@ -5,36 +5,8 @@ namespace Lab1
 {
     internal class LinkedListDisk : LinkedList
     {
-        public new class LinkedListNode
-        {
-            public int CurrentIndex;
-            public int NextIndex;
-            public double Value;
-
-            public LinkedListNode Next
-            {
-                get
-                {
-                    var node = new LinkedListNode();
-                    var bytes = new byte[12];
-
-                    fileStream.Seek(0, SeekOrigin.Begin);
-                    fileStream.Read(bytes, 0, 4);
-
-                    node.CurrentIndex = BitConverter.ToInt32(bytes, 0);
-
-                    fileStream.Seek(node.CurrentIndex, SeekOrigin.Begin);
-                    fileStream.Read(bytes, 0, 12);
-
-                    node.Value = BitConverter.ToDouble(bytes, 0);
-                    node.NextIndex = BitConverter.ToInt32(bytes, 8);
-
-                    return node;
-                }
-            }
-        }
-
-        public FileStream fileStream { get; set; }
+        // ReSharper disable once InconsistentNaming
+        public FileStream fileStream { private get; set; }
 
         public LinkedListDisk(string fileName, int count, int seed)
         {
@@ -66,36 +38,38 @@ namespace Lab1
             }
         }
 
-        public new LinkedListNode First
+        public override LinkedListNode GetFirstNode()
         {
-            get
+            var bytes = new byte[4];
+
+            fileStream.Seek(0, SeekOrigin.Begin);
+            fileStream.Read(bytes, 0, 4);
+
+            var index = BitConverter.ToInt32(bytes, 0);
+
+            return GetNode(index);
+        }
+
+        public override LinkedListNode GetNode(int index)
+        {
+            var bytes = new byte[12];
+            var node = new LinkedListNode
             {
-                var node = new LinkedListNode();
-                var bytes = new byte[12];
+                CurrentIndex = index
+            };
 
-                fileStream.Seek(0, SeekOrigin.Begin);
-                fileStream.Read(bytes, 0, 4);
+            fileStream.Seek(node.CurrentIndex, SeekOrigin.Begin);
+            fileStream.Read(bytes, 0, 12);
 
-                node.CurrentIndex = BitConverter.ToInt32(bytes, 0);
+            node.Value = BitConverter.ToDouble(bytes, 0);
+            node.NextIndex = BitConverter.ToInt32(bytes, 8);
 
-                fileStream.Seek(node.CurrentIndex, SeekOrigin.Begin);
-                fileStream.Read(bytes, 0, 12);
-
-                node.Value = BitConverter.ToDouble(bytes, 0);
-                node.NextIndex = BitConverter.ToInt32(bytes, 8);
-
-                return node;
-            }
+            return node;
         }
 
-        public LinkedListNode GetNode(int index)
+        public override LinkedListNode NextOf(LinkedListNode node)
         {
-            return null;
-        }
-
-        public override void AddLast(double data)
-        {
-            throw new NotImplementedException();
+            return GetNode(node.NextIndex);
         }
     }
 }

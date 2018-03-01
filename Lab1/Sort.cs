@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -11,7 +10,7 @@ namespace Lab1
 
         protected static long ComparisonCount;
         protected static long SwapCount;
-        private const int RunCount = 8;
+        private const int RunCount = 4;
 
         /// <summary>
         /// Draws progress bar in current console line.
@@ -72,10 +71,10 @@ namespace Lab1
                 algorithm(sample);
                 _stopwatch.Stop();
 
-                //sample.Print();
-
                 DrawTextProgressBar(count, count);
                 Console.WriteLine();
+
+                sample.Print();
 
 
                 count *= step;
@@ -100,10 +99,10 @@ namespace Lab1
                 algorithm(sample);
                 _stopwatch.Stop();
 
-                //sample.Print();
-
                 DrawTextProgressBar(count, count);
                 Console.WriteLine();
+
+                sample.Print();
 
                 count *= step;
             }
@@ -130,11 +129,11 @@ namespace Lab1
                     algorithm(sample);
                     _stopwatch.Stop();
 
-                    //sample.Print();
-                }
+                    DrawTextProgressBar(count, count);
+                    Console.WriteLine();
 
-                DrawTextProgressBar(count, count);
-                Console.WriteLine();
+                    sample.Print();
+                }
 
                 count *= step;
             }
@@ -161,11 +160,11 @@ namespace Lab1
                     algorithm(sample);
                     _stopwatch.Stop();
 
+                    DrawTextProgressBar(count, count);
+                    Console.WriteLine();
+
                     sample.Print();
                 }
-
-                DrawTextProgressBar(count, count);
-                Console.WriteLine();
 
                 count *= step;
             }

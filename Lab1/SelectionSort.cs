@@ -1,7 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Lab1
+﻿namespace Lab1
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     internal class SelectionSort : Sort
     {
         public static void Sort(Array items)
@@ -30,24 +29,26 @@ namespace Lab1
             }
         }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public static void Sort(LinkedListDisk items)
+        public static void Sort(LinkedList items)
         {
             var length = items.Count;
-            var currentOuter = items.First;
+            var currentOuter = items.GetFirstNode();
+            var currentInner = items.NextOf(currentOuter);
 
             for (var i = 0; i < length - 1; i++)
             {
                 var minimum = currentOuter;
 
-                for (var current = currentOuter.Next; current != null; current = current.Next)
+                for (var j = i + 1; j < length; j++)
                 {
                     ComparisonCount++;
 
-                    if (current.Value < minimum.Value)
+                    if (currentInner.Value < minimum.Value)
                     {
-                        minimum = current;
+                        minimum = currentInner;
                     }
+
+                    currentInner = items.NextOf(currentInner);
                 }
 
                 if (!ReferenceEquals(minimum, currentOuter))
@@ -58,7 +59,7 @@ namespace Lab1
                     minimum.Value = temp;
                 }
 
-                currentOuter = currentOuter.Next;
+                currentOuter = items.NextOf(currentOuter);
 
                 DrawTextProgressBar(i + 2, length);
             }

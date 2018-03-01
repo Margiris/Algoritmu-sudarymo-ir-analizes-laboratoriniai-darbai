@@ -6,8 +6,8 @@ namespace Lab1
     {
         private static void Main()
         {
-            const int count = 400;
-            const int step = 8;
+            const int count = 2;
+            const int step = 2;
             var seed = (int) DateTime.Now.Ticks;
             var isRunning = true;
 
@@ -26,7 +26,7 @@ namespace Lab1
                         Sort.TestArrayRAM(count, step, seed, SelectionSort.Sort);
                         break;
                     case "2":
-//                        Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
+                        Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
                         break;
                     case "3":
                         Sort.TestArrayRAM(count, step, seed, RadixSort.SortRAM);
@@ -48,7 +48,7 @@ namespace Lab1
                         break;
                     case "11":
                         Sort.TestArrayRAM(count, step, seed, SelectionSort.Sort);
-//                        Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
+                        Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
                         Sort.TestArrayRAM(count, step, seed, RadixSort.SortRAM);
                         Sort.TestListRAM(count, step, seed, RadixSort.SortRAM);
                         Sort.TestArrayDisk(count, step, seed, SelectionSort.Sort);
