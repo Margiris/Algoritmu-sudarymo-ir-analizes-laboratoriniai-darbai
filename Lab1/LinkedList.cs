@@ -7,25 +7,20 @@ namespace Lab1
         public class LinkedListNode
         {
             public LinkedListNode Next;
-            public double Value;
+
+            public double Value { get; set; }
 
             public int CurrentIndex;
             public int NextIndex;
-
-            public void AddNext(LinkedListNode node)
-            {
-                Next = node;
-            }
         }
-        
+
         public int Count;
         public LinkedListNode First { get; protected set; }
-        protected LinkedListNode Current { get; set; }
         protected LinkedListNode Last { get; set; }
 
         public abstract LinkedListNode GetFirstNode();
-        public abstract LinkedListNode GetNode(int index);
         public abstract LinkedListNode NextOf(LinkedListNode node);
+        public abstract void Swap(LinkedListNode node1, LinkedListNode node2);
 
         public void Print()
         {

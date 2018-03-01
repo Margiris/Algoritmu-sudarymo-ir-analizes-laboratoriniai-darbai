@@ -10,7 +10,7 @@ namespace Lab1
 
         protected static long ComparisonCount;
         protected static long SwapCount;
-        private const int RunCount = 4;
+        private const int RunCount = 6;
 
         /// <summary>
         /// Draws progress bar in current console line.
@@ -74,7 +74,7 @@ namespace Lab1
                 DrawTextProgressBar(count, count);
                 Console.WriteLine();
 
-                sample.Print();
+//                sample.Print();
 
 
                 count *= step;
@@ -102,7 +102,7 @@ namespace Lab1
                 DrawTextProgressBar(count, count);
                 Console.WriteLine();
 
-                sample.Print();
+//                sample.Print();
 
                 count *= step;
             }
@@ -132,7 +132,7 @@ namespace Lab1
                     DrawTextProgressBar(count, count);
                     Console.WriteLine();
 
-                    sample.Print();
+//                    sample.Print();
                 }
 
                 count *= step;
@@ -154,7 +154,7 @@ namespace Lab1
                 SwapCount = 0;
                 var sample = new LinkedListDisk(filename, count, seed);
 
-                using (sample.fileStream = new FileStream(filename, FileMode.Open, FileAccess.ReadWrite))
+                using (sample.FileStream = new FileStream(filename, FileMode.Open, FileAccess.ReadWrite))
                 {
                     _stopwatch = Stopwatch.StartNew();
                     algorithm(sample);
@@ -163,7 +163,7 @@ namespace Lab1
                     DrawTextProgressBar(count, count);
                     Console.WriteLine();
 
-                    sample.Print();
+//                    sample.Print();
                 }
 
                 count *= step;

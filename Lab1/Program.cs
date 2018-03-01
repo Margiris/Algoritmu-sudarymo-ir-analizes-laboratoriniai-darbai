@@ -6,8 +6,8 @@ namespace Lab1
     {
         private static void Main()
         {
-            const int count = 2;
-            const int step = 2;
+            const int count = 4;
+            const int step = 4;
             var seed = (int) DateTime.Now.Ticks;
             var isRunning = true;
 

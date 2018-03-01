@@ -33,7 +33,7 @@ namespace Lab1
                     Value = data,
                 };
 
-                Last.AddNext(toAdd);
+                Last.Next = toAdd;
                 Last = NextOf(Last);
             }
         }
@@ -43,21 +43,28 @@ namespace Lab1
             return First;
         }
 
-        public override LinkedListNode GetNode(int index)
-        {
-            Current = First;
-            
-            for (var i = 0; i < index; i++)
-            {
-                Current = NextOf(Current);
-            }
-
-            return Current;
-        }
-
         public override LinkedListNode NextOf(LinkedListNode node)
         {
             return node.Next;
         }
+
+        public override void Swap(LinkedListNode node1, LinkedListNode node2)
+        {
+            var temp = node1.Value;
+            node1.Value = node2.Value;
+            node2.Value = temp;
+        }
+
+//        public virtual LinkedListNode GetNode(int index)
+//        {
+//            Current = First;
+//            
+//            for (var i = 0; i < index; i++)
+//            {
+//                Current = NextOf(Current);
+//            }
+//
+//            return Current;
+//        }
     }
 }

@@ -25,7 +25,7 @@
                     items.Swap(i, indexOfMin);
                 }
 
-                DrawTextProgressBar(i + 2, items.Length);
+//                DrawTextProgressBar(i + 2, items.Length);
             }
         }
 
@@ -33,11 +33,11 @@
         {
             var length = items.Count;
             var currentOuter = items.GetFirstNode();
-            var currentInner = items.NextOf(currentOuter);
 
             for (var i = 0; i < length - 1; i++)
             {
                 var minimum = currentOuter;
+                var currentInner = items.NextOf(currentOuter);
 
                 for (var j = i + 1; j < length; j++)
                 {
@@ -54,14 +54,12 @@
                 if (!ReferenceEquals(minimum, currentOuter))
                 {
                     SwapCount++;
-                    var temp = currentOuter.Value;
-                    currentOuter.Value = minimum.Value;
-                    minimum.Value = temp;
+                    items.Swap(minimum, currentOuter);
                 }
 
                 currentOuter = items.NextOf(currentOuter);
 
-                DrawTextProgressBar(i + 2, length);
+//                DrawTextProgressBar(i + 2, length);
             }
         }
     }

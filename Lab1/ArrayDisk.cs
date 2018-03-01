@@ -32,7 +32,7 @@ namespace Lab1
             }
         }
 
-        public FileStream FileStream { get; set; }
+        public FileStream FileStream { private get; set; }
 
         public override double this[int index]
         {

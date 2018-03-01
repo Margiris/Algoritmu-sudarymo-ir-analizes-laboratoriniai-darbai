@@ -5,8 +5,7 @@ namespace Lab1
 {
     internal class LinkedListDisk : LinkedList
     {
-        // ReSharper disable once InconsistentNaming
-        public FileStream fileStream { private get; set; }
+        public FileStream FileStream { private get; set; }
 
         public LinkedListDisk(string fileName, int count, int seed)
         {
@@ -42,15 +41,15 @@ namespace Lab1
         {
             var bytes = new byte[4];
 
-            fileStream.Seek(0, SeekOrigin.Begin);
-            fileStream.Read(bytes, 0, 4);
+            FileStream.Seek(0, SeekOrigin.Begin);
+            FileStream.Read(bytes, 0, 4);
 
             var index = BitConverter.ToInt32(bytes, 0);
 
             return GetNode(index);
         }
 
-        public override LinkedListNode GetNode(int index)
+        public LinkedListNode GetNode(int index)
         {
             var bytes = new byte[12];
             var node = new LinkedListNode
@@ -58,8 +57,8 @@ namespace Lab1
                 CurrentIndex = index
             };
 
-            fileStream.Seek(node.CurrentIndex, SeekOrigin.Begin);
-            fileStream.Read(bytes, 0, 12);
+            FileStream.Seek(node.CurrentIndex, SeekOrigin.Begin);
+            FileStream.Read(bytes, 0, 12);
 
             node.Value = BitConverter.ToDouble(bytes, 0);
             node.NextIndex = BitConverter.ToInt32(bytes, 8);
@@ -70,6 +69,18 @@ namespace Lab1
         public override LinkedListNode NextOf(LinkedListNode node)
         {
             return GetNode(node.NextIndex);
+        }
+
+        public override void Swap(LinkedListNode node1, LinkedListNode node2)
+        {
+            var node1Bytes = BitConverter.GetBytes(node1.Value);
+            var node2Bytes = BitConverter.GetBytes(node2.Value);
+            
+            FileStream.Seek(node1.CurrentIndex, SeekOrigin.Begin);
+            FileStream.Write(node2Bytes, 0, 8);
+
+            FileStream.Seek(node2.CurrentIndex, SeekOrigin.Begin);
+            FileStream.Write(node1Bytes, 0, 8);
         }
     }
 }

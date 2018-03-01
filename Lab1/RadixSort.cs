@@ -79,7 +79,7 @@ namespace Lab1
             // Convert back the longs to the double items
             for (var i = 0; i < length; i++)
             {
-                DrawTextProgressBar(i + 1, length);
+//                DrawTextProgressBar(i + 1, length);
                 items[i] = BitConverter.ToDouble(BitConverter.GetBytes(a[i]), 0);
             }
         }
@@ -87,7 +87,7 @@ namespace Lab1
         public static void SortRAM(LinkedList items)
         {
             var length = items.Count;
-            var current = items.First;
+            var current = items.GetFirstNode();
 
             // temporary items and the items of converted doubles to longs
             var t = new long[length];
@@ -95,7 +95,7 @@ namespace Lab1
 
             for (var i = 0; i < length; i++)
             {
-                a[i++] = BitConverter.ToInt64(BitConverter.GetBytes(current.Value), 0);
+                a[i] = BitConverter.ToInt64(BitConverter.GetBytes(current.Value), 0);
                 current = items.NextOf(current);
             }
 
@@ -162,8 +162,8 @@ namespace Lab1
             // Convert back the longs to the double items
             for (var i = 0; i < length; i++)
             {
-                DrawTextProgressBar(i + 1, length);
-                current.Value = BitConverter.ToDouble(BitConverter.GetBytes(a[i++]), 0);
+//                DrawTextProgressBar(i + 1, length);
+                current.Value = BitConverter.ToDouble(BitConverter.GetBytes(a[i]), 0);
                 current = items.NextOf(current);
             }
         }
