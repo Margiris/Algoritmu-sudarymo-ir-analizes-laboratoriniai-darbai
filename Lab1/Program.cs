@@ -29,10 +29,10 @@ namespace Lab1
                         Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
                         break;
                     case "3":
-                        Sort.TestArrayRAM(count, step, seed, RadixSort.SortRAM);
+                        Sort.TestArrayRAM(count, step, seed, RadixSort.Sort);
                         break;
                     case "4":
-                        Sort.TestListRAM(count, step, seed, RadixSort.SortRAM);
+                        Sort.TestListRAM(count, step, seed, RadixSort.Sort);
                         break;
                     case "6":
                         Sort.TestArrayDisk(count, step, seed, SelectionSort.Sort);
@@ -41,16 +41,16 @@ namespace Lab1
                         Sort.TestListDisk(count, step, seed, SelectionSort.Sort);
                         break;
                     case "8":
-                        //Sort.TestArrayDisk(count, step, seed, RadixSort.Sort);
+                        Sort.TestArrayDisk(count, step, seed, RadixSort.Sort);
                         break;
                     case "9":
-                        //Sort.TestListDisk(count, step, seed, RadixSort.Sort);
+                        Sort.TestListDisk(count, step, seed, RadixSort.Sort);
                         break;
                     case "11":
                         Sort.TestArrayRAM(count, step, seed, SelectionSort.Sort);
                         Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
-                        Sort.TestArrayRAM(count, step, seed, RadixSort.SortRAM);
-                        Sort.TestListRAM(count, step, seed, RadixSort.SortRAM);
+                        Sort.TestArrayRAM(count, step, seed, RadixSort.Sort);
+                        Sort.TestListRAM(count, step, seed, RadixSort.Sort);
                         Sort.TestArrayDisk(count, step, seed, SelectionSort.Sort);
                         Sort.TestListDisk(count, step, seed, SelectionSort.Sort);
                         break;

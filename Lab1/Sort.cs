@@ -53,7 +53,7 @@ namespace Lab1
                 progress, total, ComparisonCount, SwapCount, _stopwatch.ElapsedMilliseconds);
         }
 
-        public static void TestArrayRAM(int count, int step, int seed, Action<Array> algorithm)
+        public static void TestArrayRAM(int count, int step, int seed, Action<Array, Array, Array> algorithm)
         {
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
@@ -66,9 +66,11 @@ namespace Lab1
                 ComparisonCount = 0;
                 SwapCount = 0;
                 var sample = new ArrayRAM(count, seed);
+                var a = new ArrayRAM(count);
+                var t = new ArrayRAM(count);
 
                 _stopwatch = Stopwatch.StartNew();
-                algorithm(sample);
+                algorithm(sample, a, t);
                 _stopwatch.Stop();
 
                 DrawTextProgressBar(count, count);
@@ -81,7 +83,7 @@ namespace Lab1
             }
         }
 
-        public static void TestListRAM(int count, int step, int seed, Action<LinkedList> algorithm)
+        public static void TestListRAM(int count, int step, int seed, Action<LinkedList, Array, Array> algorithm)
         {
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
@@ -94,9 +96,11 @@ namespace Lab1
                 ComparisonCount = 0;
                 SwapCount = 0;
                 var sample = new LinkedListRAM(count, seed);
+                var a = new ArrayRAM(count);
+                var t = new ArrayRAM(count);
 
                 _stopwatch = Stopwatch.StartNew();
-                algorithm(sample);
+                algorithm(sample, a, t);
                 _stopwatch.Stop();
 
                 DrawTextProgressBar(count, count);
@@ -108,7 +112,7 @@ namespace Lab1
             }
         }
 
-        public static void TestArrayDisk(int count, int step, int seed, Action<Array> algorithm)
+        public static void TestArrayDisk(int count, int step, int seed, Action<Array, Array, Array> algorithm)
         {
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
@@ -119,14 +123,17 @@ namespace Lab1
             for (var i = 0; i < RunCount; i++)
             {
                 const string filename = @"file.dat";
+                const string filename2 = @"additional.dat";
                 ComparisonCount = 0;
                 SwapCount = 0;
                 var sample = new ArrayDisk(filename, count, seed);
+                var a = new ArrayDisk(filename2, count, seed);
+                var t = new ArrayDisk(filename2, count, seed);
 
                 using (sample.FileStream = new FileStream(filename, FileMode.Open, FileAccess.ReadWrite))
                 {
                     _stopwatch = Stopwatch.StartNew();
-                    algorithm(sample);
+                    algorithm(sample, a, t);
                     _stopwatch.Stop();
 
                     DrawTextProgressBar(count, count);
@@ -139,7 +146,7 @@ namespace Lab1
             }
         }
 
-        public static void TestListDisk(int count, int step, int seed, Action<LinkedListDisk> algorithm)
+        public static void TestListDisk(int count, int step, int seed, Action<LinkedList, Array, Array> algorithm)
         {
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
@@ -150,14 +157,18 @@ namespace Lab1
             for (var i = 0; i < RunCount; i++)
             {
                 const string filename = @"file.dat";
+                const string filename2 = @"additional.dat";
+                const string filename3 = @"additional.dat";
                 ComparisonCount = 0;
                 SwapCount = 0;
                 var sample = new LinkedListDisk(filename, count, seed);
+                var a = new ArrayDisk(filename2, count, seed);
+                var t = new ArrayDisk(filename3, count, seed);
 
                 using (sample.FileStream = new FileStream(filename, FileMode.Open, FileAccess.ReadWrite))
                 {
                     _stopwatch = Stopwatch.StartNew();
-                    algorithm(sample);
+                    algorithm(sample, a, t);
                     _stopwatch.Stop();
 
                     DrawTextProgressBar(count, count);

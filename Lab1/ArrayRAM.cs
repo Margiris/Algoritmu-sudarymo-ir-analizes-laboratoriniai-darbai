@@ -18,6 +18,11 @@ namespace Lab1
             }
         }
 
+        public ArrayRAM(int count)
+        {
+            Data = new double[count];
+            Length = count;
+        }
         public override double this[int index]
         {
             get => Data[index];

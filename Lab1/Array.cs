@@ -6,7 +6,16 @@ namespace Lab1
     {
         public int Length;
         public abstract double this[int index] { get; set; }
-        
+
+        public void CopyTo(Array array, int index)
+        {
+            if (array.Length <= Length)
+                for (var i = index; i < array.Length; i++)
+                    this[i] = array[i];
+            else
+                throw new NotImplementedException();
+        }
+
         public void Swap(int index1, int index2)
         {
             var temp = this[index1];

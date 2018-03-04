@@ -5,12 +5,10 @@ namespace Lab1
     // ReSharper disable once ClassNeverInstantiated.Global
     internal class RadixSort : Sort
     {
-        public static void SortRAM(Array items)
+        public static void Sort(Array items, Array a, Array t)
         {
             var length = items.Length;
             // temporary items and the items of converted doubles to longs
-            var t = new long[length];
-            var a = new long[length];
 
             for (var i = 0; i < length; i++)
             {
@@ -35,9 +33,9 @@ namespace Lab1
                     count[j] = 0;
 
                 // counting elements of the c-th group 
-                foreach (var i in a)
+                for (var i = 0; i < a.Length; i++)
                 {
-                    count[(i >> shift) & mask]++;
+                    count[((long)a[i] >> shift) & mask]++;
 
                     // additionally count all negative 
                     // values in first round
@@ -53,10 +51,10 @@ namespace Lab1
                     pref[i] = pref[i - 1] + count[i - 1];
 
                 // from a[] to t[] elements ordered by c-th group 
-                foreach (var i in a)
+                for (var i = 0; i < a.Length; i++)
                 {
                     // Get the right index to sort the number in
-                    var index = pref[(i >> shift) & mask]++;
+                    var index = pref[((long)a[i] >> shift) & mask]++;
 
                     if (c == groups - 1)
                     {
@@ -69,7 +67,7 @@ namespace Lab1
                             index += negatives;
                     }
 
-                    t[index] = i;
+                    t[(int)index] = i;
                 }
 
                 // a[]=t[] and start again until the last group 
@@ -84,14 +82,14 @@ namespace Lab1
             }
         }
 
-        public static void SortRAM(LinkedList items)
+        public static void Sort(LinkedList items, Array a, Array t)
         {
             var length = items.Count;
             var current = items.GetFirstNode();
 
             // temporary items and the items of converted doubles to longs
-            var t = new long[length];
-            var a = new long[length];
+            //var t = new long[length];
+            //var a = new long[length];
 
             for (var i = 0; i < length; i++)
             {
@@ -117,9 +115,9 @@ namespace Lab1
                     count[j] = 0;
 
                 // counting elements of the c-th group 
-                foreach (var i in a)
+                for (var i = 0; i < a.Length; i++)
                 {
-                    count[(i >> shift) & mask]++;
+                    count[((long)a[i] >> shift) & mask]++;
 
                     // additionally count all negative 
                     // values in first round
@@ -135,10 +133,10 @@ namespace Lab1
                     pref[i] = pref[i - 1] + count[i - 1];
 
                 // from a[] to t[] elements ordered by c-th group 
-                foreach (var i in a)
+                for (var i = 0; i < a.Length; i++)
                 {
                     // Get the right index to sort the number in
-                    var index = pref[(i >> shift) & mask]++;
+                    var index = pref[((long)a[i] >> shift) & mask]++;
 
                     if (c == groups - 1)
                     {
@@ -151,7 +149,7 @@ namespace Lab1
                             index += negatives;
                     }
 
-                    t[index] = i;
+                    t[(int)index] = i;
                 }
 
                 // a[]=t[] and start again until the last group 
