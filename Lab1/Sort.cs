@@ -11,7 +11,7 @@ namespace Lab1
 
         protected static long ComparisonCount;
         protected static long SwapCount;
-        private const int RunCount = 7;
+        private const int RunCount = 8;
 
         private const string Filename = @"file.dat";
         private const string a_Filename = @"a.dat";
