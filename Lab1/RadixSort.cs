@@ -5,10 +5,12 @@ namespace Lab1
     // ReSharper disable once ClassNeverInstantiated.Global
     internal class RadixSort : Sort
     {
-        public static void Sort(Array items, Array a, Array t)
+        public static void Sort(Array items)
         {
             var length = items.Length;
             // temporary items and the items of converted doubles to longs
+            var t = new long[length];
+            var a = new long[length];
 
             for (var i = 0; i < length; i++)
             {
@@ -33,9 +35,10 @@ namespace Lab1
                     count[j] = 0;
 
                 // counting elements of the c-th group 
-                for (var i = 0; i < a.Length; i++)
+                for (var index = 0; index < a.Length; index++)
                 {
-                    count[((long)a[i] >> shift) & mask]++;
+                    var i = a[index];
+                    count[(i >> shift) & mask]++;
 
                     // additionally count all negative 
                     // values in first round
@@ -51,10 +54,11 @@ namespace Lab1
                     pref[i] = pref[i - 1] + count[i - 1];
 
                 // from a[] to t[] elements ordered by c-th group 
-                for (var i = 0; i < a.Length; i++)
+                for (var index1 = 0; index1 < a.Length; index1++)
                 {
+                    var i = a[index1];
                     // Get the right index to sort the number in
-                    var index = pref[((long)a[i] >> shift) & mask]++;
+                    var index = pref[(i >> shift) & mask]++;
 
                     if (c == groups - 1)
                     {
@@ -67,7 +71,7 @@ namespace Lab1
                             index += negatives;
                     }
 
-                    t[(int)index] = i;
+                    t[index] = i;
                 }
 
                 // a[]=t[] and start again until the last group 
@@ -80,18 +84,18 @@ namespace Lab1
 //                DrawTextProgressBar(i + 1, length);
                 items[i] = BitConverter.ToDouble(BitConverter.GetBytes(a[i]), 0);
             }
-        }
+}
 
-        public static void Sort(LinkedList items, Array a, Array t)
+        public static void Sort(LinkedList items)
         {
             var length = items.Count;
             var current = items.GetFirstNode();
 
             // temporary items and the items of converted doubles to longs
-            //var t = new long[length];
-            //var a = new long[length];
+            var t = new long[length];
+            var a = new long[length];
 
-            for (var i = 0; i < length; i++)
+            for (var i = 0; i < items.Count; i++)
             {
                 a[i] = BitConverter.ToInt64(BitConverter.GetBytes(current.Value), 0);
                 current = items.NextOf(current);
@@ -115,9 +119,10 @@ namespace Lab1
                     count[j] = 0;
 
                 // counting elements of the c-th group 
-                for (var i = 0; i < a.Length; i++)
+                for (var index = 0; index < a.Length; index++)
                 {
-                    count[((long)a[i] >> shift) & mask]++;
+                    var i = a[index];
+                    count[(i >> shift) & mask]++;
 
                     // additionally count all negative 
                     // values in first round
@@ -133,10 +138,11 @@ namespace Lab1
                     pref[i] = pref[i - 1] + count[i - 1];
 
                 // from a[] to t[] elements ordered by c-th group 
-                for (var i = 0; i < a.Length; i++)
+                for (var index1 = 0; index1 < a.Length; index1++)
                 {
+                    var i = a[index1];
                     // Get the right index to sort the number in
-                    var index = pref[((long)a[i] >> shift) & mask]++;
+                    var index = pref[(i >> shift) & mask]++;
 
                     if (c == groups - 1)
                     {
@@ -149,74 +155,21 @@ namespace Lab1
                             index += negatives;
                     }
 
-                    t[(int)index] = i;
+                    t[index] = i;
                 }
 
                 // a[]=t[] and start again until the last group 
                 t.CopyTo(a, 0);
             }
 
-            current = items.First;
+            current = items.GetFirstNode();
             // Convert back the longs to the double items
             for (var i = 0; i < length; i++)
             {
-//                DrawTextProgressBar(i + 1, length);
-                current.Value = BitConverter.ToDouble(BitConverter.GetBytes(a[i]), 0);
+//                DrawTextProgressBar(o + 1, length);
+                items.SetValue(current, BitConverter.ToDouble(BitConverter.GetBytes(a[i]), 0));
                 current = items.NextOf(current);
             }
-        }
-
-//        public static void Sort(DataList items)
-//        {
-//            var isFinished = false;
-//            var digitPosition = 0;
-//
-//            var buckets = new List<Queue<double>>();
-//            InitializeBuckets(buckets);
-//
-//            while (!isFinished)
-//            {
-//                isFinished = true;
-//
-//                for (var current = items.First; current != null; current = current.NextNode)
-//                {
-//                    var bucketNumber = GetBucketNumber(current.Data, digitPosition);
-//                    
-//                    if (bucketNumber > 0)
-//                    {
-//                        isFinished = false;
-//                    }
-//
-//                    buckets[bucketNumber].Enqueue(current.Data);
-//                }
-//
-//                var walk = items.First;
-//                foreach (var bucket in buckets)
-//                {
-//                    while (bucket.Count > 0 && walk != null)
-//                    {
-//                        walk.Data = bucket.Dequeue();
-//                        walk = walk.Next();
-//                    }
-//                }
-//
-//                digitPosition++;
-//            }
-//        }
-//
-//        private static int GetBucketNumber(double value, int digitPosition)
-//        {
-//            var bucketNumber = (value / (int)Math.Pow(10, digitPosition)) % 10;
-//            return bucketNumber;
-//        }
-//
-//        private static void InitializeBuckets(ICollection<Queue<double>> buckets)
-//        {
-//            for (var i = 0; i < 10; i++)
-//            {
-//                var q = new Queue<double>();
-//                buckets.Add(q);
-//            }
-//        }
+}
     }
 }

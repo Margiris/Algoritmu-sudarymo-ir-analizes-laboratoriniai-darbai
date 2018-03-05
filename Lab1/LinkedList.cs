@@ -20,6 +20,7 @@ namespace Lab1
 
         public abstract LinkedListNode GetFirstNode();
         public abstract LinkedListNode NextOf(LinkedListNode node);
+        public abstract void SetValue(LinkedListNode node, double value);
         public abstract void Swap(LinkedListNode node1, LinkedListNode node2);
 
         public void Print()

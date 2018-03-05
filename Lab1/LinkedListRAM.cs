@@ -48,6 +48,11 @@ namespace Lab1
             return node.Next;
         }
 
+        public override void SetValue(LinkedListNode node, double value)
+        {
+            node.Value = value;
+        }
+        
         public override void Swap(LinkedListNode node1, LinkedListNode node2)
         {
             var temp = node1.Value;

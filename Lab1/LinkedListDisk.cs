@@ -71,6 +71,14 @@ namespace Lab1
             return GetNode(node.NextIndex);
         }
 
+        public override void SetValue(LinkedListNode node, double value)
+        {
+            var nodeBytes = BitConverter.GetBytes(value);
+            
+            FileStream.Seek(node.CurrentIndex, SeekOrigin.Begin);
+            FileStream.Write(nodeBytes, 0, 8);
+        }
+        
         public override void Swap(LinkedListNode node1, LinkedListNode node2)
         {
             var node1Bytes = BitConverter.GetBytes(node1.Value);

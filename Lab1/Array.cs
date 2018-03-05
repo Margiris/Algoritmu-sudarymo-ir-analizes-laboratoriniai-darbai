@@ -10,8 +10,8 @@ namespace Lab1
         public void CopyTo(Array array, int index)
         {
             if (array.Length <= Length)
-                for (var i = index; i < array.Length; i++)
-                    this[i] = array[i];
+                for (var i = index; i < Length; i++)
+                    array[i] = this[i];
             else
                 throw new NotImplementedException();
         }

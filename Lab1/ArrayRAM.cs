@@ -23,6 +23,7 @@ namespace Lab1
             Data = new double[count];
             Length = count;
         }
+        
         public override double this[int index]
         {
             get => Data[index];
