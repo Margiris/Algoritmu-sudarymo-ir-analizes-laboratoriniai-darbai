@@ -68,8 +68,7 @@ namespace Lab1
                 ComparisonCount = 0;
                 SwapCount = 0;
                 var sample = new ArrayRAM(count, seed);
-
-                sample.Print();
+                
                 _stopwatch = Stopwatch.StartNew();
                 algorithm(sample);
                 _stopwatch.Stop();
@@ -128,7 +127,6 @@ namespace Lab1
 
                 using (sample.FileStream = new FileStream(Filename, FileMode.Open, FileAccess.ReadWrite))
                 {
-                    sample.Print();
                     _stopwatch = Stopwatch.StartNew();
                     algorithm(sample);
                     _stopwatch.Stop();

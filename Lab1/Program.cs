@@ -53,6 +53,8 @@ namespace Lab1
                         Sort.TestListRAM(count, step, seed, RadixSort.Sort);
                         Sort.TestArrayDisk(count, step, seed, SelectionSort.Sort);
                         Sort.TestListDisk(count, step, seed, SelectionSort.Sort);
+                        Sort.TestArrayDisk(count, step, seed, RadixSort.Sort);
+                        Sort.TestListDisk(count, step, seed, RadixSort.Sort);
                         break;
                     case "x":
                         isRunning = false;
