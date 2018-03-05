@@ -5,30 +5,24 @@ namespace Lab1
     // ReSharper disable once ClassNeverInstantiated.Global
     internal class RadixSort : Sort
     {
-        public static void Sort(Array items)
+        public const int GroupLength = 4;
+        private const int BitLength = 64;
+
+        private const long Groups = BitLength / GroupLength;
+        private const long Mask = (1 << GroupLength) - 1;
+
+        private static long _negatives, _positives;
+
+        public static void Sort(Array items, ArrayLong a, ArrayLong t, ArrayLong count, ArrayLong pref)
         {
             var length = items.Length;
-            // temporary items and the items of converted doubles to longs
-            var t = new long[length];
-            var a = new long[length];
 
             for (var i = 0; i < length; i++)
             {
                 a[i] = BitConverter.ToInt64(BitConverter.GetBytes(items[i]), 0);
             }
 
-            const int groupLength = 4;
-            const int bitLength = 64;
-
-            // counting and prefix items
-            // (dimension is 2^r, the number of possible values of a r-bit number) 
-            var count = new long[1 << groupLength];
-            var pref = new long[1 << groupLength];
-            const long groups = bitLength / groupLength;
-            const long mask = (1 << groupLength) - 1;
-            long negatives = 0, positives = 0;
-
-            for (int c = 0, shift = 0; c < groups; c++, shift += groupLength)
+            for (int c = 0, shift = 0; c < Groups; c++, shift += GroupLength)
             {
                 // reset count items 
                 for (var j = 0; j < count.Length; j++)
@@ -38,15 +32,15 @@ namespace Lab1
                 for (var index = 0; index < a.Length; index++)
                 {
                     var i = a[index];
-                    count[(i >> shift) & mask]++;
+                    count[(int) ((i >> shift) & Mask)]++;
 
                     // additionally count all negative 
                     // values in first round
                     if (c == 0 && i < 0)
-                        negatives++;
+                        _negatives++;
                 }
 
-                if (c == 0) positives = length - negatives;
+                if (c == 0) _positives = length - _negatives;
 
                 // calculating prefixes
                 pref[0] = 0;
@@ -58,20 +52,20 @@ namespace Lab1
                 {
                     var i = a[index1];
                     // Get the right index to sort the number in
-                    var index = pref[(i >> shift) & mask]++;
+                    var index = pref[(int) ((i >> shift) & Mask)]++;
 
-                    if (c == groups - 1)
+                    if (c == Groups - 1)
                     {
                         // We're in the last (most significant) group, if the
                         // number is negative, order them inversely in front
                         // of the items, pushing positive ones back.
                         if (i < 0)
-                            index = positives - (index - negatives) - 1;
+                            index = _positives - (index - _negatives) - 1;
                         else
-                            index += negatives;
+                            index += _negatives;
                     }
 
-                    t[index] = i;
+                    t[(int) index] = i;
                 }
 
                 // a[]=t[] and start again until the last group 
@@ -84,16 +78,16 @@ namespace Lab1
 //                DrawTextProgressBar(i + 1, length);
                 items[i] = BitConverter.ToDouble(BitConverter.GetBytes(a[i]), 0);
             }
-}
+        }
 
-        public static void Sort(LinkedList items)
+        public static void Sort(LinkedList items, ArrayLong a, ArrayLong t, ArrayLong count, ArrayLong pref)
         {
             var length = items.Count;
             var current = items.GetFirstNode();
 
             // temporary items and the items of converted doubles to longs
-            var t = new long[length];
-            var a = new long[length];
+            //var t = new long[length];
+            //var a = new long[length];
 
             for (var i = 0; i < items.Count; i++)
             {
@@ -101,18 +95,7 @@ namespace Lab1
                 current = items.NextOf(current);
             }
 
-            const int groupLength = 4;
-            const int bitLength = 64;
-
-            // counting and prefix items
-            // (dimension is 2^r, the number of possible values of a r-bit number) 
-            var count = new long[1 << groupLength];
-            var pref = new long[1 << groupLength];
-            const long groups = bitLength / groupLength;
-            const long mask = (1 << groupLength) - 1;
-            long negatives = 0, positives = 0;
-
-            for (int c = 0, shift = 0; c < groups; c++, shift += groupLength)
+            for (int c = 0, shift = 0; c < Groups; c++, shift += GroupLength)
             {
                 // reset count items 
                 for (var j = 0; j < count.Length; j++)
@@ -122,15 +105,15 @@ namespace Lab1
                 for (var index = 0; index < a.Length; index++)
                 {
                     var i = a[index];
-                    count[(i >> shift) & mask]++;
+                    count[(int) ((i >> shift) & Mask)]++;
 
                     // additionally count all negative 
                     // values in first round
                     if (c == 0 && i < 0)
-                        negatives++;
+                        _negatives++;
                 }
 
-                if (c == 0) positives = length - negatives;
+                if (c == 0) _positives = length - _negatives;
 
                 // calculating prefixes
                 pref[0] = 0;
@@ -142,20 +125,20 @@ namespace Lab1
                 {
                     var i = a[index1];
                     // Get the right index to sort the number in
-                    var index = pref[(i >> shift) & mask]++;
+                    var index = pref[(int) ((i >> shift) & Mask)]++;
 
-                    if (c == groups - 1)
+                    if (c == Groups - 1)
                     {
                         // We're in the last (most significant) group, if the
                         // number is negative, order them inversely in front
                         // of the items, pushing positive ones back.
                         if (i < 0)
-                            index = positives - (index - negatives) - 1;
+                            index = _positives - (index - _negatives) - 1;
                         else
-                            index += negatives;
+                            index += _negatives;
                     }
 
-                    t[index] = i;
+                    t[(int) index] = i;
                 }
 
                 // a[]=t[] and start again until the last group 
@@ -170,6 +153,6 @@ namespace Lab1
                 items.SetValue(current, BitConverter.ToDouble(BitConverter.GetBytes(a[i]), 0));
                 current = items.NextOf(current);
             }
-}
+        }
     }
 }

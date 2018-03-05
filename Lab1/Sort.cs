@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+// ReSharper disable InconsistentNaming
 
 namespace Lab1
 {
@@ -10,9 +11,13 @@ namespace Lab1
 
         protected static long ComparisonCount;
         protected static long SwapCount;
-        private const int RunCount = 1;
+        private const int RunCount = 6;
 
         private const string Filename = @"file.dat";
+        private const string a_Filename = @"a.dat";
+        private const string t_Filename = @"t.dat";
+        private const string count_Filename = @"count.dat";
+        private const string pref_Filename = @"pref.dat";
 
         /// <summary>
         /// Draws progress bar in current console line.
@@ -55,7 +60,8 @@ namespace Lab1
                 progress, total, ComparisonCount, SwapCount, _stopwatch.ElapsedMilliseconds);
         }
 
-        public static void TestArrayRAM(int count, int step, int seed, Action<Array> algorithm)
+        public static void TestArrayRAM(int amount, int step, int seed,
+            Action<Array, ArrayLong, ArrayLong, ArrayLong, ArrayLong> algorithm)
         {
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
@@ -67,23 +73,29 @@ namespace Lab1
             {
                 ComparisonCount = 0;
                 SwapCount = 0;
-                var sample = new ArrayRAM(count, seed);
                 
+                var sample = new ArrayRAM(amount, seed);
+                var a = new ArrayLongRAM(amount);
+                var t = new ArrayLongRAM(amount);
+                var count = new ArrayLongRAM(1 << RadixSort.GroupLength);
+                var pref = new ArrayLongRAM(1 << RadixSort.GroupLength);
+
                 _stopwatch = Stopwatch.StartNew();
-                algorithm(sample);
+                algorithm(sample, a, t, count, pref);
                 _stopwatch.Stop();
 
-                DrawTextProgressBar(count, count);
+                DrawTextProgressBar(amount, amount);
                 Console.WriteLine();
 
-                sample.Print();
+                //sample.Print();
 
 
-                count *= step;
+                amount *= step;
             }
         }
 
-        public static void TestListRAM(int count, int step, int seed, Action<LinkedList> algorithm)
+        public static void TestListRAM(int amount, int step, int seed,
+            Action<LinkedList, ArrayLong, ArrayLong, ArrayLong, ArrayLong> algorithm)
         {
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
@@ -95,22 +107,28 @@ namespace Lab1
             {
                 ComparisonCount = 0;
                 SwapCount = 0;
-                var sample = new LinkedListRAM(count, seed);
+                
+                var sample = new LinkedListRAM(amount, seed);
+                var a = new ArrayLongRAM(amount);
+                var t = new ArrayLongRAM(amount);
+                var count = new ArrayLongRAM(1 << RadixSort.GroupLength);
+                var pref = new ArrayLongRAM(1 << RadixSort.GroupLength);
 
                 _stopwatch = Stopwatch.StartNew();
-                algorithm(sample);
+                algorithm(sample, a, t, count, pref);
                 _stopwatch.Stop();
 
-                DrawTextProgressBar(count, count);
+                DrawTextProgressBar(amount, amount);
                 Console.WriteLine();
 
-                sample.Print();
+                //sample.Print();
 
-                count *= step;
+                amount *= step;
             }
         }
 
-        public static void TestArrayDisk(int count, int step, int seed, Action<Array> algorithm)
+        public static void TestArrayDisk(int amount, int step, int seed,
+            Action<Array, ArrayLong, ArrayLong, ArrayLong, ArrayLong> algorithm)
         {
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
@@ -122,26 +140,35 @@ namespace Lab1
             {
                 ComparisonCount = 0;
                 SwapCount = 0;
-                
-                var sample = new ArrayDisk(Filename, count, seed);
+
+                var sample = new ArrayDisk(Filename, amount, seed);
+                var a = new ArrayLongDisk(a_Filename, amount);
+                var t = new ArrayLongDisk(t_Filename, amount);
+                var count = new ArrayLongDisk(count_Filename, 1 << RadixSort.GroupLength);
+                var pref = new ArrayLongDisk(pref_Filename, 1 << RadixSort.GroupLength);
 
                 using (sample.FileStream = new FileStream(Filename, FileMode.Open, FileAccess.ReadWrite))
+                using (a.FileStream = new FileStream(a_Filename, FileMode.Open, FileAccess.ReadWrite))
+                using (t.FileStream = new FileStream(t_Filename, FileMode.Open, FileAccess.ReadWrite))
+                using (count.FileStream = new FileStream(count_Filename, FileMode.Open, FileAccess.ReadWrite))
+                using (pref.FileStream = new FileStream(pref_Filename, FileMode.Open, FileAccess.ReadWrite))
                 {
                     _stopwatch = Stopwatch.StartNew();
-                    algorithm(sample);
+                    algorithm(sample, a, t, count, pref);
                     _stopwatch.Stop();
 
-                    DrawTextProgressBar(count, count);
+                    DrawTextProgressBar(amount, amount);
                     Console.WriteLine();
 
-                    sample.Print();
+                    //sample.Print();
                 }
 
-                count *= step;
+                amount *= step;
             }
         }
 
-        public static void TestListDisk(int count, int step, int seed, Action<LinkedList> algorithm)
+        public static void TestListDisk(int amount, int step, int seed,
+            Action<LinkedList, ArrayLong, ArrayLong, ArrayLong, ArrayLong> algorithm)
         {
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
@@ -153,22 +180,30 @@ namespace Lab1
             {
                 ComparisonCount = 0;
                 SwapCount = 0;
-                
-                var sample = new LinkedListDisk(Filename, count, seed);
+
+                var sample = new LinkedListDisk(Filename, amount, seed);
+                var a = new ArrayLongDisk(a_Filename, amount);
+                var t = new ArrayLongDisk(t_Filename, amount);
+                var count = new ArrayLongDisk(count_Filename, 1 << RadixSort.GroupLength);
+                var pref = new ArrayLongDisk(pref_Filename, 1 << RadixSort.GroupLength);
 
                 using (sample.FileStream = new FileStream(Filename, FileMode.Open, FileAccess.ReadWrite))
+                using (a.FileStream = new FileStream(a_Filename, FileMode.Open, FileAccess.ReadWrite))
+                using (t.FileStream = new FileStream(t_Filename, FileMode.Open, FileAccess.ReadWrite))
+                using (count.FileStream = new FileStream(count_Filename, FileMode.Open, FileAccess.ReadWrite))
+                using (pref.FileStream = new FileStream(pref_Filename, FileMode.Open, FileAccess.ReadWrite))
                 {
                     _stopwatch = Stopwatch.StartNew();
-                    algorithm(sample);
+                    algorithm(sample, a, t, count, pref);
                     _stopwatch.Stop();
 
-                    DrawTextProgressBar(count, count);
+                    DrawTextProgressBar(amount, amount);
                     Console.WriteLine();
 
-                    sample.Print();
+                    //sample.Print();
                 }
 
-                count *= step;
+                amount *= step;
             }
         }
     }

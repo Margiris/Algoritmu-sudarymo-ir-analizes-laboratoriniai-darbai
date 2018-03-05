@@ -3,7 +3,7 @@
     // ReSharper disable once ClassNeverInstantiated.Global
     internal class SelectionSort : Sort
     {
-        public static void Sort(Array items)
+        public static void Sort(Array items, ArrayLong a, ArrayLong t, ArrayLong count, ArrayLong pref)
         {
             for (var i = 0; i < items.Length - 1; i++)
             {
@@ -29,7 +29,7 @@
             }
         }
 
-        public static void Sort(LinkedList items)
+        public static void Sort(LinkedList items, ArrayLong a, ArrayLong t, ArrayLong count, ArrayLong pref)
         {
             var length = items.Count;
             var currentOuter = items.GetFirstNode();

@@ -52,7 +52,7 @@ namespace Lab1
         {
             node.Value = value;
         }
-        
+
         public override void Swap(LinkedListNode node1, LinkedListNode node2)
         {
             var temp = node1.Value;
