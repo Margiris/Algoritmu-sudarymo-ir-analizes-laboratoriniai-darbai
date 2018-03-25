@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+
 // ReSharper disable InconsistentNaming
 
 namespace Lab1
@@ -11,13 +12,14 @@ namespace Lab1
 
         protected static long ComparisonCount;
         protected static long SwapCount;
-        private const int RunCount = 7;
+        private const int RunCount = 8;
 
         private const string Filename = @"file.dat";
         private const string a_Filename = @"a.dat";
         private const string t_Filename = @"t.dat";
         private const string count_Filename = @"count.dat";
         private const string pref_Filename = @"pref.dat";
+        private const string results_Filename = @"results.log";
 
         /// <summary>
         /// Draws progress bar in current console line.
@@ -60,20 +62,34 @@ namespace Lab1
                 progress, total, ComparisonCount, SwapCount, _stopwatch.ElapsedMilliseconds);
         }
 
+        private static void LogResults(string title, int amount)
+        {
+            var groups = "";
+            if (title.Contains("Radix"))
+                groups = RadixSort.GroupLength.ToString();
+            
+            using (var resultStreamWriter = new StreamWriter(results_Filename, true))
+            {
+                resultStreamWriter.WriteLine("{0,-36}{1,10}{2,16}{3,10}{4,22}{5,3}",
+                    title, amount, ComparisonCount, SwapCount, _stopwatch.ElapsedMilliseconds, groups);
+            }
+        }
+
         public static void TestArrayRAM(int amount, int step, int seed,
             Action<Array, ArrayLong, ArrayLong, ArrayLong, ArrayLong> algorithm)
         {
+            // ReSharper disable once PossibleNullReferenceException
+            var title = " " + algorithm.Method.DeclaringType.Name + ": Array in RAM";
+            
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
-                // ReSharper disable once PossibleNullReferenceException
-                " " + algorithm.Method.DeclaringType.Name + ": Array in RAM", " Progress",
-                "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
+                title, " Progress", "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
 
             for (var i = 0; i < RunCount; i++)
             {
                 ComparisonCount = 0;
                 SwapCount = 0;
-                
+
                 var sample = new ArrayRAM(amount, seed);
                 var a = new ArrayLongRAM(amount);
                 var t = new ArrayLongRAM(amount);
@@ -86,6 +102,7 @@ namespace Lab1
 
                 DrawTextProgressBar(amount, amount);
                 Console.WriteLine();
+                LogResults(title, amount);
 
                 //sample.Print();
 
@@ -97,17 +114,18 @@ namespace Lab1
         public static void TestListRAM(int amount, int step, int seed,
             Action<LinkedList, ArrayLong, ArrayLong, ArrayLong, ArrayLong> algorithm)
         {
+            // ReSharper disable once PossibleNullReferenceException
+            var title = " " + algorithm.Method.DeclaringType.Name + ": Linked list in RAM";
+            
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
-                // ReSharper disable once PossibleNullReferenceException
-                " " + algorithm.Method.DeclaringType.Name + ": Linked list in RAM", " Progress",
-                "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
+                title, " Progress", "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
 
             for (var i = 0; i < RunCount; i++)
             {
                 ComparisonCount = 0;
                 SwapCount = 0;
-                
+
                 var sample = new LinkedListRAM(amount, seed);
                 var a = new ArrayLongRAM(amount);
                 var t = new ArrayLongRAM(amount);
@@ -120,6 +138,7 @@ namespace Lab1
 
                 DrawTextProgressBar(amount, amount);
                 Console.WriteLine();
+                LogResults(title, amount);
 
                 //sample.Print();
 
@@ -130,11 +149,12 @@ namespace Lab1
         public static void TestArrayDisk(int amount, int step, int seed,
             Action<Array, ArrayLong, ArrayLong, ArrayLong, ArrayLong> algorithm)
         {
+            // ReSharper disable once PossibleNullReferenceException
+            var title = " " + algorithm.Method.DeclaringType.Name + ": Array in disk";
+            
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
-                // ReSharper disable once PossibleNullReferenceException
-                " " + algorithm.Method.DeclaringType.Name + ": Array in disk", " Progress",
-                "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
+                title, " Progress", "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
 
             for (var i = 0; i < RunCount; i++)
             {
@@ -159,6 +179,7 @@ namespace Lab1
 
                     DrawTextProgressBar(amount, amount);
                     Console.WriteLine();
+                    LogResults(title, amount);
 
                     //sample.Print();
                 }
@@ -170,11 +191,12 @@ namespace Lab1
         public static void TestListDisk(int amount, int step, int seed,
             Action<LinkedList, ArrayLong, ArrayLong, ArrayLong, ArrayLong> algorithm)
         {
+            // ReSharper disable once PossibleNullReferenceException
+            var title = " " + algorithm.Method.DeclaringType.Name + ": Linked list in disk";
+            
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
-                // ReSharper disable once PossibleNullReferenceException
-                " " + algorithm.Method.DeclaringType.Name + ": Linked list in disk", " Progress",
-                "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
+                title, " Progress", "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
 
             for (var i = 0; i < RunCount; i++)
             {
@@ -199,6 +221,7 @@ namespace Lab1
 
                     DrawTextProgressBar(amount, amount);
                     Console.WriteLine();
+                    LogResults(title, amount);
 
                     //sample.Print();
                 }
