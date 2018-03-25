@@ -5,7 +5,7 @@ namespace Lab1
     // ReSharper disable once ClassNeverInstantiated.Global
     internal class RadixSort : Sort
     {
-        public const int GroupLength = 1;
+        public const int GroupLength = 16;
         private const int BitLength = 64;
 
         private const long Groups = BitLength / GroupLength;

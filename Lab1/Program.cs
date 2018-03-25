@@ -6,8 +6,9 @@ namespace Lab1
     {
         private static void Main()
         {
-            const int count = 4;
-            const int step = 4;
+            const int radixSortCount = 8192;
+            const int selectionSortCount = 1024;
+            const int step = 2;
             var seed = (int) DateTime.Now.Ticks;
             var isRunning = true;
 
@@ -23,38 +24,38 @@ namespace Lab1
                         PrintMenu();
                         break;
                     case "1":
-                        Sort.TestArrayRAM(count, step, seed, SelectionSort.Sort);
+                        Sort.TestArrayRAM(selectionSortCount, step, seed, SelectionSort.Sort);
                         break;
                     case "2":
-                        Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
+                        Sort.TestListRAM(selectionSortCount, step, seed, SelectionSort.Sort);
                         break;
                     case "3":
-                        Sort.TestArrayRAM(count, step, seed, RadixSort.Sort);
+                        Sort.TestArrayRAM(radixSortCount, step, seed, RadixSort.Sort);
                         break;
                     case "4":
-                        Sort.TestListRAM(count, step, seed, RadixSort.Sort);
+                        Sort.TestListRAM(radixSortCount, step, seed, RadixSort.Sort);
                         break;
                     case "6":
-                        Sort.TestArrayDisk(count, step, seed, SelectionSort.Sort);
+                        Sort.TestArrayDisk(selectionSortCount, step, seed, SelectionSort.Sort);
                         break;
                     case "7":
-                        Sort.TestListDisk(count, step, seed, SelectionSort.Sort);
+                        Sort.TestListDisk(selectionSortCount, step, seed, SelectionSort.Sort);
                         break;
                     case "8":
-                        Sort.TestArrayDisk(count, step, seed, RadixSort.Sort);
+                        Sort.TestArrayDisk(radixSortCount, step, seed, RadixSort.Sort);
                         break;
                     case "9":
-                        Sort.TestListDisk(count, step, seed, RadixSort.Sort);
+                        Sort.TestListDisk(radixSortCount, step, seed, RadixSort.Sort);
                         break;
                     case "11":
-                        Sort.TestArrayRAM(count, step, seed, SelectionSort.Sort);
-                        Sort.TestListRAM(count, step, seed, SelectionSort.Sort);
-                        Sort.TestArrayRAM(count, step, seed, RadixSort.Sort);
-                        Sort.TestListRAM(count, step, seed, RadixSort.Sort);
-                        Sort.TestArrayDisk(count, step, seed, SelectionSort.Sort);
-                        Sort.TestListDisk(count, step, seed, SelectionSort.Sort);
-                        Sort.TestArrayDisk(count, step, seed, RadixSort.Sort);
-                        Sort.TestListDisk(count, step, seed, RadixSort.Sort);
+                        Sort.TestArrayRAM(selectionSortCount, step, seed, SelectionSort.Sort);
+                        Sort.TestListRAM(selectionSortCount, step, seed, SelectionSort.Sort);
+                        Sort.TestArrayRAM(selectionSortCount, step, seed, RadixSort.Sort);
+                        Sort.TestListRAM(radixSortCount, step, seed, RadixSort.Sort);
+                        Sort.TestArrayDisk(selectionSortCount, step, seed, SelectionSort.Sort);
+                        Sort.TestListDisk(selectionSortCount, step, seed, SelectionSort.Sort);
+                        Sort.TestArrayDisk(radixSortCount, step, seed, RadixSort.Sort);
+                        Sort.TestListDisk(radixSortCount, step, seed, RadixSort.Sort);
                         break;
                     case "x":
                         isRunning = false;
