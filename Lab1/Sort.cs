@@ -95,7 +95,7 @@ namespace Lab1
                 var t = new ArrayLongRAM(amount);
                 var count = new ArrayLongRAM(1 << RadixSort.GroupLength);
                 var pref = new ArrayLongRAM(1 << RadixSort.GroupLength);
-
+                
                 _stopwatch = Stopwatch.StartNew();
                 algorithm(sample, a, t, count, pref);
                 _stopwatch.Stop();

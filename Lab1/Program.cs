@@ -53,7 +53,7 @@ namespace Lab1
                     case "11":
                         Sort.TestArrayRAM(selectionSortCount, selectionSortStep, seed, SelectionSort.Sort);
                         Sort.TestListRAM(selectionSortCount, selectionSortStep, seed, SelectionSort.Sort);
-                        Sort.TestArrayRAM(selectionSortCount, radixSortStep, seed, RadixSort.Sort);
+                        Sort.TestArrayRAM(radixSortCount, radixSortStep, seed, RadixSort.Sort);
                         Sort.TestListRAM(radixSortCount, radixSortStep, seed, RadixSort.Sort);
                         Sort.TestArrayDisk(selectionSortCount, selectionSortStep, seed, SelectionSort.Sort);
                         Sort.TestListDisk(selectionSortCount, selectionSortStep, seed, SelectionSort.Sort);
