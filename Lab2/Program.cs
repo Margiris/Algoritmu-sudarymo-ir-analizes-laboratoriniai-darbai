@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Lab2
 {
@@ -6,22 +7,25 @@ namespace Lab2
     {
         public static void Main(string[] args)
         {
-            var a = GetInteger();
+            var number = GetInteger();
+            var actions = new LinkedList<int>();
 
-            Console.WriteLine(a);
+            Calculate(number, actions);
+
+            PrintResults(actions);
         }
 
         /// <summary>
         /// Asks for input,
         /// catches invalid characters and displays a message,
         /// returns input if greater than 1
-        /// or asks again otherwise
+        /// or asks again otherwise.
         /// </summary>
         /// <returns>An integer greater than 1</returns>
         private static int GetInteger()
         {
             var a = 0;
-            
+
             while (a <= 1)
             {
                 Console.Write("Enter an integer greater than 1: ");
@@ -37,6 +41,57 @@ namespace Lab2
             }
 
             return a;
+        }
+        
+        /// <summary>
+        /// Calculates the smallest amount of actions required to get the given number to 1.
+        /// Allowed actions are:
+        ///     division by 3;
+        ///     division by 2;
+        ///     subtraction of 1.
+        /// </summary>
+        /// <param name="number">The number to work with</param>
+        /// <param name="actions">List of actions performed</param>
+        private static void Calculate(int number, LinkedList<int> actions)
+        {
+            while (number > 1)
+            {
+                if (number % 3 == 0)
+                {
+                    number /= 3;
+                    actions.AddLast(1);
+                }
+                else if (number % 2 == 0)
+                {
+                    number /= 2;
+                    actions.AddLast(2);
+                }
+                else
+                {
+                    number -= 1;
+                    actions.AddLast(3);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Prints the length of the given list of numbers in one line and all the numbers in the other one.
+        /// </summary>
+        /// <param name="actions">List of numbers to print</param>
+        /// <exception cref="ArgumentNullException">Throws if the given list is null</exception>
+        private static void PrintResults(LinkedList<int> actions)
+        {
+            if (actions == null) throw new ArgumentNullException(nameof(actions));
+            
+            Console.WriteLine("Number of actions required - " + actions.Count);
+
+            Console.Write("Actions: ");
+            foreach (var action in actions)
+            {
+                Console.Write(action);
+            }
+            
+            Console.WriteLine();
         }
     }
 }
