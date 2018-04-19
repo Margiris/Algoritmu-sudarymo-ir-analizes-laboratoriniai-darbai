@@ -11,6 +11,13 @@ namespace Lab2
             Console.WriteLine(a);
         }
 
+        /// <summary>
+        /// Asks for input,
+        /// catches invalid characters and displays a message,
+        /// returns input if greater than 1
+        /// or asks again otherwise
+        /// </summary>
+        /// <returns>An integer greater than 1</returns>
         private static int GetInteger()
         {
             var a = 0;
