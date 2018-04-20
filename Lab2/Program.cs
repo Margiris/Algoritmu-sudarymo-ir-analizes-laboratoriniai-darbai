@@ -8,11 +8,10 @@ namespace Lab2
         public static void Main(string[] args)
         {
             var number = GetInteger();
-            var actions = new LinkedList<int>();
+            var actions = CalculateActions(number);
             
-            Console.WriteLine("Result 2 (long) - " + F(number));
-
-            Calculate(number, actions);
+            Console.WriteLine("Recursively - " + Fr(number));
+            Console.WriteLine("Dinamicaly - " + Fd(number));
 
             PrintResults(actions);
         }
@@ -24,17 +23,22 @@ namespace Lab2
         /// </summary>
         /// <param name="n">Argument of the function</param>
         /// <returns>Result of the function</returns>
-        private static long F(long n)
+        private static long Fr(long n)
         {
             if (n <= 1)
             {
                 return 2;
             }
 
-            return F(n - 2) +
-                   6 * Convert.ToInt64(Math.Pow(F(n / 5), 2)) +
-                   3 * Convert.ToInt64(Math.Pow(F(n / 6), 2)) +
+            return Fr(n - 2) +
+                   6 * Convert.ToInt64(Math.Pow(Fr(n / 5), 2)) +
+                   3 * Convert.ToInt64(Math.Pow(Fr(n / 6), 2)) +
                    Convert.ToInt64(Math.Pow(n, 2) / 5);
+        }
+
+        private static long Fd(long n)
+        {
+            return 0;
         }
         
         /// <summary>
@@ -73,9 +77,11 @@ namespace Lab2
         ///     subtraction of 1.
         /// </summary>
         /// <param name="number">The number to work with</param>
-        /// <param name="actions">List of actions performed</param>
-        private static void Calculate(int number, LinkedList<int> actions)
+        /// <returns>List of actions performed</returns>
+        private static LinkedList<int> CalculateActions(int number)
         {
+            var actions = new LinkedList<int>();
+            
             while (number > 1)
             {
                 if (number % 3 == 0)
@@ -94,6 +100,8 @@ namespace Lab2
                     actions.AddLast(1);
                 }
             }
+
+            return actions;
         }
 
         /// <summary>
