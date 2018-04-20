@@ -10,86 +10,31 @@ namespace Lab2
             var number = GetInteger();
             var actions = new LinkedList<int>();
             
-            Console.WriteLine("Result 1 (long) - " + Function1Long(number));
-            Console.WriteLine("Result 1 (double) - " + Function1Double(number));
-            Console.WriteLine("Result 2 (long) - " + Function2Long(number));
-            Console.WriteLine("Result 2 (double) - " + Function2Double(number));
+            Console.WriteLine("Result 2 (long) - " + F(number));
 
             Calculate(number, actions);
 
             PrintResults(actions);
         }
-
+        
         /// <summary>
-        /// Calculates given function recursively.
+        /// Calculates F(n)    = F(n - 2) + 6 * F(n / 5) ^ 2 + 3 * F(n / 6) ^ 2 + n ^ 2 / 5; if n > 1
+        ///                    = 2; otherwise
+        /// recursively.
         /// </summary>
         /// <param name="n">Argument of the function</param>
         /// <returns>Result of the function</returns>
-        private static long Function1Long(long n)
+        private static long F(long n)
         {
             if (n <= 1)
             {
                 return 2;
             }
 
-            return Function1Long(n - 2) +
-                   6 * Function1Long(Convert.ToInt64(Math.Pow(n / 5, 2))) +
-                   3 * Function1Long(Convert.ToInt64(Math.Pow(n / 6, 2))) +
+            return F(n - 2) +
+                   6 * Convert.ToInt64(Math.Pow(F(n / 5), 2)) +
+                   3 * Convert.ToInt64(Math.Pow(F(n / 6), 2)) +
                    Convert.ToInt64(Math.Pow(n, 2) / 5);
-        }
-        
-        /// <summary>
-        /// Calculates given function recursively.
-        /// </summary>
-        /// <param name="n">Argument of the function</param>
-        /// <returns>Result of the function</returns>
-        private static double Function1Double(double n)
-        {
-            if (n <= 1)
-            {
-                return 2;
-            }
-
-            return Function1Double(n - 2) +
-                   6 * Function1Double(Math.Pow(n / 5, 2)) +
-                   3 * Function1Double(Math.Pow(n / 6, 2)) +
-                   Math.Pow(n, 2) / 5;
-        }
-        
-        /// <summary>
-        /// Calculates given function recursively.
-        /// </summary>
-        /// <param name="n">Argument of the function</param>
-        /// <returns>Result of the function</returns>
-        private static long Function2Long(long n)
-        {
-            if (n <= 1)
-            {
-                return 2;
-            }
-
-            return Function2Long(n - 2) +
-                   6 * Convert.ToInt64(Math.Pow(Function2Long(n / 5), 2)) +
-                   3 * Convert.ToInt64(Math.Pow(Function2Long(n / 6), 2)) +
-                   Convert.ToInt64(Math.Pow(n, 2) / 5);
-        }
-        
-        /// <summary>
-        /// Calculates given function recursively.
-        /// </summary>
-        /// <param name="n">Argument of the function</param>
-        /// <returns>Result of the function</returns>
-        private static double Function2Double(double n)
-        {
-            if (n <= 1)
-            {
-                return 2;
-            }
-
-            return Function2Double(n - 2) +
-                   6 * Math.Pow(Function2Double(n / 5), 2) +
-                   3 * Math.Pow(Function2Double(n / 6), 2) +
-                   Math.Pow(n, 2) / 5;
         }
         
         /// <summary>
