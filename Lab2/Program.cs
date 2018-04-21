@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 
 // ReSharper disable TailRecursiveCall
@@ -9,12 +10,13 @@ namespace Lab2
 {
     internal static class Program
     {
+        private const string ResultsLogFilename = @"results.log";
         private static Stopwatch _stopwatch;
 
         public static void Main()
         {
             _stopwatch = new Stopwatch();
-            
+
             Console.WriteLine("Task 1");
             var task1 = new Thread(Task1, 1000000000);
             task1.Start();
@@ -27,11 +29,11 @@ namespace Lab2
                 Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
                 Console.CursorLeft = 0;
             }
-            
+
             Console.WriteLine("Task 2");
             var task2 = new Thread(Task2, 1000000000);
             task2.Start();
-            
+
             while (task1.IsAlive)
             {
                 Thread.Sleep(500);
@@ -54,15 +56,15 @@ namespace Lab2
                 var intermediateResults = LongArrayWithSingleValue(-1, number);
 
                 _stopwatch = Stopwatch.StartNew();
-                Fr(number);
+                var result = Fr(number);
                 _stopwatch.Stop();
-                Console.WriteLine("Total elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
+                LogResults((ulong) number, _stopwatch.ElapsedMilliseconds, result, null);
 
                 _stopwatch = Stopwatch.StartNew();
-                Fd(number, intermediateResults);
+                result = Fd(number, intermediateResults);
                 _stopwatch.Stop();
-                Console.WriteLine("Total elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
-                
+                LogResults((ulong) number, _stopwatch.ElapsedMilliseconds, result, null);
+
                 Console.WriteLine();
             }
         }
@@ -79,19 +81,46 @@ namespace Lab2
                 _stopwatch = Stopwatch.StartNew();
                 var actions = CalculateActionsRecursively(number, new List<int>());
                 _stopwatch.Stop();
-                Console.WriteLine("Total elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
-                PrintResults(actions);
+                LogResults(number, _stopwatch.ElapsedMilliseconds, actions.Count, actions);
 
                 actions.Clear();
 
                 _stopwatch = Stopwatch.StartNew();
                 actions = CalculateActions(number);
                 _stopwatch.Stop();
-                Console.WriteLine("Total elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
-                PrintResults(actions);
+                LogResults(number, _stopwatch.ElapsedMilliseconds, actions.Count, actions);
             }
         }
-        
+
+        /// <summary>
+        /// Prints the length of the given list of numbers in one line and all the numbers in the other oneto the console.
+        /// Logs the running time of each method to file.
+        /// </summary>
+        /// <param name="number">The given number</param>
+        /// <param name="elapsedTime">Time it took to finish the algorithm</param>
+        /// <param name="result">The result calculated by the algorithm</param>
+        /// <param name="actions">Actions performed (if any) in the second task</param>
+        private static void LogResults(ulong number, long elapsedTime, long result, List<int> actions)
+        {
+            Console.WriteLine("Total elapsed time (ms) - " + elapsedTime);
+
+            var actionsString = "";
+            
+            if (actions != null)
+            {
+                Console.WriteLine("Number of actions required - " + actions.Count);
+                Console.Write("Actions: ");
+
+                foreach (var action in actions)
+                    actionsString += action;
+            }
+            
+            using (var resultStreamWriter = new StreamWriter(ResultsLogFilename, true))
+            {
+                resultStreamWriter.WriteLine("{0,20}{1,15}{2,30}{3,70}", number, elapsedTime, result, actionsString);
+            }
+        }
+
         /// <summary>
         /// Creates and returns an array of type long filled with spedified value.
         /// </summary>
