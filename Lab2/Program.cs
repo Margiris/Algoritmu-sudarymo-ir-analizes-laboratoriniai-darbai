@@ -10,15 +10,23 @@ namespace Lab2
     internal static class Program
     {
         private static Stopwatch _stopwatch;
-        
+
         public static void Main()
         {
+            _stopwatch = new Stopwatch();
+            
             var task1 = new Thread(Task1, 1000000000);
             task1.Start();
-            
+
             while (task1.IsAlive)
             {
-                Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
+                Thread.Sleep(500);
+
+                if (_stopwatch.IsRunning)
+                {
+                    Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
+                    Console.CursorLeft = 0;                    
+                }
             }
         }
 
@@ -30,30 +38,32 @@ namespace Lab2
             {
                 var intermediateResults = LongArrayWithSingleValue(-1, number);
 
-                _stopwatch = Stopwatch.StartNew();                    
-                Console.WriteLine("Result of the first task recursively - " + Fr(number));
-                _stopwatch.Stop();
-                Console.WriteLine("Total elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
-                
                 _stopwatch = Stopwatch.StartNew();
-                Console.WriteLine("Result of the first task dynamically - " + Fd(number, intermediateResults));
+                Fr(number);
                 _stopwatch.Stop();
                 Console.WriteLine("Total elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
 
+                _stopwatch = Stopwatch.StartNew();
+                Fd(number, intermediateResults);
+                _stopwatch.Stop();
+                Console.WriteLine("Total elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
                 
+                Console.WriteLine();
+
+                _stopwatch = Stopwatch.StartNew();
                 var actions = CalculateActionsRecursively(number, new LinkedList<int>());
+                _stopwatch.Stop();
+                Console.WriteLine("Total elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
                 PrintResults(actions);
 
                 actions.Clear();
 
+                _stopwatch = Stopwatch.StartNew();
                 actions = CalculateActions(number);
+                _stopwatch.Stop();
+                Console.WriteLine("Total elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
                 PrintResults(actions);
             }
-        }
-
-        private static void Task2()
-        {
-            
         }
 
         /// <summary>
