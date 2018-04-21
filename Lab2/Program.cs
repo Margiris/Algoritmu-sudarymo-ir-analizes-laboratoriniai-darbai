@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+// ReSharper disable TailRecursiveCall
 
 namespace Lab2
 {
@@ -15,6 +16,10 @@ namespace Lab2
             Console.WriteLine("Dinamicaly - " + Fd(number, intermediateResults));
 
             var actions = CalculateActions(number);
+            PrintResults(actions);
+            
+            actions.Clear();
+            actions = CalculateActionsRecursively(number, new LinkedList<int>());
             PrintResults(actions);
         }
 
@@ -138,6 +143,34 @@ namespace Lab2
             }
 
             return actions;
+        }
+
+        /// <summary>
+        /// Same as CalculateActions but instead of while loop it uses recursion.
+        /// </summary>
+        /// <param name="number">The number to work with</param>
+        /// <param name="actions">List of actions performed</param>
+        /// <returns>List of actions performed</returns>
+        private static LinkedList<int> CalculateActionsRecursively(int number, LinkedList<int> actions)
+        {
+            if (number <= 1)
+            {
+                return actions;
+            }
+            
+            if (number % 3 == 0)
+            {
+                actions.AddLast(3);
+                return CalculateActionsRecursively(number / 3, actions);
+            }
+            if (number % 2 == 0)
+            {
+                actions.AddLast(2);
+                return CalculateActionsRecursively(number / 2, actions);
+            }
+
+            actions.AddLast(1);
+            return CalculateActionsRecursively(number - 1, actions);
         }
 
         /// <summary>
