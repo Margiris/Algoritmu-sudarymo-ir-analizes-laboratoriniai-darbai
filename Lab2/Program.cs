@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 
 // ReSharper disable TailRecursiveCall
@@ -8,9 +9,17 @@ namespace Lab2
 {
     internal static class Program
     {
+        private static Stopwatch _stopwatch;
+        
         public static void Main()
         {
-            new Thread(Task1, 1000000000).Start();
+            var task1 = new Thread(Task1, 1000000000);
+            task1.Start();
+            
+            while (task1.IsAlive)
+            {
+                Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
+            }
         }
 
         private static void Task1()
@@ -21,20 +30,30 @@ namespace Lab2
             {
                 var intermediateResults = LongArrayWithSingleValue(-1, number);
 
-                Console.WriteLine("Recursively:");
+                _stopwatch = Stopwatch.StartNew();                    
+                Console.WriteLine("Result of the first task recursively - " + Fr(number));
+                _stopwatch.Stop();
+                Console.WriteLine("Total elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
+                
+                _stopwatch = Stopwatch.StartNew();
+                Console.WriteLine("Result of the first task dynamically - " + Fd(number, intermediateResults));
+                _stopwatch.Stop();
+                Console.WriteLine("Total elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
 
-                var result = Fr(number);
+                
                 var actions = CalculateActionsRecursively(number, new LinkedList<int>());
-                PrintResults(actions, result);
+                PrintResults(actions);
 
                 actions.Clear();
 
-                Console.WriteLine("Dynamically:");
-
-                result = Fd(number, intermediateResults);
                 actions = CalculateActions(number);
-                PrintResults(actions, result);
+                PrintResults(actions);
             }
+        }
+
+        private static void Task2()
+        {
+            
         }
 
         /// <summary>
@@ -201,13 +220,11 @@ namespace Lab2
         /// Prints the length of the given list of numbers in one line and all the numbers in the other one.
         /// </summary>
         /// <param name="actions">List of numbers to print</param>
-        /// <param name="result">Result of the first task</param>
         /// <exception cref="ArgumentNullException">Throws if the given list is null</exception>
-        private static void PrintResults(LinkedList<int> actions, long result)
+        private static void PrintResults(LinkedList<int> actions)
         {
             if (actions == null) throw new ArgumentNullException(nameof(actions));
 
-            Console.WriteLine("Result of the first task - " + result);
             Console.WriteLine("Number of actions required - " + actions.Count);
             Console.Write("Actions: ");
 
