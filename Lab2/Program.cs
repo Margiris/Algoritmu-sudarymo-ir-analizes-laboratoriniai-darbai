@@ -9,18 +9,22 @@ namespace Lab2
         public static void Main()
         {
             var number = GetInteger();
-
             var intermediateResults = LongArrayWithSingleValue(-1, number);
 
-            Console.WriteLine("Recursively - " + Fr(number));
-            Console.WriteLine("Dinamicaly - " + Fd(number, intermediateResults));
+            Console.WriteLine("Recursively:");
 
-            var actions = CalculateActions(number);
-            PrintResults(actions);
+            var result = Fr(number);
+            var actions = CalculateActionsRecursively(number, new LinkedList<int>());
+            PrintResults(actions, result);
             
             actions.Clear();
-            actions = CalculateActionsRecursively(number, new LinkedList<int>());
-            PrintResults(actions);
+            
+            Console.WriteLine("Dynamically:");
+
+            result = Fd(number, intermediateResults);
+            actions = CalculateActions(number);
+            PrintResults(actions, result);
+            
         }
 
         /// <summary>
@@ -177,19 +181,19 @@ namespace Lab2
         /// Prints the length of the given list of numbers in one line and all the numbers in the other one.
         /// </summary>
         /// <param name="actions">List of numbers to print</param>
+        /// <param name="result">Result of the first task</param>
         /// <exception cref="ArgumentNullException">Throws if the given list is null</exception>
-        private static void PrintResults(LinkedList<int> actions)
+        private static void PrintResults(LinkedList<int> actions, long result)
         {
             if (actions == null) throw new ArgumentNullException(nameof(actions));
 
+            Console.WriteLine("Result of the first task - " + result);
             Console.WriteLine("Number of actions required - " + actions.Count);
-
             Console.Write("Actions: ");
+            
             foreach (var action in actions)
-            {
                 Console.Write(action);
-            }
-
+            
             Console.WriteLine();
         }
     }
