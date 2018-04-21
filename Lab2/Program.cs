@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+
 // ReSharper disable TailRecursiveCall
 
 namespace Lab2
@@ -7,6 +9,12 @@ namespace Lab2
     internal static class Program
     {
         public static void Main()
+        {
+            var t = new Thread(Task1, 500000000);
+            t.Start();
+        }
+
+        private static void Task1()
         {
             var number = GetInteger();
             var intermediateResults = LongArrayWithSingleValue(-1, number);
@@ -16,15 +24,14 @@ namespace Lab2
             var result = Fr(number);
             var actions = CalculateActionsRecursively(number, new LinkedList<int>());
             PrintResults(actions, result);
-            
+
             actions.Clear();
-            
+
             Console.WriteLine("Dynamically:");
 
             result = Fd(number, intermediateResults);
             actions = CalculateActions(number);
             PrintResults(actions, result);
-            
         }
 
         /// <summary>
@@ -56,9 +63,9 @@ namespace Lab2
                 return 2;
 
             return Fr(n - 2) +
-                   6 * Convert.ToInt64(Math.Pow(Fr(n / 5), 2)) +
-                   3 * Convert.ToInt64(Math.Pow(Fr(n / 6), 2)) +
-                   Convert.ToInt64(Math.Pow(n, 2) / 5);
+                   6 * Fr(n / 5) * Fr(n / 5) +
+                   3 * Fr(n / 6) * Fr(n / 6) +
+                   n * n / 5;
         }
 
         /// <summary>
@@ -74,16 +81,14 @@ namespace Lab2
             if (n <= 1)
                 return 2;
 
-            if (n >= 2)
-                results[n - 2] = (results[n - 2] > -1) ? results[n - 2] : Fd(n - 2, results);
-
+            results[n - 2] = (results[n - 2] > -1) ? results[n - 2] : Fd(n - 2, results);
             results[n / 5] = (results[n / 5] > -1) ? results[n / 5] : Fd(n / 5, results);
             results[n / 6] = (results[n / 6] > -1) ? results[n / 6] : Fd(n / 6, results);
 
             return results[n - 2] +
-                   6 * Convert.ToInt64(Math.Pow(results[n / 5], 2)) +
-                   3 * Convert.ToInt64(Math.Pow(Fd(n / 6, results), 2)) +
-                   Convert.ToInt64(Math.Pow(n, 2) / 5);
+                   6 * results[n / 5] * results[n / 5] +
+                   3 * results[n / 6] * results[n / 6] +
+                   n * n / 5;
         }
 
         /// <summary>
@@ -165,12 +170,13 @@ namespace Lab2
             {
                 return actions;
             }
-            
+
             if (number % 3 == 0)
             {
                 actions.AddLast(3);
                 return CalculateActionsRecursively(number / 3, actions);
             }
+
             if (number % 2 == 0)
             {
                 actions.AddLast(2);
@@ -194,10 +200,10 @@ namespace Lab2
             Console.WriteLine("Result of the first task - " + result);
             Console.WriteLine("Number of actions required - " + actions.Count);
             Console.Write("Actions: ");
-            
+
             foreach (var action in actions)
                 Console.Write(action);
-            
+
             Console.WriteLine();
         }
     }
