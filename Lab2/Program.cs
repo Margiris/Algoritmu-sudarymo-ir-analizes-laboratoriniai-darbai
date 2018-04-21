@@ -10,28 +10,31 @@ namespace Lab2
     {
         public static void Main()
         {
-            var t = new Thread(Task1, 500000000);
-            t.Start();
+            new Thread(Task1, 1000000000).Start();
         }
 
         private static void Task1()
         {
-            var number = GetInteger();
-            var intermediateResults = LongArrayWithSingleValue(-1, number);
+            int number;
 
-            Console.WriteLine("Recursively:");
+            while ((number = GetInteger()) > -1)
+            {
+                var intermediateResults = LongArrayWithSingleValue(-1, number);
 
-            var result = Fr(number);
-            var actions = CalculateActionsRecursively(number, new LinkedList<int>());
-            PrintResults(actions, result);
+                Console.WriteLine("Recursively:");
 
-            actions.Clear();
+                var result = Fr(number);
+                var actions = CalculateActionsRecursively(number, new LinkedList<int>());
+                PrintResults(actions, result);
 
-            Console.WriteLine("Dynamically:");
+                actions.Clear();
 
-            result = Fd(number, intermediateResults);
-            actions = CalculateActions(number);
-            PrintResults(actions, result);
+                Console.WriteLine("Dynamically:");
+
+                result = Fd(number, intermediateResults);
+                actions = CalculateActions(number);
+                PrintResults(actions, result);
+            }
         }
 
         /// <summary>
@@ -48,6 +51,41 @@ namespace Lab2
                 array[i] = value;
 
             return array;
+        }
+
+        /// <summary>
+        /// Asks for input,
+        /// catches invalid characters and displays a message,
+        /// returns input if greater than 1
+        /// or asks again otherwise.
+        /// </summary>
+        /// <returns>An integer greater than 1</returns>
+        private static int GetInteger()
+        {
+            var a = 0;
+
+            while (a <= 1)
+            {
+                Console.Write("Provide an integer greater than 1 or type x to exit: ");
+
+                var line = Console.ReadLine();
+
+                if (line == "x")
+                {
+                    return -1;
+                }
+
+                try
+                {
+                    a = Convert.ToInt32(line);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Invalid input, please try again.");
+                }
+            }
+
+            return a;
         }
 
         /// <summary>
@@ -89,34 +127,6 @@ namespace Lab2
                    6 * results[n / 5] * results[n / 5] +
                    3 * results[n / 6] * results[n / 6] +
                    n * n / 5;
-        }
-
-        /// <summary>
-        /// Asks for input,
-        /// catches invalid characters and displays a message,
-        /// returns input if greater than 1
-        /// or asks again otherwise.
-        /// </summary>
-        /// <returns>An integer greater than 1</returns>
-        private static int GetInteger()
-        {
-            var a = 0;
-
-            while (a <= 1)
-            {
-                Console.Write("Enter an integer greater than 1: ");
-
-                try
-                {
-                    a = Convert.ToInt32(Console.ReadLine());
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Invalid input, please try again.");
-                }
-            }
-
-            return a;
         }
 
         /// <summary>
