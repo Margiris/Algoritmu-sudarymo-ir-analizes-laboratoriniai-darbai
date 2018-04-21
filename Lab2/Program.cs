@@ -46,7 +46,7 @@ namespace Lab2
         {
             int number;
 
-            while ((number = GetInteger()) > -1)
+            while ((number = Convert.ToInt32(GetInteger())) > 0)
             {
                 var intermediateResults = LongArrayWithSingleValue(-1, number);
 
@@ -66,12 +66,12 @@ namespace Lab2
 
         private static void Task2()
         {
-            int number;
+            ulong number;
 
-            while ((number = GetInteger()) > -1)
+            while ((number = GetInteger()) > 0)
             {
                 _stopwatch = Stopwatch.StartNew();
-                var actions = CalculateActionsRecursively(number, new LinkedList<int>());
+                var actions = CalculateActionsRecursively(number, new List<int>());
                 _stopwatch.Stop();
                 Console.WriteLine("Total elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
                 PrintResults(actions);
@@ -85,6 +85,7 @@ namespace Lab2
                 PrintResults(actions);
             }
         }
+        
         /// <summary>
         /// Creates and returns an array of type long filled with spedified value.
         /// </summary>
@@ -108,9 +109,9 @@ namespace Lab2
         /// or asks again otherwise.
         /// </summary>
         /// <returns>An integer greater than 1</returns>
-        private static int GetInteger()
+        private static ulong GetInteger()
         {
-            var a = 0;
+            ulong a = 0;
 
             while (a <= 1)
             {
@@ -120,12 +121,12 @@ namespace Lab2
 
                 if (line == "x")
                 {
-                    return -1;
+                    return 0;
                 }
 
                 try
                 {
-                    a = Convert.ToInt32(line);
+                    a = Convert.ToUInt64(line);
                 }
                 catch (Exception)
                 {
@@ -190,26 +191,26 @@ namespace Lab2
         /// </summary>
         /// <param name="number">The number to work with</param>
         /// <returns>List of actions performed</returns>
-        private static LinkedList<int> CalculateActions(int number)
+        private static List<int> CalculateActions(ulong number)
         {
-            var actions = new LinkedList<int>();
+            var actions = new List<int>();
 
             while (number > 1)
             {
                 if (number % 3 == 0)
                 {
                     number /= 3;
-                    actions.AddLast(3);
+                    actions.Add(3);
                 }
                 else if (number % 2 == 0)
                 {
                     number /= 2;
-                    actions.AddLast(2);
+                    actions.Add(2);
                 }
                 else
                 {
                     number -= 1;
-                    actions.AddLast(1);
+                    actions.Add(1);
                 }
             }
 
@@ -222,7 +223,7 @@ namespace Lab2
         /// <param name="number">The number to work with</param>
         /// <param name="actions">List of actions performed</param>
         /// <returns>List of actions performed</returns>
-        private static LinkedList<int> CalculateActionsRecursively(int number, LinkedList<int> actions)
+        private static List<int> CalculateActionsRecursively(ulong number, List<int> actions)
         {
             if (number <= 1)
             {
@@ -231,17 +232,17 @@ namespace Lab2
 
             if (number % 3 == 0)
             {
-                actions.AddLast(3);
+                actions.Add(3);
                 return CalculateActionsRecursively(number / 3, actions);
             }
 
             if (number % 2 == 0)
             {
-                actions.AddLast(2);
+                actions.Add(2);
                 return CalculateActionsRecursively(number / 2, actions);
             }
 
-            actions.AddLast(1);
+            actions.Add(1);
             return CalculateActionsRecursively(number - 1, actions);
         }
 
@@ -250,7 +251,7 @@ namespace Lab2
         /// </summary>
         /// <param name="actions">List of numbers to print</param>
         /// <exception cref="ArgumentNullException">Throws if the given list is null</exception>
-        private static void PrintResults(LinkedList<int> actions)
+        private static void PrintResults(List<int> actions)
         {
             if (actions == null) throw new ArgumentNullException(nameof(actions));
 
