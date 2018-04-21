@@ -120,6 +120,10 @@ namespace Lab2
         ///     division by 3;
         ///     division by 2;
         ///     subtraction of 1.
+        /// Time complexity:
+        ///     best - log3(n);
+        ///     worst - n - 1
+        /// for all natural numbers n > 1.
         /// </summary>
         /// <param name="number">The number to work with</param>
         /// <returns>List of actions performed</returns>
