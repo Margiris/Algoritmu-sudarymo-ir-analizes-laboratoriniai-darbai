@@ -15,6 +15,7 @@ namespace Lab2
         {
             _stopwatch = new Stopwatch();
             
+            Console.WriteLine("Task 1");
             var task1 = new Thread(Task1, 1000000000);
             task1.Start();
 
@@ -22,11 +23,22 @@ namespace Lab2
             {
                 Thread.Sleep(500);
 
-                if (_stopwatch.IsRunning)
-                {
-                    Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
-                    Console.CursorLeft = 0;                    
-                }
+                if (!_stopwatch.IsRunning) continue;
+                Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
+                Console.CursorLeft = 0;
+            }
+            
+            Console.WriteLine("Task 2");
+            var task2 = new Thread(Task2, 1000000000);
+            task2.Start();
+            
+            while (task1.IsAlive)
+            {
+                Thread.Sleep(500);
+
+                if (!_stopwatch.IsRunning) continue;
+                Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
+                Console.CursorLeft = 0;
             }
         }
 
@@ -49,7 +61,15 @@ namespace Lab2
                 Console.WriteLine("Total elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
                 
                 Console.WriteLine();
+            }
+        }
 
+        private static void Task2()
+        {
+            int number;
+
+            while ((number = GetInteger()) > -1)
+            {
                 _stopwatch = Stopwatch.StartNew();
                 var actions = CalculateActionsRecursively(number, new LinkedList<int>());
                 _stopwatch.Stop();
@@ -65,7 +85,6 @@ namespace Lab2
                 PrintResults(actions);
             }
         }
-
         /// <summary>
         /// Creates and returns an array of type long filled with spedified value.
         /// </summary>
