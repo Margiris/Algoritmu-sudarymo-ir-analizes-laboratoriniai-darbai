@@ -42,6 +42,9 @@ namespace Lab2
             }
         }
 
+        /// <summary>
+        /// Method for the first task.
+        /// </summary>
         private static void Task1()
         {
             int number;
@@ -64,6 +67,9 @@ namespace Lab2
             }
         }
 
+        /// <summary>
+        /// Mathod for the second task.
+        /// </summary>
         private static void Task2()
         {
             ulong number;
