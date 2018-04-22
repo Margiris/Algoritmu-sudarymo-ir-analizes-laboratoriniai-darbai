@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 
@@ -105,16 +106,16 @@ namespace Lab2
             Console.WriteLine("Total elapsed time (ms) - " + elapsedTime);
 
             var actionsString = "";
-            
+
             if (actions != null)
             {
-                Console.WriteLine("Number of actions required - " + actions.Count);
-                Console.Write("Actions: ");
-
                 foreach (var action in actions)
                     actionsString += action;
+                
+                Console.WriteLine("Number of actions required - " + actions.Count);
+                Console.WriteLine("Actions: " + actionsString);
             }
-            
+
             using (var resultStreamWriter = new StreamWriter(ResultsLogFilename, true))
             {
                 resultStreamWriter.WriteLine("{0,20}{1,15}{2,30}{3,70}", number, elapsedTime, result, actionsString);
@@ -179,15 +180,17 @@ namespace Lab2
         /// </summary>
         /// <param name="n">Argument of the function</param>
         /// <returns>Result of the function</returns>
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
         private static long Fr(long n)
         {
             if (n <= 1)
                 return 2;
 
-            return Fr(n - 2) +
-                   6 * Fr(n / 5) * Fr(n / 5) +
-                   3 * Fr(n / 6) * Fr(n / 6) +
-                   n * n / 5;
+            var Fr1 = Fr(n - 2);
+            var Fr2 = Fr(n / 5);
+            var Fr3 = Fr(n / 6);
+
+            return Fr1 + 6 * Fr2 * Fr2 + 3 * Fr3 * Fr3 + n * n / 5;
         }
 
         /// <summary>
