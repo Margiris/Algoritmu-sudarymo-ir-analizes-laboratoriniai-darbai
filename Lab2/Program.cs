@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 
+// ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable TailRecursiveCall
 
 namespace Lab2
@@ -44,11 +45,11 @@ namespace Lab2
                 Console.CursorLeft = 0;
             }
 
-            Console.WriteLine("\nTask 2 from input number down to 2");
-            var task2DownToTwo = new Thread(Task2DownToTwo, 1000000000);
-            task2DownToTwo.Start();
+            Console.WriteLine("\nTask 2 from 2 to the input number increasing by * 5");
+            var task2Automatic = new Thread(Task2Automatic, 1000000000);
+            task2Automatic.Start();
 
-            while (task2DownToTwo.IsAlive)
+            while (task2Automatic.IsAlive)
             {
                 Thread.Sleep(500);
                 if (!_stopwatch.IsRunning) continue;
@@ -65,11 +66,12 @@ namespace Lab2
         {
             int number;
 
-            while ((number = Convert.ToInt32(GetNumber())) > 0)
+            while ((number = GetInteger()) > 0)
             {
                 var intermediateResults = LongArrayWithSingleValue(-1, number);
 
                 _stopwatch = Stopwatch.StartNew();
+                // ReSharper disable once RedundantAssignment
                 var result = Fr(number);
                 _stopwatch.Stop();
                 var elapsedTime1 = _stopwatch.ElapsedMilliseconds;
@@ -80,7 +82,7 @@ namespace Lab2
                 var elapsedTime2 = _stopwatch.ElapsedMilliseconds;
 
 
-                LogResults((ulong) number, elapsedTime1, elapsedTime2, result, null);
+                LogResults(number, elapsedTime1, elapsedTime2, result, null);
             }
         }
 
@@ -89,7 +91,7 @@ namespace Lab2
         /// </summary>
         private static void Task2()
         {
-            ulong number;
+            double number;
 
             while ((number = GetNumber()) > 0)
             {
@@ -110,15 +112,16 @@ namespace Lab2
         }
 
         /// <summary>
-        /// Method for the second task that calculates the result for all numbers from input to 2.
+        /// Method for the second task that takes a number from input and calculates the result
+        /// for all numbers from 2 to it increasing by * 2.
         /// </summary>
-        private static void Task2DownToTwo()
+        private static void Task2Automatic()
         {
-            ulong initialNumber;
+            double initialNumber;
 
             while ((initialNumber = GetNumber()) > 0)
             {
-                for (var number = initialNumber; number > 1; --number)
+                for (double number = 2; number < initialNumber; number *= 5)
                 {
                     _stopwatch = Stopwatch.StartNew();
                     var actions = CalculateActionsRecursively(number, new List<int>());
@@ -146,7 +149,7 @@ namespace Lab2
         /// <param name="actions">Actions performed (if any) in the second task</param>
         /// <param name="elapsedTime1">Time it took to finish the recursive algorithm</param>
         /// <param name="elapsedTime2">Time it took to finish the dynamic algorithm</param>
-        private static void LogResults(ulong number, long elapsedTime1, long elapsedTime2, long result,
+        private static void LogResults(double number, long elapsedTime1, long elapsedTime2, long result,
             List<int> actions)
         {
             Console.WriteLine("Total elapsed time (ms) recursively - {0}, dynamically - {1}",
@@ -168,7 +171,7 @@ namespace Lab2
 
                     Console.WriteLine("Number of actions required - " + actions.Count);
                     Console.WriteLine("Actions: " + actionsString);
-                    
+
                     resultStreamWriter.WriteLine("{0,20}{1,4}{2,4}{3,4}  {4}",
                         number, elapsedTime1, elapsedTime2, result, actionsString);
                 }
@@ -194,15 +197,34 @@ namespace Lab2
         }
 
         /// <summary>
+        /// Checks if input number is bigger than maximum int value:
+        ///     if it is - prints a warning and asks got input again;
+        ///     if it's not - returns input converted to int.
+        /// </summary>
+        /// <returns>Input number converted to int</returns>
+        private static int GetInteger()
+        {
+            var number = GetNumber();
+            
+            while (number > int.MaxValue)
+            {
+                Console.WriteLine("This number is too big for the current method, please try again.");
+                number = GetNumber();
+            }
+
+            return Convert.ToInt32(number);
+        }
+        
+        /// <summary>
         /// Asks for input,
         /// catches invalid characters and displays a message,
         /// returns input if greater than 1
         /// or asks again otherwise.
         /// </summary>
-        /// <returns>An integer greater than 1</returns>
-        private static ulong GetNumber()
+        /// <returns>A number greater than 1</returns>
+        private static double GetNumber()
         {
-            ulong a = 0;
+            double a = 0;
 
             while (a <= 1)
             {
@@ -217,7 +239,7 @@ namespace Lab2
 
                 try
                 {
-                    a = Convert.ToUInt64(line);
+                    a = Convert.ToDouble(line);
                 }
                 catch (Exception)
                 {
@@ -284,7 +306,7 @@ namespace Lab2
         /// </summary>
         /// <param name="number">The number to work with</param>
         /// <returns>List of actions performed</returns>
-        private static List<int> CalculateActions(ulong number)
+        private static List<int> CalculateActions(double number)
         {
             var actions = new List<int>();
 
@@ -316,7 +338,7 @@ namespace Lab2
         /// <param name="number">The number to work with</param>
         /// <param name="actions">List of actions performed</param>
         /// <returns>List of actions performed</returns>
-        private static List<int> CalculateActionsRecursively(ulong number, List<int> actions)
+        private static List<int> CalculateActionsRecursively(double number, List<int> actions)
         {
             if (number <= 1)
             {
