@@ -280,23 +280,5 @@ namespace Lab2
             actions.Add(1);
             return CalculateActionsRecursively(number - 1, actions);
         }
-
-        /// <summary>
-        /// Prints the length of the given list of numbers in one line and all the numbers in the other one.
-        /// </summary>
-        /// <param name="actions">List of numbers to print</param>
-        /// <exception cref="ArgumentNullException">Throws if the given list is null</exception>
-        private static void PrintResults(List<int> actions)
-        {
-            if (actions == null) throw new ArgumentNullException(nameof(actions));
-
-            Console.WriteLine("Number of actions required - " + actions.Count);
-            Console.Write("Actions: ");
-
-            foreach (var action in actions)
-                Console.Write(action);
-
-            Console.WriteLine();
-        }
     }
 }
