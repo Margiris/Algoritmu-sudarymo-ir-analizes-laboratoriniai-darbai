@@ -26,12 +26,12 @@ namespace Lab2
             {
                 Thread.Sleep(500);
                 if (!_stopwatch.IsRunning) continue;
-                
+
                 Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
                 Console.CursorLeft = 0;
             }
 
-            Console.WriteLine("Task 2");
+            Console.WriteLine("\nTask 2");
             var task2 = new Thread(Task2, 1000000000);
             task2.Start();
 
@@ -39,12 +39,12 @@ namespace Lab2
             {
                 Thread.Sleep(500);
                 if (!_stopwatch.IsRunning) continue;
-                
+
                 Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
                 Console.CursorLeft = 0;
             }
-            
-            Console.WriteLine("Task 2 from input number down to 2");
+
+            Console.WriteLine("\nTask 2 from input number down to 2");
             var task2DownToTwo = new Thread(Task2DownToTwo, 1000000000);
             task2DownToTwo.Start();
 
@@ -52,7 +52,7 @@ namespace Lab2
             {
                 Thread.Sleep(500);
                 if (!_stopwatch.IsRunning) continue;
-                
+
                 Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
                 Console.CursorLeft = 0;
             }
@@ -78,11 +78,9 @@ namespace Lab2
                 result = Fd(number, intermediateResults);
                 _stopwatch.Stop();
                 var elapsedTime2 = _stopwatch.ElapsedMilliseconds;
-                
-                
-                LogResults((ulong) number, elapsedTime1, elapsedTime2, result, null);
 
-                Console.WriteLine();
+
+                LogResults((ulong) number, elapsedTime1, elapsedTime2, result, null);
             }
         }
 
@@ -106,11 +104,11 @@ namespace Lab2
                 actions = CalculateActions(number);
                 _stopwatch.Stop();
                 var elapsedTime2 = _stopwatch.ElapsedMilliseconds;
-                
+
                 LogResults(number, elapsedTime1, elapsedTime2, actions.Count, actions);
             }
         }
-        
+
         /// <summary>
         /// Method for the second task that calculates the result for all numbers from input to 2.
         /// </summary>
@@ -148,27 +146,35 @@ namespace Lab2
         /// <param name="actions">Actions performed (if any) in the second task</param>
         /// <param name="elapsedTime1">Time it took to finish the recursive algorithm</param>
         /// <param name="elapsedTime2">Time it took to finish the dynamic algorithm</param>
-        private static void LogResults(ulong number, long elapsedTime1, long elapsedTime2, long result, List<int> actions)
+        private static void LogResults(ulong number, long elapsedTime1, long elapsedTime2, long result,
+            List<int> actions)
         {
             Console.WriteLine("Total elapsed time (ms) recursively - {0}, dynamically - {1}",
                 elapsedTime1, elapsedTime2);
 
             var actionsString = "";
 
-            if (actions != null)
-            {
-                foreach (var action in actions)
-                    actionsString += action;
-                
-                Console.WriteLine("Number of actions required - " + actions.Count);
-                Console.WriteLine("Actions: " + actionsString);
-            }
-
             using (var resultStreamWriter = new StreamWriter(ResultsLogFilename, true))
             {
-                resultStreamWriter.WriteLine("{0,20}{1,15}{2,15}{3,30}{4,-75}",
-                    number, elapsedTime1, elapsedTime2, result, actionsString);
+                if (actions == null)
+                {
+                    resultStreamWriter.WriteLine("{0,7}{1,15}{2,15}{3,30}",
+                        number, elapsedTime1, elapsedTime2, result);
+                }
+                else
+                {
+                    foreach (var action in actions)
+                        actionsString += action;
+
+                    Console.WriteLine("Number of actions required - " + actions.Count);
+                    Console.WriteLine("Actions: " + actionsString);
+                    
+                    resultStreamWriter.WriteLine("{0,20}{1,4}{2,4}{3,4}  {4}",
+                        number, elapsedTime1, elapsedTime2, result, actionsString);
+                }
             }
+
+            Console.WriteLine();
         }
 
         /// <summary>
