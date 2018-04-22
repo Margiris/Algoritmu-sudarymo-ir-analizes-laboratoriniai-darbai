@@ -25,8 +25,8 @@ namespace Lab2
             while (task1.IsAlive)
             {
                 Thread.Sleep(500);
-
                 if (!_stopwatch.IsRunning) continue;
+                
                 Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
                 Console.CursorLeft = 0;
             }
@@ -35,11 +35,24 @@ namespace Lab2
             var task2 = new Thread(Task2, 1000000000);
             task2.Start();
 
-            while (task1.IsAlive)
+            while (task2.IsAlive)
             {
                 Thread.Sleep(500);
-
                 if (!_stopwatch.IsRunning) continue;
+                
+                Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
+                Console.CursorLeft = 0;
+            }
+            
+            Console.WriteLine("Task 2 from input number down to 2");
+            var task2DownToTwo = new Thread(Task2DownToTwo, 1000000000);
+            task2DownToTwo.Start();
+
+            while (task2DownToTwo.IsAlive)
+            {
+                Thread.Sleep(500);
+                if (!_stopwatch.IsRunning) continue;
+                
                 Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
                 Console.CursorLeft = 0;
             }
@@ -52,7 +65,7 @@ namespace Lab2
         {
             int number;
 
-            while ((number = Convert.ToInt32(GetInteger())) > 0)
+            while ((number = Convert.ToInt32(GetNumber())) > 0)
             {
                 var intermediateResults = LongArrayWithSingleValue(-1, number);
 
@@ -80,7 +93,7 @@ namespace Lab2
         {
             ulong number;
 
-            while ((number = GetInteger()) > 0)
+            while ((number = GetNumber()) > 0)
             {
                 _stopwatch = Stopwatch.StartNew();
                 var actions = CalculateActionsRecursively(number, new List<int>());
@@ -95,6 +108,34 @@ namespace Lab2
                 var elapsedTime2 = _stopwatch.ElapsedMilliseconds;
                 
                 LogResults(number, elapsedTime1, elapsedTime2, actions.Count, actions);
+            }
+        }
+        
+        /// <summary>
+        /// Method for the second task that calculates the result for all numbers from input to 2.
+        /// </summary>
+        private static void Task2DownToTwo()
+        {
+            ulong initialNumber;
+
+            while ((initialNumber = GetNumber()) > 0)
+            {
+                for (var number = initialNumber; number > 1; --number)
+                {
+                    _stopwatch = Stopwatch.StartNew();
+                    var actions = CalculateActionsRecursively(number, new List<int>());
+                    _stopwatch.Stop();
+                    var elapsedTime1 = _stopwatch.ElapsedMilliseconds;
+
+                    actions.Clear();
+
+                    _stopwatch = Stopwatch.StartNew();
+                    actions = CalculateActions(number);
+                    _stopwatch.Stop();
+                    var elapsedTime2 = _stopwatch.ElapsedMilliseconds;
+
+                    LogResults(number, elapsedTime1, elapsedTime2, actions.Count, actions);
+                }
             }
         }
 
@@ -125,7 +166,7 @@ namespace Lab2
 
             using (var resultStreamWriter = new StreamWriter(ResultsLogFilename, true))
             {
-                resultStreamWriter.WriteLine("{0,20}{1,15}{2,15}{3,30}{4,70}",
+                resultStreamWriter.WriteLine("{0,20}{1,15}{2,15}{3,30}{4,-75}",
                     number, elapsedTime1, elapsedTime2, result, actionsString);
             }
         }
@@ -153,7 +194,7 @@ namespace Lab2
         /// or asks again otherwise.
         /// </summary>
         /// <returns>An integer greater than 1</returns>
-        private static ulong GetInteger()
+        private static ulong GetNumber()
         {
             ulong a = 0;
 
