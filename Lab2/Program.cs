@@ -59,19 +59,22 @@ namespace Lab2
                 _stopwatch = Stopwatch.StartNew();
                 var result = Fr(number);
                 _stopwatch.Stop();
-                LogResults((ulong) number, _stopwatch.ElapsedMilliseconds, result, null);
+                var elapsedTime1 = _stopwatch.ElapsedMilliseconds;
 
                 _stopwatch = Stopwatch.StartNew();
                 result = Fd(number, intermediateResults);
                 _stopwatch.Stop();
-                LogResults((ulong) number, _stopwatch.ElapsedMilliseconds, result, null);
+                var elapsedTime2 = _stopwatch.ElapsedMilliseconds;
+                
+                
+                LogResults((ulong) number, elapsedTime1, elapsedTime2, result, null);
 
                 Console.WriteLine();
             }
         }
 
         /// <summary>
-        /// Mathod for the second task.
+        /// Method for the second task.
         /// </summary>
         private static void Task2()
         {
@@ -82,14 +85,16 @@ namespace Lab2
                 _stopwatch = Stopwatch.StartNew();
                 var actions = CalculateActionsRecursively(number, new List<int>());
                 _stopwatch.Stop();
-                LogResults(number, _stopwatch.ElapsedMilliseconds, actions.Count, actions);
+                var elapsedTime1 = _stopwatch.ElapsedMilliseconds;
 
                 actions.Clear();
 
                 _stopwatch = Stopwatch.StartNew();
                 actions = CalculateActions(number);
                 _stopwatch.Stop();
-                LogResults(number, _stopwatch.ElapsedMilliseconds, actions.Count, actions);
+                var elapsedTime2 = _stopwatch.ElapsedMilliseconds;
+                
+                LogResults(number, elapsedTime1, elapsedTime2, actions.Count, actions);
             }
         }
 
@@ -98,12 +103,14 @@ namespace Lab2
         /// Logs the running time of each method to file.
         /// </summary>
         /// <param name="number">The given number</param>
-        /// <param name="elapsedTime">Time it took to finish the algorithm</param>
         /// <param name="result">The result calculated by the algorithm</param>
         /// <param name="actions">Actions performed (if any) in the second task</param>
-        private static void LogResults(ulong number, long elapsedTime, long result, List<int> actions)
+        /// <param name="elapsedTime1">Time it took to finish the recursive algorithm</param>
+        /// <param name="elapsedTime2">Time it took to finish the dynamic algorithm</param>
+        private static void LogResults(ulong number, long elapsedTime1, long elapsedTime2, long result, List<int> actions)
         {
-            Console.WriteLine("Total elapsed time (ms) - " + elapsedTime);
+            Console.WriteLine("Total elapsed time (ms) recursively - {0}, dynamically - {1}",
+                elapsedTime1, elapsedTime2);
 
             var actionsString = "";
 
@@ -118,7 +125,8 @@ namespace Lab2
 
             using (var resultStreamWriter = new StreamWriter(ResultsLogFilename, true))
             {
-                resultStreamWriter.WriteLine("{0,20}{1,15}{2,30}{3,70}", number, elapsedTime, result, actionsString);
+                resultStreamWriter.WriteLine("{0,20}{1,15}{2,15}{3,30}{4,70}",
+                    number, elapsedTime1, elapsedTime2, result, actionsString);
             }
         }
 
