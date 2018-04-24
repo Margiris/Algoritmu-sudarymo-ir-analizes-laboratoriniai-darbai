@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 
+// ReSharper disable AssignNullToNotNullAttribute
 // ReSharper disable RedundantAssignment
 // ReSharper disable SuggestBaseTypeForParameter
 // ReSharper disable InconsistentNaming
-
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable TailRecursiveCall
 
@@ -18,7 +19,7 @@ namespace Lab2
     {
         private const string ResultsLogFilename = @"results.log";
         private static Stopwatch _stopwatch;
-        private static int actionCount;
+        private static BigInteger actionCount;
 
         public static void Main()
         {
@@ -96,7 +97,7 @@ namespace Lab2
         /// </summary>
         private static void Task2()
         {
-            double number;
+            BigInteger number;
 
             while ((number = GetNumber()) > 0)
             {
@@ -114,11 +115,11 @@ namespace Lab2
         /// </summary>
         private static void Task2Automatic()
         {
-            double initialNumber;
+            BigInteger initialNumber;
 
             while ((initialNumber = GetNumber()) > 0)
             {
-                for (double number = 2; number < initialNumber; number *= 5)
+                for (BigInteger number = 2; number < initialNumber; number *= 5)
                 {
                     _stopwatch = Stopwatch.StartNew();
                     var actions = CalculateActionsRecursively(number, new List<int>());
@@ -146,8 +147,8 @@ namespace Lab2
         /// <param name="actions">Actions performed (if any) in the second task</param>
         /// <param name="actionsPerformed1">Amount of actions performed to finish the recursive algorithm</param>
         /// <param name="actionsPerformed2">Amount of actions performed to finish the dynamic algorithm</param>
-        private static void LogResults(double number, long actionsPerformed1, long actionsPerformed2, long result,
-            List<int> actions)
+        private static void LogResults(BigInteger number, BigInteger actionsPerformed1, BigInteger actionsPerformed2,
+            long result, List<int> actions)
         {
             using (var resultStreamWriter = new StreamWriter(ResultsLogFilename, true))
             {
@@ -209,7 +210,7 @@ namespace Lab2
                 number = GetNumber();
             }
 
-            return Convert.ToInt32(number);
+            return Convert.ToInt32(number.ToString());
         }
 
         /// <summary>
@@ -219,9 +220,9 @@ namespace Lab2
         /// or asks again otherwise.
         /// </summary>
         /// <returns>A number greater than 1</returns>
-        private static double GetNumber()
+        private static BigInteger GetNumber()
         {
-            double a = 0;
+            BigInteger a = 0;
 
             while (a <= 1)
             {
@@ -236,7 +237,7 @@ namespace Lab2
 
                 try
                 {
-                    a = Convert.ToDouble(line);
+                    a = BigInteger.Parse(line);
                 }
                 catch (Exception)
                 {
@@ -306,7 +307,7 @@ namespace Lab2
         /// </summary>
         /// <param name="number">The number to work with</param>
         /// <returns>List of actions performed</returns>
-        private static List<int> CalculateActions(double number)
+        private static List<int> CalculateActions(BigInteger number)
         {
             var actions = new List<int>();
 
@@ -338,7 +339,7 @@ namespace Lab2
         /// <param name="number">The number to work with</param>
         /// <param name="actions">List of actions performed</param>
         /// <returns>List of actions performed</returns>
-        private static List<int> CalculateActionsRecursively(double number, List<int> actions)
+        private static List<int> CalculateActionsRecursively(BigInteger number, List<int> actions)
         {
             if (number <= 1)
             {
@@ -367,14 +368,14 @@ namespace Lab2
         /// <param name="divider">Number to divide by</param>
         /// <param name="number">Number to divide</param>
         /// <returns>true if number dividable by divider without residue, false otherwise.</returns>
-        private static bool IsDividableBy(int divider, double number)
+        private static bool IsDividableBy(int divider, BigInteger number)
         {
             if (divider == 1 || divider == number)
             {
                 return true;
             }
-            
-            var digits = doubleToIntArray(number);
+
+            var digits = bigIntegerToIntArray(number);
 
             switch (divider)
             {
@@ -388,7 +389,12 @@ namespace Lab2
             }
         }
 
-        private static int[] doubleToIntArray(double number)
+        /// <summary>
+        /// Converts given number to an array of integers representing that number.
+        /// </summary>
+        /// <param name="number">The number to convert</param>
+        /// <returns>Array of integers</returns>
+        private static int[] bigIntegerToIntArray(BigInteger number)
         {
             var array = new LinkedList<int>();
 
