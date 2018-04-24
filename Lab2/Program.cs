@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
+// ReSharper disable RedundantAssignment
+// ReSharper disable SuggestBaseTypeForParameter
+// ReSharper disable InconsistentNaming
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable TailRecursiveCall
@@ -14,6 +16,7 @@ namespace Lab2
     {
         private const string ResultsLogFilename = @"results.log";
         private static Stopwatch _stopwatch;
+        private static int actionCount;
 
         public static void Main()
         {
@@ -28,7 +31,7 @@ namespace Lab2
                 Thread.Sleep(500);
                 if (!_stopwatch.IsRunning) continue;
 
-                Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
+                Console.Write("Actions performed - " + actionCount);
                 Console.CursorLeft = 0;
             }
 
@@ -41,7 +44,7 @@ namespace Lab2
                 Thread.Sleep(500);
                 if (!_stopwatch.IsRunning) continue;
 
-                Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
+                Console.Write("Actions performed - " + actionCount);
                 Console.CursorLeft = 0;
             }
 
@@ -54,7 +57,7 @@ namespace Lab2
                 Thread.Sleep(500);
                 if (!_stopwatch.IsRunning) continue;
 
-                Console.Write("Elapsed time (ms) - " + _stopwatch.ElapsedMilliseconds);
+                Console.Write("Actions performed - " + actionCount);
                 Console.CursorLeft = 0;
             }
         }
@@ -70,19 +73,19 @@ namespace Lab2
             {
                 var intermediateResults = LongArrayWithSingleValue(-1, number);
 
+                actionCount = 0;
                 _stopwatch = Stopwatch.StartNew();
-                // ReSharper disable once RedundantAssignment
                 var result = Fr(number);
                 _stopwatch.Stop();
-                var elapsedTime1 = _stopwatch.ElapsedMilliseconds;
+                var actionsPerformed1 = actionCount;
 
+                actionCount = 0;
                 _stopwatch = Stopwatch.StartNew();
                 result = Fd(number, intermediateResults);
                 _stopwatch.Stop();
-                var elapsedTime2 = _stopwatch.ElapsedMilliseconds;
+                var actionsPerformed2 = actionCount;
 
-
-                LogResults(number, elapsedTime1, elapsedTime2, result, null);
+                LogResults(number, actionsPerformed1, actionsPerformed2, result, null);
             }
         }
 
@@ -98,16 +101,8 @@ namespace Lab2
                 _stopwatch = Stopwatch.StartNew();
                 var actions = CalculateActionsRecursively(number, new List<int>());
                 _stopwatch.Stop();
-                var elapsedTime1 = _stopwatch.ElapsedMilliseconds;
 
-                actions.Clear();
-
-                _stopwatch = Stopwatch.StartNew();
-                actions = CalculateActions(number);
-                _stopwatch.Stop();
-                var elapsedTime2 = _stopwatch.ElapsedMilliseconds;
-
-                LogResults(number, elapsedTime1, elapsedTime2, actions.Count, actions);
+                LogResults(number, 0, 0, actions.Count, actions);
             }
         }
 
@@ -141,39 +136,39 @@ namespace Lab2
         }
 
         /// <summary>
-        /// Prints the length of the given list of numbers in one line and all the numbers in the other oneto the console.
-        /// Logs the running time of each method to file.
+        /// Prints the length of the given list of numbers in one line and all the numbers in the other one to the console.
+        /// Logs the required amount of actions of each method to file.
         /// </summary>
         /// <param name="number">The given number</param>
         /// <param name="result">The result calculated by the algorithm</param>
         /// <param name="actions">Actions performed (if any) in the second task</param>
-        /// <param name="elapsedTime1">Time it took to finish the recursive algorithm</param>
-        /// <param name="elapsedTime2">Time it took to finish the dynamic algorithm</param>
-        private static void LogResults(double number, long elapsedTime1, long elapsedTime2, long result,
+        /// <param name="actionsPerformed1">Amount of actions performed to finish the recursive algorithm</param>
+        /// <param name="actionsPerformed2">Amount of actions performed to finish the dynamic algorithm</param>
+        private static void LogResults(double number, long actionsPerformed1, long actionsPerformed2, long result,
             List<int> actions)
         {
-            Console.WriteLine("Total elapsed time (ms) recursively - {0}, dynamically - {1}",
-                elapsedTime1, elapsedTime2);
-
-            var actionsString = "";
-
             using (var resultStreamWriter = new StreamWriter(ResultsLogFilename, true))
             {
                 if (actions == null)
                 {
+                    Console.WriteLine("Total actions performed recursively - {0}, dynamically - {1}",
+                        actionsPerformed1, actionsPerformed2);
+                    
                     resultStreamWriter.WriteLine("{0,7}{1,15}{2,15}{3,30}",
-                        number, elapsedTime1, elapsedTime2, result);
+                        number, actionsPerformed1, actionsPerformed2, result);
                 }
                 else
                 {
+                    var actionsString = "";
+                    
                     foreach (var action in actions)
                         actionsString += action;
 
                     Console.WriteLine("Number of actions required - " + actions.Count);
                     Console.WriteLine("Actions: " + actionsString);
 
-                    resultStreamWriter.WriteLine("{0,20}{1,4}{2,4}{3,4}  {4}",
-                        number, elapsedTime1, elapsedTime2, result, actionsString);
+                    resultStreamWriter.WriteLine("{0,30}{1,4}  {2}",
+                        number, result, actionsString);
                 }
             }
 
@@ -257,9 +252,11 @@ namespace Lab2
         /// </summary>
         /// <param name="n">Argument of the function</param>
         /// <returns>Result of the function</returns>
-        [SuppressMessage("ReSharper", "InconsistentNaming")]
+
         private static long Fr(long n)
         {
+            actionCount++;
+            
             if (n <= 1)
                 return 2;
 
@@ -280,6 +277,8 @@ namespace Lab2
         // ReSharper disable once SuggestBaseTypeForParameter
         private static long Fd(long n, long[] results)
         {
+            actionCount++;
+
             if (n <= 1)
                 return 2;
 
