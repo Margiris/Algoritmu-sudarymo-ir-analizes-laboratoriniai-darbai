@@ -361,6 +361,13 @@ namespace Lab2
             return CalculateActionsRecursively(number - 1, actions);
         }
 
+        /// <summary>
+        /// Checks whether a number can be divided by divider without residue.
+        /// </summary>
+        /// <param name="divider">Number to divide by</param>
+        /// <param name="number">Number to divide</param>
+        /// <returns>true if number dividable by divider without residue, false otherwise.</returns>
+        /// <exception cref="NotImplementedException"></exception>
         private static bool IsDividableBy(int divider, double number)
         {
             if (divider == 1 || divider == number)
@@ -377,7 +384,8 @@ namespace Lab2
                 case 3:
                     return digits.Sum() % 3 == 0;
                 default:
-                    throw new NotImplementedException();
+                    Console.WriteLine("Not implemented yet.");
+                    return false;
             }
         }
 
