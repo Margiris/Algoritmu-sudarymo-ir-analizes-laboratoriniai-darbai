@@ -206,7 +206,7 @@ namespace Lab2
 
             while (number > int.MaxValue)
             {
-                Console.WriteLine("This number is too big for the current method, please try again.");
+                Console.WriteLine("This number is too big for the current task, please try again.");
                 number = GetNumber();
             }
 
