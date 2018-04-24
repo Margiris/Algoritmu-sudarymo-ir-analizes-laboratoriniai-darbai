@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
+
 // ReSharper disable RedundantAssignment
 // ReSharper disable SuggestBaseTypeForParameter
 // ReSharper disable InconsistentNaming
@@ -153,14 +155,14 @@ namespace Lab2
                 {
                     Console.WriteLine("Total actions performed recursively - {0}, dynamically - {1}",
                         actionsPerformed1, actionsPerformed2);
-                    
+
                     resultStreamWriter.WriteLine("{0,7}{1,15}{2,15}{3,30}",
                         number, actionsPerformed1, actionsPerformed2, result);
                 }
                 else
                 {
                     var actionsString = "";
-                    
+
                     foreach (var action in actions)
                         actionsString += action;
 
@@ -200,7 +202,7 @@ namespace Lab2
         private static int GetInteger()
         {
             var number = GetNumber();
-            
+
             while (number > int.MaxValue)
             {
                 Console.WriteLine("This number is too big for the current method, please try again.");
@@ -209,7 +211,7 @@ namespace Lab2
 
             return Convert.ToInt32(number);
         }
-        
+
         /// <summary>
         /// Asks for input,
         /// catches invalid characters and displays a message,
@@ -252,11 +254,10 @@ namespace Lab2
         /// </summary>
         /// <param name="n">Argument of the function</param>
         /// <returns>Result of the function</returns>
-
         private static long Fr(long n)
         {
             actionCount++;
-            
+
             if (n <= 1)
                 return 2;
 
@@ -344,13 +345,13 @@ namespace Lab2
                 return actions;
             }
 
-            if (number % 3 == 0)
+            if (IsDividableBy(3, number))
             {
                 actions.Add(3);
                 return CalculateActionsRecursively(number / 3, actions);
             }
 
-            if (number % 2 == 0)
+            if (IsDividableBy(2, number))
             {
                 actions.Add(2);
                 return CalculateActionsRecursively(number / 2, actions);
@@ -358,6 +359,39 @@ namespace Lab2
 
             actions.Add(1);
             return CalculateActionsRecursively(number - 1, actions);
+        }
+
+        private static bool IsDividableBy(int divider, double number)
+        {
+            if (divider == 1 || divider == number)
+            {
+                return true;
+            }
+            
+            var digits = doubleToIntArray(number);
+
+            switch (divider)
+            {
+                case 2:
+                    return digits[digits.Length - 1] % 2 == 0;
+                case 3:
+                    return digits.Sum() % 3 == 0;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private static int[] doubleToIntArray(double number)
+        {
+            var array = new LinkedList<int>();
+
+            while (number >= 1)
+            {
+                array.AddFirst((int) (number % 10));
+                number /= 10;
+            }
+
+            return array.ToArray();
         }
     }
 }
