@@ -367,7 +367,6 @@ namespace Lab2
         /// <param name="divider">Number to divide by</param>
         /// <param name="number">Number to divide</param>
         /// <returns>true if number dividable by divider without residue, false otherwise.</returns>
-        /// <exception cref="NotImplementedException"></exception>
         private static bool IsDividableBy(int divider, double number)
         {
             if (divider == 1 || divider == number)
