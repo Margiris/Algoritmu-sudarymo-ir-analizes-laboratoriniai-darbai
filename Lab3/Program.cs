@@ -6,6 +6,7 @@
         {
             FirstTask.Run();
             
+            SecondTask.Run();
         }
     }
 }

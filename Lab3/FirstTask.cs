@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
 // ReSharper disable SuggestBaseTypeForParameter
 
 namespace Lab3
 {
-
     public static class FirstTask
     {
         private const int MaxValue = 20;
@@ -14,7 +14,7 @@ namespace Lab3
         private const int ItemsCount = 10;
 
         private static readonly string[] Results = new string[ArrayCount];
-        
+
         public static void Run()
         {
             for (var i = 0; i < ArrayCount; i++)
