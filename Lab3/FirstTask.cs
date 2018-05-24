@@ -9,9 +9,9 @@ namespace Lab3
 {
     public static class FirstTask
     {
-        private const int MaxValue = 20;
-        private const int ArrayCount = 20;
-        private const int ItemsCount = 10;
+        private const int MaxValue = 2000;
+        private const int ArrayCount = 2;
+        private const int ItemsCount = 10000;
 
         private static readonly string[] Results = new string[ArrayCount];
 
