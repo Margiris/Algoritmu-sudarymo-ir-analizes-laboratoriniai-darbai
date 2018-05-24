@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Numerics;
-using System.Threading;
 using System.Threading.Tasks;
 
 // ReSharper disable InconsistentlySynchronizedField
@@ -16,8 +15,6 @@ namespace Lab3
     {
         private const string ResultsLogFilename = @"results.log";
         private static Stopwatch _stopwatch;
-        private static int threadCount = 1; // Main runs on the first thread.
-        private static readonly object setThreadCount = new object();
 
         /// <summary>
         /// Main thread for the task.
@@ -69,86 +66,6 @@ namespace Lab3
             var Fr3 = Fr(n / 6);
 
             return Fr1 + 6 * Fr2 * Fr2 + 3 * Fr3 * Fr3 + n * n / 5;
-        }
-
-        /// <summary>
-        /// Calculates F(n)    = F(n - 2) + 6 * F(n / 5) ^ 2 + 3 * F(n / 6) ^ 2 + n ^ 2 / 5; if n > 1
-        ///                    = 2; otherwise
-        /// recursively using a new thread for every recursive call.
-        /// </summary>
-        /// <param name="n">Argument of the function</param>
-        /// <returns>Result of the function</returns>
-        private static long Ft(long n)
-        {
-            if (n <= 1)
-                return 2;
-
-            long Ft1 = 0;
-            long Ft2 = 0;
-            long Ft3 = 0;
-
-            if (threadCount <= Environment.ProcessorCount - 4)
-            {
-                var t1 = new Thread(() => { Ft1 = Ft(n - 2); });
-                var t2 = new Thread(() => { Ft2 = Ft(n / 5); });
-                var t3 = new Thread(() => { Ft3 = Ft(n / 6); });
-
-                #region Start Threads
-
-                lock (setThreadCount)
-                {
-                    t1.Start();
-                    threadCount++;
-                }
-
-                lock (setThreadCount)
-                {
-                    t2.Start();
-                    threadCount++;
-                }
-
-                lock (setThreadCount)
-                {
-                    t3.Start();
-                    threadCount++;
-                }
-
-                Console.WriteLine("Number of threads after starting - {0}", threadCount);
-
-                #endregion
-
-                #region Join Threads
-
-                t1.Join();
-                lock (setThreadCount)
-                {
-                    threadCount--;
-                }
-
-                t2.Join();
-                lock (setThreadCount)
-                {
-                    threadCount--;
-                }
-
-                t3.Join();
-                lock (setThreadCount)
-                {
-                    threadCount--;
-                }
-
-                Console.WriteLine("Number of threads after joinning - {0}", threadCount);
-
-                #endregion
-            }
-            else
-            {
-                Ft1 = Ft(n - 2);
-                Ft2 = Ft(n / 5);
-                Ft3 = Ft(n / 6);
-            }
-
-            return Ft1 + 6 * Ft2 * Ft2 + 3 * Ft3 * Ft3 + n * n / 5;
         }
 
         /// <summary>
