@@ -164,8 +164,8 @@ namespace Lab3
                 return 2;
 
             var FtN1 = Task<long>.Factory.StartNew(() => FtN(n - 2));
-            var FtN2 = Task<long>.Factory.StartNew(() => FtN(n / 5));
-            var FtN3 = Task<long>.Factory.StartNew(() => FtN(n / 6));
+            var FtN2 = Task<long>.Factory.StartNew(() => Fr(n / 5));
+            var FtN3 = Task<long>.Factory.StartNew(() => Fr(n / 6));
             
             return FtN1.Result + 6 * FtN2.Result * FtN2.Result + 3 * FtN3.Result * FtN3.Result + n * n / 5;
         }
