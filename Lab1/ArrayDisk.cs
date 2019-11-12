@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Lab1
 {
-    internal class ArrayDisk : Array
+    public class ArrayDisk : Array
     {
         public ArrayDisk(string fileName, int count, int seed)
         {

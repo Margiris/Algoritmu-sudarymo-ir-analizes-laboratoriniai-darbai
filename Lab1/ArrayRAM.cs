@@ -2,7 +2,7 @@
 
 namespace Lab1
 {
-    internal class ArrayRAM : Array
+    public class ArrayRAM : Array
     {
         public readonly double[] Data;
 

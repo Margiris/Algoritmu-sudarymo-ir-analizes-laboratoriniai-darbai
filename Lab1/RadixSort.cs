@@ -75,7 +75,7 @@ namespace Lab1
             // Convert back the longs to the double items
             for (var i = 0; i < length; i++)
             {
-//                DrawTextProgressBar(i + 1, length);
+                DrawTextProgressBar(i + 1, length);
                 items[i] = BitConverter.ToDouble(BitConverter.GetBytes(a[i]), 0);
             }
         }
@@ -149,7 +149,7 @@ namespace Lab1
             // Convert back the longs to the double items
             for (var i = 0; i < length; i++)
             {
-//                DrawTextProgressBar(o + 1, length);
+                DrawTextProgressBar(i + 1, length);
                 items.SetValue(current, BitConverter.ToDouble(BitConverter.GetBytes(a[i]), 0));
                 current = items.NextOf(current);
             }
