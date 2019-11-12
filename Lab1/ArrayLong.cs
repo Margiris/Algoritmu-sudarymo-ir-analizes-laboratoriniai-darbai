@@ -2,7 +2,7 @@
 
 namespace Lab1
 {
-    internal abstract class ArrayLong
+    public abstract class ArrayLong
     {
         public int Length;
         public abstract long this[int index] { get; set; }

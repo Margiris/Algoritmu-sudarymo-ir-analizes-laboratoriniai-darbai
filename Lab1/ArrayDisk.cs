@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Lab1
@@ -11,13 +12,11 @@ namespace Lab1
 
             Length = count;
 
-            if (File.Exists(fileName))
-            {
-                File.Delete(fileName);
-            }
-
             try
             {
+                if (File.Exists(fileName))
+                    File.Delete(fileName);
+
                 using (var writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 {
                     for (var i = 0; i < Length; i++)
@@ -46,6 +45,7 @@ namespace Lab1
             set
             {
                 var bytes = BitConverter.GetBytes(value);
+                Debug.WriteLine(FileStream.CanSeek);
                 FileStream.Seek(8 * index, SeekOrigin.Begin);
                 FileStream.Write(bytes, 0, 8);
             }

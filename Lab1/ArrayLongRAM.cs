@@ -1,6 +1,6 @@
 ﻿namespace Lab1
 {
-    internal class ArrayLongRAM : ArrayLong
+    public class ArrayLongRAM : ArrayLong
     {
         public readonly long[] Data;
 

@@ -3,19 +3,17 @@ using System.IO;
 
 namespace Lab1
 {
-    internal class ArrayLongDisk : ArrayLong
+    public class ArrayLongDisk : ArrayLong
     {
         public ArrayLongDisk(string fileName, int count)
         {
             Length = count;
 
-            if (File.Exists(fileName))
-            {
-                File.Delete(fileName);
-            }
-
             try
             {
+                if (File.Exists(fileName))
+                    File.Delete(fileName);
+
                 using (var writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 {
                     for (var i = 0; i < Length; i++)

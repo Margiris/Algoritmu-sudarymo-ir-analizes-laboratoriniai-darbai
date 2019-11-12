@@ -49,9 +49,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArrayDiskTest.cs" />
+    <Compile Include="ArrayLongTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ArrayRAMTest.cs" />
+    <Compile Include="ArrayTest.cs" />
+    <Compile Include="LinkedListTest.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
