@@ -9,7 +9,7 @@ namespace Lab1
 
         public void CopyTo(ArrayLong array, int index)
         {
-            if (array.Length <= Length)
+            if (array.Length >= Length + index)
                 for (var i = index; i < Length; i++)
                     array[i] = this[i];
             else

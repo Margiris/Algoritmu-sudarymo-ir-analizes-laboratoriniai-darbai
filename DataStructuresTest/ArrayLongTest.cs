@@ -88,16 +88,16 @@ namespace DataStructuresTest
         [DataRow(1, 0)]
         [DataRow(68453, 0)]
         [DataRow(68453, 9456)]
-        [DataRow(int.MaxValue / 40, 6843215)]
+//        [DataRow(int.MaxValue / 40, 6843215)]
         public void TestCopyToSameType(int length, int index)
         {
             var arrSource1 = Util.LongsArrayWithRandomValues(length);
             var arrSource2 = new ArrayLongRAM(length);
             var arrSource3 = new ArrayLongDisk(Filename1, length) {FileStream = _fs1};
 
-            var arrDestination1 = Util.LongsArrayWithRandomValues(length);
-            var arrDestination2 = new ArrayLongRAM(length);
-            var arrDestination3 = new ArrayLongDisk(Filename2, length) {FileStream = _fs2};
+            var arrDestination1 = Util.LongsArrayWithRandomValues(length + index);
+            var arrDestination2 = new ArrayLongRAM(length + index);
+            var arrDestination3 = new ArrayLongDisk(Filename2, length + index) {FileStream = _fs2};
 
             for (var i = 0; i < length; i++)
             {
@@ -127,16 +127,16 @@ namespace DataStructuresTest
         [DataRow(1, 0)]
         [DataRow(68453, 0)]
         [DataRow(68453, 9456)]
-        [DataRow(int.MaxValue / 40, 6843215)]
+//        [DataRow(int.MaxValue / 40, 6843215)]
         public void TestCopyToDifferentType(int length, int index)
         {
             var arrSource1 = Util.LongsArrayWithRandomValues(length);
             var arrSource2 = new ArrayLongRAM(length);
             var arrSource3 = new ArrayLongDisk(Filename1, length) {FileStream = _fs1};
 
-            var arrDestination1 = Util.LongsArrayWithRandomValues(length);
-            var arrDestination2 = new ArrayLongRAM(length);
-            var arrDestination3 = new ArrayLongDisk(Filename2, length) {FileStream = _fs2};
+            var arrDestination1 = Util.LongsArrayWithRandomValues(length + index);
+            var arrDestination2 = new ArrayLongRAM(length + index);
+            var arrDestination3 = new ArrayLongDisk(Filename2, length + index) {FileStream = _fs2};
 
             for (var i = 0; i < length; i++)
             {
