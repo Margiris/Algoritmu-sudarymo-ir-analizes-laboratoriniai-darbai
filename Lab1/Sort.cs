@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Lab1
 {
-    internal class Sort
+    public class Sort
     {
         private static Stopwatch _stopwatch;
 

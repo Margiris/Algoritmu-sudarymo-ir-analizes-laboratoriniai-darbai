@@ -1,7 +1,7 @@
 ﻿namespace Lab1
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    internal class SelectionSort : Sort
+    public class SelectionSort : Sort
     {
         public static void Sort(Array items, ArrayLong a, ArrayLong t, ArrayLong count, ArrayLong pref)
         {
