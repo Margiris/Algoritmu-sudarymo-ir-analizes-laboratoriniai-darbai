@@ -2,7 +2,6 @@
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lab1;
-using static DataStructuresTest.Util;
 
 // ReSharper disable InconsistentNaming
 
@@ -93,11 +92,11 @@ namespace DataStructuresTest
         [DataRow(int.MaxValue / 40, 6843215)]
         public void TestCopyToSameType(int length, int index)
         {
-            var arrSource1 = DoublesArrayWithRandomValues(length);
+            var arrSource1 = Util.DoublesArrayWithRandomValues(length);
             var arrSource2 = new ArrayRAM(length, 0);
             var arrSource3 = new ArrayDisk(Filename1, length, 0) {FileStream = _fs1};
 
-            var arrDestination1 = DoublesArrayWithRandomValues(length);
+            var arrDestination1 = Util.DoublesArrayWithRandomValues(length);
             var arrDestination2 = new ArrayRAM(length, 0);
             var arrDestination3 = new ArrayDisk(Filename2, length, 0) {FileStream = _fs2};
 
@@ -113,9 +112,9 @@ namespace DataStructuresTest
             arrSource2.CopyTo(arrDestination2, index);
             arrSource3.CopyTo(arrDestination3, index);
 
-            var diffIndex1 = ArraysAreEqual(arrDestination1, arrDestination2);
-            var diffIndex2 = ArraysAreEqual(arrDestination1, arrDestination3);
-            var diffIndex3 = ArraysAreEqual(arrDestination2, arrDestination3);
+            var diffIndex1 = Util.ArraysAreEqual(arrDestination1, arrDestination2);
+            var diffIndex2 = Util.ArraysAreEqual(arrDestination1, arrDestination3);
+            var diffIndex3 = Util.ArraysAreEqual(arrDestination2, arrDestination3);
 
             Assert.AreEqual(-1, diffIndex1,
                 $"System.Array and ArrayRAM should be the same but differ at index {diffIndex1}");
@@ -132,11 +131,11 @@ namespace DataStructuresTest
         [DataRow(int.MaxValue / 40, 6843215)]
         public void TestCopyToDifferentType(int length, int index)
         {
-            var arrSource1 = DoublesArrayWithRandomValues(length);
+            var arrSource1 = Util.DoublesArrayWithRandomValues(length);
             var arrSource2 = new ArrayRAM(length, 0);
             var arrSource3 = new ArrayDisk(Filename1, length, 0) {FileStream = _fs1};
 
-            var arrDestination1 = DoublesArrayWithRandomValues(length);
+            var arrDestination1 = Util.DoublesArrayWithRandomValues(length);
             var arrDestination2 = new ArrayRAM(length, 0);
             var arrDestination3 = new ArrayDisk(Filename2, length, 0) {FileStream = _fs2};
 
@@ -151,7 +150,7 @@ namespace DataStructuresTest
             arrSource2.CopyTo(arrDestination3, index);
             arrSource3.CopyTo(arrDestination2, index);
 
-            var diffIndex = ArraysAreEqual(arrDestination2, arrDestination3);
+            var diffIndex = Util.ArraysAreEqual(arrDestination2, arrDestination3);
 
             Assert.AreEqual(-1, diffIndex,
                 $"ArrayRAM and ArrayDisk objects should be the same but differ at index {diffIndex}");
@@ -204,7 +203,7 @@ namespace DataStructuresTest
             var arr1 = new ArrayRAM(length, seed);
             var arr2 = new ArrayRAM(length, seed);
 
-            var diffIndex = ArraysAreEqual(arr1, arr2);
+            var diffIndex = Util.ArraysAreEqual(arr1, arr2);
             Assert.AreEqual(-1, diffIndex,
                 $"Two arrays created with same seed should be equal number-by-number, failed at index {diffIndex}");
         }
