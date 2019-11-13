@@ -52,6 +52,7 @@
     <Compile Include="RadixSort.cs" />
     <Compile Include="SelectionSort.cs" />
     <Compile Include="Sort.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

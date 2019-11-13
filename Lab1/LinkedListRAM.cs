@@ -2,7 +2,7 @@
 
 namespace Lab1
 {
-    internal class LinkedListRAM : LinkedList
+    public class LinkedListRAM : LinkedList
     {
         public LinkedListRAM(int count, int seed)
         {
@@ -30,7 +30,7 @@ namespace Lab1
             {
                 var toAdd = new LinkedListNode
                 {
-                    Value = data,
+                    Value = data
                 };
 
                 Last.Next = toAdd;

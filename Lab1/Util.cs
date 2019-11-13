@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataStructuresTest
+namespace Lab1
 {
     public static class Util
     {
@@ -28,7 +28,7 @@ namespace DataStructuresTest
             return arr;
         }
 
-        public static int ArraysAreEqual(Lab1.Array array1, Lab1.Array array2)
+        public static int ArraysAreEqual(Array array1, Array array2)
         {
             for (var i = 0; i < array1.Length; i++)
                 if (Math.Abs(array1[i] - array2[i]) > 0.00001)
@@ -36,7 +36,7 @@ namespace DataStructuresTest
             return -1;
         }
 
-        public static int ArraysAreEqual(double[] array1, Lab1.Array array2)
+        public static int ArraysAreEqual(double[] array1, Array array2)
         {
             for (var i = 0; i < array1.Length; i++)
                 if (Math.Abs(array1[i] - array2[i]) > 0.00001)
@@ -44,7 +44,7 @@ namespace DataStructuresTest
             return -1;
         }
 
-        public static int ArraysAreEqual(Lab1.ArrayLong array1, Lab1.ArrayLong array2)
+        public static int ArraysAreEqual(ArrayLong array1, ArrayLong array2)
         {
             for (var i = 0; i < array1.Length; i++)
                 if (array1[i] != array2[i])
@@ -52,7 +52,7 @@ namespace DataStructuresTest
             return -1;
         }
 
-        public static int ArraysAreEqual(long[] array1, Lab1.ArrayLong array2)
+        public static int ArraysAreEqual(long[] array1, ArrayLong array2)
         {
             for (var i = 0; i < array1.Length; i++)
                 if (array1[i] != array2[i])

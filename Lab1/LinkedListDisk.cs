@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Lab1
 {
-    internal class LinkedListDisk : LinkedList
+    public class LinkedListDisk : LinkedList
     {
         public FileStream FileStream { private get; set; }
 

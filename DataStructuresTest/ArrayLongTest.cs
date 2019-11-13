@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lab1;
 
@@ -12,21 +11,21 @@ namespace DataStructuresTest
     {
         private const string Filename1 = @"testArray1.dat";
         private const string Filename2 = @"testArray2.dat";
-        private FileStream fs1;
-        private FileStream fs2;
+        private FileStream _fs1;
+        private FileStream _fs2;
 
         [TestInitialize]
         public void Initialize()
         {
-            fs1 = new FileStream(Filename1, FileMode.Create, FileAccess.ReadWrite);
-            fs2 = new FileStream(Filename2, FileMode.Create, FileAccess.ReadWrite);
+            _fs1 = new FileStream(Filename1, FileMode.Create, FileAccess.ReadWrite);
+            _fs2 = new FileStream(Filename2, FileMode.Create, FileAccess.ReadWrite);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            fs1.Dispose();
-            fs2.Dispose();
+            _fs1.Dispose();
+            _fs2.Dispose();
             if (File.Exists(Filename1))
                 File.Delete(Filename1);
             if (File.Exists(Filename2))
@@ -45,7 +44,7 @@ namespace DataStructuresTest
         {
             var array1 = new double[length];
             var array2 = new ArrayLongRAM(length);
-            var array3 = new ArrayLongDisk(Filename1, length) {FileStream = fs1};
+            var array3 = new ArrayLongDisk(Filename1, length) {FileStream = _fs1};
 
             Assert.AreEqual(length, array2.Length,
                 $"Array should be of length {length}, now it's {array2.Length}");
@@ -74,7 +73,7 @@ namespace DataStructuresTest
         public void TestGetSetCorrectValues(int length, int index, long originalNumber)
         {
             var arrayRAM = new ArrayLongRAM(length);
-            var arrayDisk = new ArrayLongDisk(Filename1, length) {FileStream = fs1};
+            var arrayDisk = new ArrayLongDisk(Filename1, length) {FileStream = _fs1};
 
             arrayRAM[index] = originalNumber;
             arrayDisk[index] = originalNumber;
@@ -94,11 +93,11 @@ namespace DataStructuresTest
         {
             var arrSource1 = Util.LongsArrayWithRandomValues(length);
             var arrSource2 = new ArrayLongRAM(length);
-            var arrSource3 = new ArrayLongDisk(Filename1, length) {FileStream = fs1};
+            var arrSource3 = new ArrayLongDisk(Filename1, length) {FileStream = _fs1};
 
             var arrDestination1 = Util.LongsArrayWithRandomValues(length);
             var arrDestination2 = new ArrayLongRAM(length);
-            var arrDestination3 = new ArrayLongDisk(Filename2, length) {FileStream = fs2};
+            var arrDestination3 = new ArrayLongDisk(Filename2, length) {FileStream = _fs2};
 
             for (var i = 0; i < length; i++)
             {
@@ -133,11 +132,11 @@ namespace DataStructuresTest
         {
             var arrSource1 = Util.LongsArrayWithRandomValues(length);
             var arrSource2 = new ArrayLongRAM(length);
-            var arrSource3 = new ArrayLongDisk(Filename1, length) {FileStream = fs1};
+            var arrSource3 = new ArrayLongDisk(Filename1, length) {FileStream = _fs1};
 
             var arrDestination1 = Util.LongsArrayWithRandomValues(length);
             var arrDestination2 = new ArrayLongRAM(length);
-            var arrDestination3 = new ArrayLongDisk(Filename2, length) {FileStream = fs2};
+            var arrDestination3 = new ArrayLongDisk(Filename2, length) {FileStream = _fs2};
 
             for (var i = 0; i < length; i++)
             {
