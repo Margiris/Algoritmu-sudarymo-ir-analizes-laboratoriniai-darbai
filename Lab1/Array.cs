@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Lab1
 {
@@ -10,8 +11,8 @@ namespace Lab1
         public void CopyTo(Array array, int index)
         {
             if (array.Length >= Length + index)
-                for (var i = index; i < Length; i++)
-                    array[i] = this[i];
+                for (var i = 0; i < Length; i++)
+                    array[index + i] = this[i];
             else
                 throw new NotImplementedException();
         }

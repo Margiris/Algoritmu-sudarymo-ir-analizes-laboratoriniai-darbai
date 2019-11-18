@@ -88,7 +88,7 @@ namespace DataStructuresTest
         [DataRow(1, 0)]
         [DataRow(68453, 0)]
         [DataRow(68453, 9456)]
-//        [DataRow(int.MaxValue / 40, 6843215)]
+        [DataRow(int.MaxValue / 400, 6843215)]
         public void TestCopyToSameType(int length, int index)
         {
             var arrSource1 = Util.LongsArrayWithRandomValues(length);
@@ -111,9 +111,9 @@ namespace DataStructuresTest
             arrSource2.CopyTo(arrDestination2, index);
             arrSource3.CopyTo(arrDestination3, index);
 
-            var diffIndex1 = Util.ArraysAreEqual(arrDestination1, arrDestination2);
-            var diffIndex2 = Util.ArraysAreEqual(arrDestination1, arrDestination3);
-            var diffIndex3 = Util.ArraysAreEqual(arrDestination2, arrDestination3);
+            var diffIndex1 = Util.FindArraysDifferenceIndex(arrDestination1, arrDestination2);
+            var diffIndex2 = Util.FindArraysDifferenceIndex(arrDestination1, arrDestination3);
+            var diffIndex3 = Util.FindArraysDifferenceIndex(arrDestination2, arrDestination3);
 
             Assert.AreEqual(-1, diffIndex1,
                 $"System.Array and ArrayRAM should be the same but differ at index {diffIndex1}");
@@ -127,7 +127,7 @@ namespace DataStructuresTest
         [DataRow(1, 0)]
         [DataRow(68453, 0)]
         [DataRow(68453, 9456)]
-//        [DataRow(int.MaxValue / 40, 6843215)]
+        [DataRow(int.MaxValue / 400, 6843215)]
         public void TestCopyToDifferentType(int length, int index)
         {
             var arrSource1 = Util.LongsArrayWithRandomValues(length);
@@ -149,7 +149,7 @@ namespace DataStructuresTest
             arrSource2.CopyTo(arrDestination3, index);
             arrSource3.CopyTo(arrDestination2, index);
 
-            var diffIndex = Util.ArraysAreEqual(arrDestination2, arrDestination3);
+            var diffIndex = Util.FindArraysDifferenceIndex(arrDestination2, arrDestination3);
 
             Assert.AreEqual(-1, diffIndex,
                 $"ArrayRAM and ArrayDisk objects should be the same but differ at index {diffIndex}");

@@ -112,9 +112,9 @@
 //            arrSource2.CopyTo(arrDestination2, index);
 //            arrSource3.CopyTo(arrDestination3, index);
 //
-//            var diffIndex1 = Util.ArraysAreEqual(arrDestination1, arrDestination2);
-//            var diffIndex2 = Util.ArraysAreEqual(arrDestination1, arrDestination3);
-//            var diffIndex3 = Util.ArraysAreEqual(arrDestination2, arrDestination3);
+//            var diffIndex1 = Util.FindArraysDifferenceIndex(arrDestination1, arrDestination2);
+//            var diffIndex2 = Util.FindArraysDifferenceIndex(arrDestination1, arrDestination3);
+//            var diffIndex3 = Util.FindArraysDifferenceIndex(arrDestination2, arrDestination3);
 //
 //            Assert.AreEqual(-1, diffIndex1,
 //                $"System.Array and ArrayRAM should be the same but differ at index {diffIndex1}");
@@ -150,7 +150,7 @@
 //            arrSource2.CopyTo(arrDestination3, index);
 //            arrSource3.CopyTo(arrDestination2, index);
 //
-//            var diffIndex = Util.ArraysAreEqual(arrDestination2, arrDestination3);
+//            var diffIndex = Util.FindArraysDifferenceIndex(arrDestination2, arrDestination3);
 //
 //            Assert.AreEqual(-1, diffIndex,
 //                $"ArrayRAM and ArrayDisk objects should be the same but differ at index {diffIndex}");
@@ -203,7 +203,7 @@
 //            var arr1 = new LinkedListRAM(length, seed);
 //            var arr2 = new LinkedListRAM(length, seed);
 //
-//            var diffIndex = Util.ArraysAreEqual(arr1, arr2);
+//            var diffIndex = Util.FindArraysDifferenceIndex(arr1, arr2);
 //            Assert.AreEqual(-1, diffIndex,
 //                $"Two arrays created with same seed should be equal number-by-number, failed at index {diffIndex}");
 //        }

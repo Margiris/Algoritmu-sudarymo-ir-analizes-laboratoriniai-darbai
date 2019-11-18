@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Lab1
 {
@@ -28,36 +30,68 @@ namespace Lab1
             return arr;
         }
 
-        public static int ArraysAreEqual(Array array1, Array array2)
+        public static int FindArraysDifferenceIndex(Array array1, Array array2)
         {
             for (var i = 0; i < array1.Length; i++)
                 if (Math.Abs(array1[i] - array2[i]) > 0.00001)
                     return i;
+
             return -1;
         }
 
-        public static int ArraysAreEqual(double[] array1, Array array2)
+        public static int FindArraysDifferenceIndex(double[] array1, Array array2)
         {
             for (var i = 0; i < array1.Length; i++)
                 if (Math.Abs(array1[i] - array2[i]) > 0.00001)
                     return i;
+
             return -1;
         }
 
-        public static int ArraysAreEqual(ArrayLong array1, ArrayLong array2)
+        public static int FindArraysDifferenceIndex(ArrayLong array1, ArrayLong array2)
         {
             for (var i = 0; i < array1.Length; i++)
                 if (array1[i] != array2[i])
                     return i;
+
             return -1;
         }
 
-        public static int ArraysAreEqual(long[] array1, ArrayLong array2)
+        public static int FindArraysDifferenceIndex(long[] array1, ArrayLong array2)
         {
             for (var i = 0; i < array1.Length; i++)
                 if (array1[i] != array2[i])
                     return i;
+
             return -1;
+        }
+
+        public static void WriteArray(Array arr)
+        {
+            for (var i = 0; i < arr.Length; i++)
+                Debug.Write(arr[i] + " ");
+            Debug.Write("\n");
+        }
+
+        public static void WriteArray(IEnumerable<double> arr)
+        {
+            foreach (var num in arr)
+                Debug.Write(num + " ");
+            Debug.Write("\n");
+        }
+
+        public static void WriteArray(ArrayLong arr)
+        {
+            for (var i = 0; i < arr.Length; i++)
+                Debug.Write(arr[i] + " ");
+            Debug.Write("\n");
+        }
+
+        public static void WriteArray(IEnumerable<long> arr)
+        {
+            foreach (var num in arr)
+                Debug.Write(num + " ");
+            Debug.Write("\n");
         }
     }
 }

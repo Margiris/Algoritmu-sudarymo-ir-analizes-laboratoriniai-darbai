@@ -4,31 +4,30 @@ using System.IO;
 
 namespace Lab1
 {
-    public class ArrayDisk : Array
+    public class ArrayDisk : Array, IDisposable
     {
         public ArrayDisk(string fileName, int count, int seed)
         {
-            var data = new ArrayRAM(count, seed).Data;
-
-            Length = count;
-
             try
             {
                 if (File.Exists(fileName))
                     File.Delete(fileName);
 
-                using (var writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                {
-                    for (var i = 0; i < Length; i++)
-                    {
-                        writer.Write(data[i]);
-                    }
-                }
+                FileStream = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite);
             }
             catch (IOException ex)
             {
                 Console.WriteLine(ex.ToString());
             }
+
+            Length = count;
+            new ArrayRAM(count, seed).CopyTo(this, 0);
+        }
+
+        public void Dispose()
+        {
+            FileStream.Flush();
+            FileStream.Close();
         }
 
         public FileStream FileStream { private get; set; }
@@ -45,7 +44,6 @@ namespace Lab1
             set
             {
                 var bytes = BitConverter.GetBytes(value);
-                Debug.WriteLine(FileStream.CanSeek);
                 FileStream.Seek(8 * index, SeekOrigin.Begin);
                 FileStream.Write(bytes, 0, 8);
             }
