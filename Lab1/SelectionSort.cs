@@ -25,7 +25,7 @@
                     items.Swap(i, indexOfMin);
                 }
 
-                DrawTextProgressBar(i + 2, items.Length);
+//                DrawTextProgressBar(i + 2, items.Length);
             }
         }
 
@@ -59,7 +59,7 @@
 
                 currentOuter = items.NextOf(currentOuter);
 
-                DrawTextProgressBar(i + 2, length);
+//                DrawTextProgressBar(i + 2, length);
             }
         }
     }

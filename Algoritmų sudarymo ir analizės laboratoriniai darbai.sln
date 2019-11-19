@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab2", "Lab2\Lab2.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab3", "Lab3\Lab3.csproj", "{1E9C4038-F25E-4167-A327-C26FF6EAD955}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSorting", "SortingTest\TestSorting.csproj", "{8ABBEA5B-F7E6-4EB6-A000-95F78E57C089}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSorting", "TestSorting\TestSorting.csproj", "{8ABBEA5B-F7E6-4EB6-A000-95F78E57C089}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDataStructures", "DataStructuresTest\TestDataStructures.csproj", "{47E8E255-AC0A-4D2D-9003-9EE8E1C5263F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDataStructures", "TestDataStructures\TestDataStructures.csproj", "{47E8E255-AC0A-4D2D-9003-9EE8E1C5263F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

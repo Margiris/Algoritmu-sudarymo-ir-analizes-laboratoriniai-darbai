@@ -71,18 +71,12 @@ namespace TestSorting
 
             if (Util.FindArraysDifferenceIndex(arrSource1, arrSource2) != -1 ||
                 Util.FindArraysDifferenceIndex(arrSource1, arrSource3) != -1) return;
-
-            arrSource2.Print(true);
-            arrSource3.Print(true);
-
+            
             System.Array.Sort((Array) arrSource1);
             SelectionSort.Sort(arrSource2, new ArrayLongRAM(length), new ArrayLongRAM(length),
                 new ArrayLongRAM(1 << RadixSort.GroupLength), new ArrayLongRAM(1 << RadixSort.GroupLength));
             SelectionSort.Sort(arrSource3, a, t, count, pref);
-
-            arrSource2.Print(true);
-            arrSource3.Print(true);
-
+            
             Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource2));
             Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource3));
         }
