@@ -26,19 +26,19 @@ namespace SortingTest
         [TestCleanup]
         public void Cleanup()
         {
-            if (_fileHandle1 != null)
+            GC.Collect();
+
+            if (_fileHandle1 != null && _fileHandle1.CanWrite)
             {
                 _fileHandle1.Flush();
                 _fileHandle1.Close();
             }
 
-            if (_fileHandle2 != null)
+            if (_fileHandle2 != null && _fileHandle2.CanWrite)
             {
                 _fileHandle2.Flush();
                 _fileHandle2.Close();
             }
-
-            GC.Collect();
 
             if (File.Exists(Filename1))
                 File.Delete(Filename1);
@@ -47,6 +47,7 @@ namespace SortingTest
         }
 
         [TestMethod]
+        [DataRow(10)]
         public void TestArraySort(int length)
         {
             var arrSource1 = Util.DoublesArrayWithRandomValues(length);
@@ -90,6 +91,7 @@ namespace SortingTest
                 current3.Value = current2.Value;
                 current2 = listSource2.NextOf(current2);
             }
+
             Assert.Fail();
 //            if (Util.FindArraysDifferenceIndex(arrSource1, arrSource2) != -1 ||
 //                Util.FindArraysDifferenceIndex(arrSource1, arrSource3) != -1) return;

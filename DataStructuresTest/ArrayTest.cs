@@ -25,19 +25,19 @@ namespace DataStructuresTest
         [TestCleanup]
         public void Cleanup()
         {
-            if (_fileHandle1 != null)
+            GC.Collect();
+
+            if (_fileHandle1 != null && _fileHandle1.CanWrite)
             {
                 _fileHandle1.Flush();
                 _fileHandle1.Close();
             }
 
-            if (_fileHandle2 != null)
+            if (_fileHandle2 != null && _fileHandle2.CanWrite)
             {
                 _fileHandle2.Flush();
                 _fileHandle2.Close();
             }
-
-            GC.Collect();
 
             if (File.Exists(Filename1))
                 File.Delete(Filename1);
