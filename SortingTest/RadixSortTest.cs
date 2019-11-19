@@ -44,7 +44,13 @@ namespace SortingTest
         }
 
         [TestMethod]
-        [DataRow(10)]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(64)]
+        [DataRow(256)]
+        [DataRow(4096)]
+        [DataRow(10240)]
+//        [DataRow(int.MaxValue / 40)]
         public void TestArraySort(int length)
         {
             var arrSource1 = Util.DoublesArrayWithRandomValues(length);

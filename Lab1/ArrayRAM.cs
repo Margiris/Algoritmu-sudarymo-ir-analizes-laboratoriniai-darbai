@@ -4,24 +4,24 @@ namespace Lab1
 {
     public class ArrayRAM : Array
     {
-        public readonly double[] Data;
+        public readonly double[] data;
 
         public ArrayRAM(int count, int seed)
         {
-            Data = new double[count];
+            data = new double[count];
             Length = count;
             var rand = new Random(seed);
 
             for (var i = 0; i < count; i++)
             {
-                Data[i] = rand.NextDouble();
+                data[i] = rand.NextDouble();
             }
         }
 
         public override double this[int index]
         {
-            get => Data[index];
-            set => Data[index] = value;
+            get => data[index];
+            set => data[index] = value;
         }
     }
 }
