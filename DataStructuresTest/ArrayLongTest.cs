@@ -5,7 +5,7 @@ using Lab1;
 
 // ReSharper disable InconsistentNaming
 
-namespace DataStructuresTest
+namespace TestDataStructures
 {
     [TestClass]
     public class ArrayLongTest

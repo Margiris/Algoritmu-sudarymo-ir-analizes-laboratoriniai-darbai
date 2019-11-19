@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="RadixSortTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectionSortTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
