@@ -67,7 +67,7 @@ namespace Lab1
             var groups = "";
             if (title.Contains("Radix"))
                 groups = RadixSort.GroupLength.ToString();
-            
+
             using (var resultStreamWriter = new StreamWriter(results_Filename, true))
             {
                 resultStreamWriter.WriteLine("{0,-36}{1,10}{2,16}{3,10}{4,22}{5,3}",
@@ -80,7 +80,7 @@ namespace Lab1
         {
             // ReSharper disable once PossibleNullReferenceException
             var title = " " + algorithm.Method.DeclaringType.Name + ": Array in RAM";
-            
+
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
                 title, " Progress", "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
@@ -95,7 +95,7 @@ namespace Lab1
                 var t = new ArrayLongRAM(amount);
                 var count = new ArrayLongRAM(1 << RadixSort.GroupLength);
                 var pref = new ArrayLongRAM(1 << RadixSort.GroupLength);
-                
+
                 _stopwatch = Stopwatch.StartNew();
                 algorithm(sample, a, t, count, pref);
                 _stopwatch.Stop();
@@ -116,7 +116,7 @@ namespace Lab1
         {
             // ReSharper disable once PossibleNullReferenceException
             var title = " " + algorithm.Method.DeclaringType.Name + ": Linked list in RAM";
-            
+
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
                 title, " Progress", "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
@@ -151,7 +151,7 @@ namespace Lab1
         {
             // ReSharper disable once PossibleNullReferenceException
             var title = " " + algorithm.Method.DeclaringType.Name + ": Array in disk";
-            
+
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
                 title, " Progress", "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");
@@ -167,22 +167,21 @@ namespace Lab1
                 var count = new ArrayLongDisk(count_Filename, 1 << RadixSort.GroupLength);
                 var pref = new ArrayLongDisk(pref_Filename, 1 << RadixSort.GroupLength);
 
-                using (sample.FileStream = new FileStream(Filename, FileMode.Open, FileAccess.ReadWrite))
-                using (a.FileStream = new FileStream(a_Filename, FileMode.Open, FileAccess.ReadWrite))
-                using (t.FileStream = new FileStream(t_Filename, FileMode.Open, FileAccess.ReadWrite))
-                using (count.FileStream = new FileStream(count_Filename, FileMode.Open, FileAccess.ReadWrite))
-                using (pref.FileStream = new FileStream(pref_Filename, FileMode.Open, FileAccess.ReadWrite))
-                {
-                    _stopwatch = Stopwatch.StartNew();
-                    algorithm(sample, a, t, count, pref);
-                    _stopwatch.Stop();
+                _stopwatch = Stopwatch.StartNew();
+                algorithm(sample, a, t, count, pref);
+                _stopwatch.Stop();
 
-                    DrawTextProgressBar(amount, amount);
-                    Console.WriteLine();
-                    LogResults(title, amount);
+                DrawTextProgressBar(amount, amount);
+                Console.WriteLine();
+                LogResults(title, amount);
 
-                    //sample.Print();
-                }
+                //sample.Print();
+
+                Util.CloseFileStream(sample.FileStream);
+                Util.CloseFileStream(a.FileStream);
+                Util.CloseFileStream(t.FileStream);
+                Util.CloseFileStream(count.FileStream);
+                Util.CloseFileStream(pref.FileStream);
 
                 amount *= step;
             }
@@ -193,7 +192,7 @@ namespace Lab1
         {
             // ReSharper disable once PossibleNullReferenceException
             var title = " " + algorithm.Method.DeclaringType.Name + ": Linked list in disk";
-            
+
             Console.WriteLine(new string('_', 119));
             Console.WriteLine("{0,-34}{1,13}{2,14}{3,10}{4,16}{5,10}{6,22}",
                 title, " Progress", "Current", "Total", "Comparisons", "Swaps", "Elapsed time (ms)");

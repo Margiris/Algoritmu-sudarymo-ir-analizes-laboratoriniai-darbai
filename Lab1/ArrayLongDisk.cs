@@ -25,8 +25,7 @@ namespace Lab1
 
         ~ArrayLongDisk()
         {
-            FileStream.Flush();
-            FileStream.Close();
+            Util.CloseFileStream(FileStream);
         }
 
         public FileStream FileStream { get; set; }

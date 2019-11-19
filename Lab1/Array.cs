@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Lab1
 {
@@ -23,14 +24,22 @@ namespace Lab1
             this[index2] = temp;
         }
 
-        public void Print()
+        public void Print(bool debug)
         {
-            for (var i = 0; i < Length; i++)
+            if (debug)
             {
-                Console.Write("{0:F5} ", this[i]);
-            }
+                for (var i = 0; i < Length; i++)
+                    Debug.Write($"{this[i]:F5} ");
 
-            Console.WriteLine();
+                Debug.Write("\n");
+            }
+            else
+            {
+                for (var i = 0; i < Length; i++)
+                    Console.Write($"{this[i]:F5} ");
+
+                Console.Write("\n");
+            }
         }
     }
 }
