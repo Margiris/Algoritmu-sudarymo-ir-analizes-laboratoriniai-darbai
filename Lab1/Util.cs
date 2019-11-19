@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Lab1
 {
@@ -64,34 +62,6 @@ namespace Lab1
                     return i;
 
             return -1;
-        }
-
-        public static void WriteArray(Array arr)
-        {
-            for (var i = 0; i < arr.Length; i++)
-                Debug.Write(arr[i] + " ");
-            Debug.Write("\n");
-        }
-
-        public static void WriteArray(IEnumerable<double> arr)
-        {
-            foreach (var num in arr)
-                Debug.Write(num + " ");
-            Debug.Write("\n");
-        }
-
-        public static void WriteArray(ArrayLong arr)
-        {
-            for (var i = 0; i < arr.Length; i++)
-                Debug.Write(arr[i] + " ");
-            Debug.Write("\n");
-        }
-
-        public static void WriteArray(IEnumerable<long> arr)
-        {
-            foreach (var num in arr)
-                Debug.Write(num + " ");
-            Debug.Write("\n");
         }
     }
 }

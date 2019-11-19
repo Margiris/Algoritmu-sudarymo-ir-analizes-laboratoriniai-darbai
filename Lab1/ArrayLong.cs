@@ -15,5 +15,12 @@ namespace Lab1
             else
                 throw new NotImplementedException();
         }
+        
+        public void Swap(int index1, int index2)
+        {
+            var temp = this[index1];
+            this[index1] = this[index2];
+            this[index2] = temp;
+        }
     }
 }

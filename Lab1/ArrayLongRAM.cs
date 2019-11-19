@@ -2,18 +2,18 @@
 {
     public class ArrayLongRAM : ArrayLong
     {
-        public readonly long[] Data;
+        public long[] data;
 
         public ArrayLongRAM(int count)
         {
-            Data = new long[count];
+            data = Util.LongsArrayWithRandomValues(count);
             Length = count;
         }
 
         public override long this[int index]
         {
-            get => Data[index];
-            set => Data[index] = value;
+            get => data[index];
+            set => data[index] = value;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lab1;
@@ -12,21 +13,33 @@ namespace SortingTest
     {
         private const string Filename1 = @"testArray1.dat";
         private const string Filename2 = @"testArray2.dat";
-        private FileStream _fs1;
-        private FileStream _fs2;
+        private FileStream _fileHandle1;
+        private FileStream _fileHandle2;
 
         [TestInitialize]
         public void Initialize()
         {
-            _fs1 = new FileStream(Filename1, FileMode.Create, FileAccess.ReadWrite);
-            _fs2 = new FileStream(Filename2, FileMode.Create, FileAccess.ReadWrite);
+            _fileHandle1 = null;
+            _fileHandle2 = null;
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _fs1.Dispose();
-            _fs2.Dispose();
+            if (_fileHandle1 != null)
+            {
+                _fileHandle1.Flush();
+                _fileHandle1.Close();
+            }
+
+            if (_fileHandle2 != null)
+            {
+                _fileHandle2.Flush();
+                _fileHandle2.Close();
+            }
+
+            GC.Collect();
+
             if (File.Exists(Filename1))
                 File.Delete(Filename1);
             if (File.Exists(Filename2))
@@ -38,7 +51,8 @@ namespace SortingTest
         {
             var arrSource1 = Util.DoublesArrayWithRandomValues(length);
             var arrSource2 = new ArrayRAM(length, 0);
-            var arrSource3 = new ArrayDisk(Filename1, length, 0) {FileStream = _fs1};
+            var arrSource3 = new ArrayDisk(Filename1, length, 0);
+            _fileHandle1 = arrSource3.FileStream;
 
             for (var i = 0; i < length; i++)
             {
@@ -64,7 +78,7 @@ namespace SortingTest
         {
             var listSource1 = new LinkedList<double>();
             var listSource2 = new LinkedListRAM(length, 0);
-            var listSource3 = new LinkedListDisk(Filename1, length, 0) {FileStream = _fs1};
+            var listSource3 = new LinkedListDisk(Filename1, length, 0);
 
             var current1 = listSource1.First;
             var current2 = listSource2.First;

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 
 namespace Lab1
 {
-    public class ArrayDisk : Array, IDisposable
+    public class ArrayDisk : Array
     {
         public ArrayDisk(string fileName, int count, int seed)
         {
@@ -25,11 +24,6 @@ namespace Lab1
         }
 
         ~ArrayDisk()
-        {
-            Dispose();
-        }
-
-        public void Dispose()
         {
             FileStream.Flush();
             FileStream.Close();

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lab1;
 
@@ -11,21 +12,33 @@ namespace DataStructuresTest
     {
         private const string Filename1 = @"testArray1.dat";
         private const string Filename2 = @"testArray2.dat";
-        private FileStream _fs1;
-        private FileStream _fs2;
+        private FileStream _fileHandle1;
+        private FileStream _fileHandle2;
 
         [TestInitialize]
         public void Initialize()
         {
-            _fs1 = new FileStream(Filename1, FileMode.Create, FileAccess.ReadWrite);
-            _fs2 = new FileStream(Filename2, FileMode.Create, FileAccess.ReadWrite);
+            _fileHandle1 = null;
+            _fileHandle2 = null;
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _fs1.Dispose();
-            _fs2.Dispose();
+            if (_fileHandle1 != null)
+            {
+                _fileHandle1.Flush();
+                _fileHandle1.Close();
+            }
+
+            if (_fileHandle2 != null)
+            {
+                _fileHandle2.Flush();
+                _fileHandle2.Close();
+            }
+
+            GC.Collect();
+
             if (File.Exists(Filename1))
                 File.Delete(Filename1);
             if (File.Exists(Filename2))
@@ -36,15 +49,16 @@ namespace DataStructuresTest
         /// System.Array, ArrayRAM and ArrayDisk objects should be of equal length.
         /// </summary>
         [TestMethod]
-        [DataRow(1)]
-        [DataRow(int.MaxValue / 40)]
-        [DataRow(13601111)]
+//        [DataRow(1)]
+//        [DataRow(int.MaxValue / 40)]
+//        [DataRow(13601111)]
         [DataRow(69420)]
         public void TestLength(int length)
         {
             var array1 = new double[length];
             var array2 = new ArrayLongRAM(length);
-            var array3 = new ArrayLongDisk(Filename1, length) {FileStream = _fs1};
+            var array3 = new ArrayLongDisk(Filename1, length);
+            _fileHandle1 = array3.FileStream;
 
             Assert.AreEqual(length, array2.Length,
                 $"Array should be of length {length}, now it's {array2.Length}");
@@ -62,18 +76,19 @@ namespace DataStructuresTest
         /// <param name="originalNumber">Value to put in array</param>
         [TestMethod]
         [DataRow(1651, 0, 54)]
-        [DataRow(int.MaxValue / 40, int.MaxValue / 40 - 1, 568432)]
-        [DataRow(1651, 0, -4146465)]
-        [DataRow(int.MaxValue / 40, 354, 54)]
-        [DataRow(888, 886, 568432)]
-        [DataRow(13532154, 13532154 - 1, long.MinValue)]
-        [DataRow(1, 0, 54)]
-        [DataRow(54, 1, long.MaxValue)]
-        [DataRow(54, 22, -4146465)]
+//        [DataRow(int.MaxValue / 40, int.MaxValue / 40 - 1, 568432)]
+//        [DataRow(1651, 0, -4146465)]
+//        [DataRow(int.MaxValue / 40, 354, 54)]
+//        [DataRow(888, 886, 568432)]
+//        [DataRow(13532154, 13532154 - 1, long.MinValue)]
+//        [DataRow(1, 0, 54)]
+//        [DataRow(54, 1, long.MaxValue)]
+//        [DataRow(54, 22, -4146465)]
         public void TestGetSetCorrectValues(int length, int index, long originalNumber)
         {
             var arrayRAM = new ArrayLongRAM(length);
-            var arrayDisk = new ArrayLongDisk(Filename1, length) {FileStream = _fs1};
+            var arrayDisk = new ArrayLongDisk(Filename1, length);
+            _fileHandle1 = arrayDisk.FileStream;
 
             arrayRAM[index] = originalNumber;
             arrayDisk[index] = originalNumber;
@@ -85,19 +100,23 @@ namespace DataStructuresTest
         }
 
         [TestMethod]
-        [DataRow(1, 0)]
-        [DataRow(68453, 0)]
-        [DataRow(68453, 9456)]
-        [DataRow(int.MaxValue / 400, 6843215)]
+        [DataRow(6, 0)]
+//        [DataRow(6, 4)]
+//        [DataRow(1, 0)]
+//        [DataRow(68453, 0)]
+//        [DataRow(68453, 9456)]
+//        [DataRow(int.MaxValue / 400, 3843215)]
         public void TestCopyToSameType(int length, int index)
         {
             var arrSource1 = Util.LongsArrayWithRandomValues(length);
             var arrSource2 = new ArrayLongRAM(length);
-            var arrSource3 = new ArrayLongDisk(Filename1, length) {FileStream = _fs1};
+            var arrSource3 = new ArrayLongDisk(Filename1, length);
+            _fileHandle1 = arrSource3.FileStream;
 
             var arrDestination1 = Util.LongsArrayWithRandomValues(length + index);
             var arrDestination2 = new ArrayLongRAM(length + index);
-            var arrDestination3 = new ArrayLongDisk(Filename2, length + index) {FileStream = _fs2};
+            var arrDestination3 = new ArrayLongDisk(Filename2, length + index);
+            _fileHandle2 = arrDestination3.FileStream;
 
             for (var i = 0; i < length; i++)
             {
@@ -124,19 +143,32 @@ namespace DataStructuresTest
         }
 
         [TestMethod]
-        [DataRow(1, 0)]
-        [DataRow(68453, 0)]
-        [DataRow(68453, 9456)]
-        [DataRow(int.MaxValue / 400, 6843215)]
+        public void TestCopyToTooSmallDestinationArray()
+        {
+            var arrSource = new ArrayLongRAM(20);
+            var arrDestination = new ArrayLongRAM(10);
+            
+            Assert.ThrowsException<NotImplementedException>(() => arrSource.CopyTo(arrDestination, 0));
+        }
+
+        [TestMethod]
+        [DataRow(6, 0)]
+//        [DataRow(6, 4)]
+//        [DataRow(1, 0)]
+//        [DataRow(68453, 0)]
+//        [DataRow(68453, 9456)]
+//        [DataRow(int.MaxValue / 400, 3843215)]
         public void TestCopyToDifferentType(int length, int index)
         {
             var arrSource1 = Util.LongsArrayWithRandomValues(length);
             var arrSource2 = new ArrayLongRAM(length);
-            var arrSource3 = new ArrayLongDisk(Filename1, length) {FileStream = _fs1};
+            var arrSource3 = new ArrayLongDisk(Filename1, length);
+            _fileHandle1 = arrSource3.FileStream;
 
             var arrDestination1 = Util.LongsArrayWithRandomValues(length + index);
             var arrDestination2 = new ArrayLongRAM(length + index);
-            var arrDestination3 = new ArrayLongDisk(Filename2, length + index) {FileStream = _fs2};
+            var arrDestination3 = new ArrayLongDisk(Filename2, length + index);
+            _fileHandle2 = arrDestination3.FileStream;
 
             for (var i = 0; i < length; i++)
             {
@@ -154,7 +186,30 @@ namespace DataStructuresTest
             Assert.AreEqual(-1, diffIndex,
                 $"ArrayRAM and ArrayDisk objects should be the same but differ at index {diffIndex}");
         }
-        
 
+        [TestMethod]
+        [DataRow(1, 0, 0)]
+//        [DataRow(163484, 6341, 46451)]
+//        [DataRow(int.MaxValue / 40, int.MaxValue / 1354, 153)]
+        public void TestSwap(int length, int index1, int index2)
+        {
+            var arrayRAM = new ArrayLongRAM(length);
+            var arrayDisk = new ArrayLongDisk(Filename1, length);
+            _fileHandle1 = arrayDisk.FileStream;
+
+            TestSwap(arrayRAM, index1, index2);
+            TestSwap(arrayDisk, index1, index2);
+        }
+
+        public void TestSwap(ArrayLong array, int index1, int index2)
+        {
+            var value1 = array[index1];
+            var value2 = array[index2];
+
+            array.Swap(index1, index2);
+
+            Assert.AreEqual(value1, array[index2]);
+            Assert.AreEqual(value2, array[index1]);
+        }
     }
 }

@@ -7,28 +7,29 @@ namespace Lab1
     {
         public ArrayLongDisk(string fileName, int count)
         {
-            Length = count;
-
             try
             {
                 if (File.Exists(fileName))
                     File.Delete(fileName);
 
-                using (var writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                {
-                    for (var i = 0; i < Length; i++)
-                    {
-                        writer.Write(i);
-                    }
-                }
+                FileStream = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite);
             }
             catch (IOException ex)
             {
                 Console.WriteLine(ex.ToString());
             }
+
+            Length = count;
+            new ArrayLongRAM(count).CopyTo(this, 0);
         }
 
-        public FileStream FileStream { private get; set; }
+        ~ArrayLongDisk()
+        {
+            FileStream.Flush();
+            FileStream.Close();
+        }
+
+        public FileStream FileStream { get; set; }
 
         public override long this[int index]
         {

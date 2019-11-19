@@ -5,36 +5,30 @@ namespace Lab1
 {
     public class LinkedListDisk : LinkedList
     {
-        public FileStream FileStream { private get; set; }
+        public FileStream FileStream { get; set; }
 
         public LinkedListDisk(string fileName, int count, int seed)
         {
-            Count = count;
-
-            var data = new ArrayRAM(count, seed).Data;
-
-            if (File.Exists(fileName))
-            {
-                File.Delete(fileName);
-            }
-
             try
             {
-                using (var writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                {
-                    for (var i = 0; i < count; i++)
-                    {
-                        writer.Write(i * 12 + 4);
-                        writer.Write(data[i]);
-                    }
+                if (File.Exists(fileName))
+                    File.Delete(fileName);
 
-                    writer.Write(count * 12 + 4);
-                }
+                FileStream = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite);
             }
             catch (IOException ex)
             {
                 Console.WriteLine(ex.ToString());
             }
+
+            Count = count;
+//            new ArrayRAM(count, seed).CopyTo(this, 0);
+        }
+
+        ~LinkedListDisk()
+        {
+            FileStream.Flush();
+            FileStream.Close();
         }
 
         public override LinkedListNode GetFirstNode()
