@@ -13,16 +13,33 @@ namespace DataStructuresTest
     {
         private const string Filename1 = @"testArray1.dat";
         private const string Filename2 = @"testArray2.dat";
+        private FileStream FileHandle1;
+        private FileStream FileHandle2;
 
         [TestInitialize]
         public void Initialize()
         {
+            FileHandle1 = null;
+            FileHandle2 = null;
         }
 
         [TestCleanup]
         public void Cleanup()
         {
+            if (FileHandle1 != null)
+            {
+                FileHandle1.Flush();
+                FileHandle1.Close();
+            }
+
+            if (FileHandle2 != null)
+            {
+                FileHandle2.Flush();
+                FileHandle2.Close();
+            }
+
             GC.Collect();
+
             if (File.Exists(Filename1))
                 File.Delete(Filename1);
             if (File.Exists(Filename2))
@@ -42,6 +59,7 @@ namespace DataStructuresTest
             var array1 = new double[length];
             var array2 = new ArrayRAM(length, 0);
             var array3 = new ArrayDisk(Filename1, length, 0);
+            FileHandle1 = array3.FileStream;
 
             Assert.AreEqual(length, array2.Length,
                 $"Array should be of length {length}, now it's {array2.Length}");
@@ -71,6 +89,7 @@ namespace DataStructuresTest
         {
             var arrayRAM = new ArrayRAM(length, 0);
             var arrayDisk = new ArrayDisk(Filename1, length, 0);
+            FileHandle1 = arrayDisk.FileStream;
 
             arrayRAM[index] = originalNumber;
             arrayDisk[index] = originalNumber;
@@ -90,38 +109,38 @@ namespace DataStructuresTest
         [DataRow(int.MaxValue / 400, 6843215)]
         public void TestCopyToSameType(int length, int index)
         {
-            using (var arrSource3 = new ArrayDisk(Filename1, length, 0))
-            using (var arrDestination3 = new ArrayDisk(Filename2, length + index, 0))
+            var arrSource1 = Util.DoublesArrayWithRandomValues(length);
+            var arrSource2 = new ArrayRAM(length, 0);
+            var arrSource3 = new ArrayDisk(Filename1, length, 0);
+            FileHandle1 = arrSource3.FileStream;
+
+            var arrDestination1 = Util.DoublesArrayWithRandomValues(length + index);
+            var arrDestination2 = new ArrayRAM(length + index, 0);
+            var arrDestination3 = new ArrayDisk(Filename2, length + index, 0);
+            FileHandle2 = arrDestination3.FileStream;
+
+            for (var i = 0; i < length; i++)
             {
-                var arrSource1 = Util.DoublesArrayWithRandomValues(length);
-                var arrSource2 = new ArrayRAM(length, 0);
-
-                var arrDestination1 = Util.DoublesArrayWithRandomValues(length + index);
-                var arrDestination2 = new ArrayRAM(length + index, 0);
-
-                for (var i = 0; i < length; i++)
-                {
-                    arrSource2[i] = arrSource1[i];
-                    arrSource3[i] = arrSource1[i];
-                    arrDestination2[i] = arrDestination1[i];
-                    arrDestination3[i] = arrDestination1[i];
-                }
-
-                arrSource1.CopyTo(arrDestination1, index);
-                arrSource2.CopyTo(arrDestination2, index);
-                arrSource3.CopyTo(arrDestination3, index);
-
-                var diffIndex1 = Util.FindArraysDifferenceIndex(arrDestination1, arrDestination2);
-                var diffIndex2 = Util.FindArraysDifferenceIndex(arrDestination1, arrDestination3);
-                var diffIndex3 = Util.FindArraysDifferenceIndex(arrDestination2, arrDestination3);
-
-                Assert.AreEqual(-1, diffIndex1,
-                    $"System.Array and ArrayRAM should be the same but differ at index {diffIndex1}");
-                Assert.AreEqual(-1, diffIndex2,
-                    $"System.Array and ArrayDisk should be the same but differ at index {diffIndex2}");
-                Assert.AreEqual(-1, diffIndex3,
-                    $"ArrayRAM and ArrayDisk should be the same but differ at index {diffIndex3}");
+                arrSource2[i] = arrSource1[i];
+                arrSource3[i] = arrSource1[i];
+                arrDestination2[i] = arrDestination1[i];
+                arrDestination3[i] = arrDestination1[i];
             }
+
+            arrSource1.CopyTo(arrDestination1, index);
+            arrSource2.CopyTo(arrDestination2, index);
+            arrSource3.CopyTo(arrDestination3, index);
+
+            var diffIndex1 = Util.FindArraysDifferenceIndex(arrDestination1, arrDestination2);
+            var diffIndex2 = Util.FindArraysDifferenceIndex(arrDestination1, arrDestination3);
+            var diffIndex3 = Util.FindArraysDifferenceIndex(arrDestination2, arrDestination3);
+
+            Assert.AreEqual(-1, diffIndex1,
+                $"System.Array and ArrayRAM should be the same but differ at index {diffIndex1}");
+            Assert.AreEqual(-1, diffIndex2,
+                $"System.Array and ArrayDisk should be the same but differ at index {diffIndex2}");
+            Assert.AreEqual(-1, diffIndex3,
+                $"ArrayRAM and ArrayDisk should be the same but differ at index {diffIndex3}");
         }
 
         [TestMethod]
@@ -133,31 +152,31 @@ namespace DataStructuresTest
         [DataRow(int.MaxValue / 400, 6843215)]
         public void TestCopyToDifferentType(int length, int index)
         {
-            using (var arrSource3 = new ArrayDisk(Filename1, length, 0))
-            using (var arrDestination3 = new ArrayDisk(Filename2, length + index, 0))
+            var arrSource1 = Util.DoublesArrayWithRandomValues(length);
+            var arrSource2 = new ArrayRAM(length, 0);
+            var arrSource3 = new ArrayDisk(Filename1, length, 0);
+            FileHandle1 = arrSource3.FileStream;
+
+            var arrDestination1 = Util.DoublesArrayWithRandomValues(length + index);
+            var arrDestination2 = new ArrayRAM(length + index, 0);
+            var arrDestination3 = new ArrayDisk(Filename2, length + index, 0);
+            FileHandle2 = arrDestination3.FileStream;
+
+            for (var i = 0; i < length; i++)
             {
-                var arrSource1 = Util.DoublesArrayWithRandomValues(length);
-                var arrSource2 = new ArrayRAM(length, 0);
-
-                var arrDestination1 = Util.DoublesArrayWithRandomValues(length + index);
-                var arrDestination2 = new ArrayRAM(length + index, 0);
-
-                for (var i = 0; i < length; i++)
-                {
-                    arrSource2[i] = arrSource1[i];
-                    arrSource3[i] = arrSource1[i];
-                    arrDestination2[i] = arrDestination1[i];
-                    arrDestination3[i] = arrDestination1[i];
-                }
-
-                arrSource2.CopyTo(arrDestination3, index);
-                arrSource3.CopyTo(arrDestination2, index);
-
-                var diffIndex = Util.FindArraysDifferenceIndex(arrDestination2, arrDestination3);
-
-                Assert.AreEqual(-1, diffIndex,
-                    $"ArrayRAM and ArrayDisk objects should be the same but differ at index {diffIndex}");
+                arrSource2[i] = arrSource1[i];
+                arrSource3[i] = arrSource1[i];
+                arrDestination2[i] = arrDestination1[i];
+                arrDestination3[i] = arrDestination1[i];
             }
+
+            arrSource2.CopyTo(arrDestination3, index);
+            arrSource3.CopyTo(arrDestination2, index);
+
+            var diffIndex = Util.FindArraysDifferenceIndex(arrDestination2, arrDestination3);
+
+            Assert.AreEqual(-1, diffIndex,
+                $"ArrayRAM and ArrayDisk objects should be the same but differ at index {diffIndex}");
         }
 
         [TestMethod]
@@ -168,6 +187,7 @@ namespace DataStructuresTest
         {
             var arrayRAM = new ArrayRAM(length, 0);
             var arrayDisk = new ArrayDisk(Filename1, length, 0);
+            FileHandle1 = arrayDisk.FileStream;
 
             TestSwap(arrayRAM, index1, index2);
             TestSwap(arrayDisk, index1, index2);

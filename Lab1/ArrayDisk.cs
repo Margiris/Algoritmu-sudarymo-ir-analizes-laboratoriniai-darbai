@@ -24,13 +24,18 @@ namespace Lab1
             new ArrayRAM(count, seed).CopyTo(this, 0);
         }
 
+        ~ArrayDisk()
+        {
+            Dispose();
+        }
+
         public void Dispose()
         {
             FileStream.Flush();
             FileStream.Close();
         }
 
-        public FileStream FileStream { private get; set; }
+        public FileStream FileStream { get; set; }
 
         public override double this[int index]
         {
