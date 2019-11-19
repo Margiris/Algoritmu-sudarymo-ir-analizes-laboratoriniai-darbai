@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Lab1
 {
@@ -62,6 +63,25 @@ namespace Lab1
                     return i;
 
             return -1;
+        }
+
+        public static bool CloseFileStream(FileStream stream)
+        {
+            if (stream == null) return false;
+
+            if (stream.CanWrite)
+                stream.Flush();
+
+            try
+            {
+                stream.Close();
+                return true;
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
         }
     }
 }

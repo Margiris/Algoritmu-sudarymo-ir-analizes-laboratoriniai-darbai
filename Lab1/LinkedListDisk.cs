@@ -27,8 +27,7 @@ namespace Lab1
 
         ~LinkedListDisk()
         {
-            FileStream.Flush();
-            FileStream.Close();
+            Util.CloseFileStream(FileStream);
         }
 
         public override LinkedListNode GetFirstNode()

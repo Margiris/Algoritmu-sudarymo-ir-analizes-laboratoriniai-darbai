@@ -26,18 +26,8 @@ namespace DataStructuresTest
         public void Cleanup()
         {
             GC.Collect();
-
-            if (_fileHandle1 != null && _fileHandle1.CanWrite)
-            {
-                _fileHandle1.Flush();
-                _fileHandle1.Close();
-            }
-
-            if (_fileHandle2 != null && _fileHandle2.CanWrite)
-            {
-                _fileHandle2.Flush();
-                _fileHandle2.Close();
-            }
+            Util.CloseFileStream(_fileHandle1);
+            Util.CloseFileStream(_fileHandle2);
 
             if (File.Exists(Filename1))
                 File.Delete(Filename1);
@@ -49,9 +39,9 @@ namespace DataStructuresTest
         /// System.Array, ArrayRAM and ArrayDisk objects should be of equal length.
         /// </summary>
         [TestMethod]
-//        [DataRow(1)]
-//        [DataRow(int.MaxValue / 40)]
-//        [DataRow(13601111)]
+        [DataRow(1)]
+        [DataRow(int.MaxValue / 40)]
+        [DataRow(13601111)]
         [DataRow(69420)]
         public void TestLength(int length)
         {
@@ -76,14 +66,14 @@ namespace DataStructuresTest
         /// <param name="originalNumber">Value to put in array</param>
         [TestMethod]
         [DataRow(1651, 0, 0.54)]
-//        [DataRow(int.MaxValue / 40, int.MaxValue / 40 - 1, 568432.051684134)]
-//        [DataRow(1651, 0, -4146465.00000001)]
-//        [DataRow(int.MaxValue / 40, 354, 0.54)]
-//        [DataRow(888, 886, 568432.051684134)]
-//        [DataRow(13532154, 13532154 - 1, double.MinValue)]
-//        [DataRow(1, 0, 0.54)]
-//        [DataRow(54, 1, double.MaxValue)]
-//        [DataRow(54, 22, -4146465.00000001)]
+        [DataRow(int.MaxValue / 40, int.MaxValue / 40 - 1, 568432.051684134)]
+        [DataRow(1651, 0, -4146465.00000001)]
+        [DataRow(int.MaxValue / 40, 354, 0.54)]
+        [DataRow(888, 886, 568432.051684134)]
+        [DataRow(13532154, 13532154 - 1, double.MinValue)]
+        [DataRow(1, 0, 0.54)]
+        [DataRow(54, 1, double.MaxValue)]
+        [DataRow(54, 22, -4146465.00000001)]
         public void TestGetSetCorrectValues(int length, int index, double originalNumber)
         {
             var arrayRAM = new ArrayRAM(length, 0);
@@ -101,11 +91,11 @@ namespace DataStructuresTest
 
         [TestMethod]
         [DataRow(6, 0)]
-//        [DataRow(6, 4)]
-//        [DataRow(1, 0)]
-//        [DataRow(68453, 0)]
-//        [DataRow(68453, 9456)]
-//        [DataRow(int.MaxValue / 400, 3843215)]
+        [DataRow(6, 4)]
+        [DataRow(1, 0)]
+        [DataRow(68453, 0)]
+        [DataRow(68453, 9456)]
+        [DataRow(int.MaxValue / 400, 3843215)]
         public void TestCopyToSameType(int length, int index)
         {
             var arrSource1 = Util.DoublesArrayWithRandomValues(length);
@@ -153,11 +143,11 @@ namespace DataStructuresTest
 
         [TestMethod]
         [DataRow(6, 0)]
-//        [DataRow(6, 4)]
-//        [DataRow(1, 0)]
-//        [DataRow(68453, 0)]
-//        [DataRow(68453, 9456)]
-//        [DataRow(int.MaxValue / 400, 3843215)]
+        [DataRow(6, 4)]
+        [DataRow(1, 0)]
+        [DataRow(68453, 0)]
+        [DataRow(68453, 9456)]
+        [DataRow(int.MaxValue / 400, 3843215)]
         public void TestCopyToDifferentType(int length, int index)
         {
             var arrSource1 = Util.DoublesArrayWithRandomValues(length);
@@ -189,8 +179,8 @@ namespace DataStructuresTest
 
         [TestMethod]
         [DataRow(1, 0, 0)]
-//        [DataRow(163484, 6341, 46451)]
-//        [DataRow(int.MaxValue / 40, int.MaxValue / 1354, 153)]
+        [DataRow(163484, 6341, 46451)]
+        [DataRow(int.MaxValue / 40, int.MaxValue / 1354, 153)]
         public void TestSwap(int length, int index1, int index2)
         {
             var arrayRAM = new ArrayRAM(length, 0);
@@ -221,13 +211,13 @@ namespace DataStructuresTest
         /// </summary>
         [TestMethod]
         [DataRow(1654, 0)]
-//        [DataRow(96384, 1)]
-//        [DataRow(999999, 167483521)]
-//        [DataRow(int.MaxValue / 40, int.MaxValue)]
-//        [DataRow(int.MaxValue / 40, 48)]
-//        [DataRow(2, int.MaxValue)]
-//        [DataRow(135787, int.MaxValue)]
-//        [DataRow(96485, int.MinValue)]
+        [DataRow(96384, 1)]
+        [DataRow(999999, 167483521)]
+        [DataRow(int.MaxValue / 40, int.MaxValue)]
+        [DataRow(int.MaxValue / 40, 48)]
+        [DataRow(2, int.MaxValue)]
+        [DataRow(135787, int.MaxValue)]
+        [DataRow(96485, int.MinValue)]
         public void TestRandomnessWithSameSeed(int length, int seed)
         {
             var arr1 = new ArrayRAM(length, seed);
@@ -247,12 +237,12 @@ namespace DataStructuresTest
         /// </summary>
         [TestMethod]
         [DataRow(1654, 0, 1)]
-//        [DataRow(96384, 164231, 64135)]
-//        [DataRow(999999, 1650, 41635)]
-//        [DataRow(int.MaxValue / 40, 46213, 0)]
-//        [DataRow(int.MaxValue / 40, 1, int.MaxValue)]
-//        [DataRow(2, int.MaxValue, int.MaxValue - 1)]
-//        [DataRow(135787, int.MaxValue - 1, int.MaxValue)]
+        [DataRow(96384, 164231, 64135)]
+        [DataRow(999999, 1650, 41635)]
+        [DataRow(int.MaxValue / 40, 46213, 0)]
+        [DataRow(int.MaxValue / 40, 1, int.MaxValue)]
+        [DataRow(2, int.MaxValue, int.MaxValue - 1)]
+        [DataRow(135787, int.MaxValue - 1, int.MaxValue)]
         public void TestRandomnessWithDifferentSeeds(int length, int seed1, int seed2)
         {
             var arr1 = new ArrayRAM(length, seed1);

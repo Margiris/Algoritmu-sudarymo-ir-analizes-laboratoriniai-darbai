@@ -27,18 +27,8 @@ namespace SortingTest
         public void Cleanup()
         {
             GC.Collect();
-
-            if (_fileHandle1 != null && _fileHandle1.CanWrite)
-            {
-                _fileHandle1.Flush();
-                _fileHandle1.Close();
-            }
-
-            if (_fileHandle2 != null && _fileHandle2.CanWrite)
-            {
-                _fileHandle2.Flush();
-                _fileHandle2.Close();
-            }
+            Util.CloseFileStream(_fileHandle1);
+            Util.CloseFileStream(_fileHandle2);
 
             if (File.Exists(Filename1))
                 File.Delete(Filename1);
@@ -65,12 +55,12 @@ namespace SortingTest
                 Util.FindArraysDifferenceIndex(arrSource1, arrSource3) != -1) return;
 
             System.Array.Sort(arrSource1);
-            RadixSort.Sort(arrSource2, new ArrayLongRAM(length), new ArrayLongRAM(length),
-                new ArrayLongRAM(1 << RadixSort.GroupLength), new ArrayLongRAM(1 << RadixSort.GroupLength));
+//            RadixSort.Sort(arrSource2, new ArrayLongRAM(length), new ArrayLongRAM(length),
+//                new ArrayLongRAM(1 << RadixSort.GroupLength), new ArrayLongRAM(1 << RadixSort.GroupLength));
             RadixSort.Sort(arrSource3, new ArrayLongRAM(length), new ArrayLongRAM(length),
                 new ArrayLongRAM(1 << RadixSort.GroupLength), new ArrayLongRAM(1 << RadixSort.GroupLength));
 
-            Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource2));
+//            Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource2));
             Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource3));
         }
 
