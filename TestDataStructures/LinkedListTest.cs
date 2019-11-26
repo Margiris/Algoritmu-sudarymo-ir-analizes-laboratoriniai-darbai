@@ -38,6 +38,7 @@ namespace TestDataStructures
         /// <summary>
         /// System.Array, LinkedListRAM and LinkedListDisk objects should be of equal length.
         /// </summary>
+        /// <param name="length">Length of the list to be created</param>
         [TestMethod]
         [DataRow(1)]
         [DataRow(int.MaxValue / 40)]
@@ -98,6 +99,12 @@ namespace TestDataStructures
                 "Number value in listDisk is different from the original number");
         }
 
+        /// <summary>
+        /// Should swap values at specified indexes in LinkedListRAM type object.
+        /// </summary>
+        /// <param name="length">Length of the list to be created</param>
+        /// <param name="index1">First index for swapping</param>
+        /// <param name="index2">Second index for swapping</param>
         [TestMethod]
         [DataRow(1, 0, 0)]
         [DataRow(163484, 6341, 46451)]
@@ -109,6 +116,12 @@ namespace TestDataStructures
             TestSwap(listRAM, index1, index2);
         }
         
+        /// <summary>
+        /// Should swap values at specified indexes in LinkedListDisk type object.
+        /// </summary>
+        /// <param name="length">Length of the list to be created</param>
+        /// <param name="index1">First index for swapping</param>
+        /// <param name="index2">Second index for swapping</param>
         [TestMethod]
         [DataRow(1, 0, 0)]
         [DataRow(163484, 6341, 46451)]
@@ -121,6 +134,12 @@ namespace TestDataStructures
             TestSwap(listDisk, index1, index2);
         }
 
+        /// <summary>
+        /// Helper method for testing Swap method.
+        /// </summary>
+        /// <param name="list">LinkedList to swap values in</param>
+        /// <param name="index1">First index for swapping</param>
+        /// <param name="index2">Second index for swapping</param>
         public void TestSwap(LinkedList list, int index1, int index2)
         {
             var node1 = list.GetFirstNode();
@@ -149,6 +168,8 @@ namespace TestDataStructures
         /// Given same seed, System.Random provides same random
         /// number sequence.
         /// </summary>
+        /// <param name="length">Length of the list to be created</param>
+        /// <param name="seed">Seed for the random function</param>
         [TestMethod]
         [DataRow(1654, 0)]
         [DataRow(96384, 1)]
@@ -173,8 +194,11 @@ namespace TestDataStructures
         /// should not be equal item-by-item more than 0.1 %.
         ///
         /// By System.Random implementation absolute value of
-        /// seed is used, so testing negative numbers is redundant.
+        /// seed is used, so testing negative seed values is redundant.
         /// </summary>
+        /// <param name="length">Length of the list to be created</param>
+        /// <param name="seed1">First seed for the random function</param>
+        /// <param name="seed2">Second seed for the random function</param>
         [TestMethod]
         [DataRow(1654, 0, 1)]
         [DataRow(96384, 164231, 64135)]

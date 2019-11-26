@@ -40,6 +40,10 @@ namespace TestSorting
                 File.Delete(file);
         }
 
+        /// <summary>
+        /// Test if radix sort implementation works and sorts numbers in ArrayRAM correctly.
+        /// </summary>
+        /// <param name="length">Length of the list to sort</param>
         [TestMethod]
         [DataRow(1)]
         [DataRow(2)]
@@ -63,7 +67,11 @@ namespace TestSorting
 
             Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource2));
         }
-
+        
+        /// <summary>
+        /// Test if radix sort implementation works and sorts numbers in ArrayDisk correctly.
+        /// </summary>
+        /// <param name="length">Length of the list to sort</param>
         [TestMethod]
         [DataRow(1)]
         [DataRow(2)]
@@ -96,7 +104,11 @@ namespace TestSorting
             
             Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource2));
         }
-
+        
+        /// <summary>
+        /// Test if radix sort implementation works and sorts numbers in LinkedListRAM correctly.
+        /// </summary>
+        /// <param name="length">Length of the list to sort</param>
         [TestMethod]
         [DataRow(1)]
         [DataRow(2)]
@@ -125,6 +137,10 @@ namespace TestSorting
             Assert.AreEqual(-1, Util.FindListsDifferenceIndex(sorted, listSource2));
         }
         
+        /// <summary>
+        /// Test if radix sort implementation works and sorts numbers in LinkedListDisk correctly.
+        /// </summary>
+        /// <param name="length">Length of the list to sort</param>
         [TestMethod]
         [DataRow(1)]
         [DataRow(2)]

@@ -88,7 +88,16 @@ namespace TestDataStructures
             Assert.AreEqual(originalNumber, arrayDisk[index],
                 "Number value in arrayDisk is different from the original number");
         }
-
+        
+        /// <summary>
+        /// CopyTo method should work the same as System.Array.CopyTo(), which reads:
+        /// Copies all the elements of the current one-dimensional array to the specified
+        /// one-dimensional array starting at the specified destination array index. The index is specified as a 32-bit integer.
+        ///
+        /// This test checks CopyTo correctness when copying data to structure of the same type as source.
+        /// </summary>
+        /// <param name="length">Length of the array to be created</param>
+        /// <param name="index">Index of the array to start copying from</param>
         [TestMethod]
         [DataRow(6, 0)]
         [DataRow(6, 4)]
@@ -131,7 +140,10 @@ namespace TestDataStructures
             Assert.AreEqual(-1, diffIndex3,
                 $"ArrayRAM and ArrayDisk should be the same but differ at index {diffIndex3}");
         }
-
+        
+        /// <summary>
+        /// When trying to CopyTo a smaller array than length of source + index, method should throw NotImplementedException.
+        /// </summary>
         [TestMethod]
         public void TestCopyToTooSmallDestinationArray()
         {
@@ -141,6 +153,15 @@ namespace TestDataStructures
             Assert.ThrowsException<NotImplementedException>(() => arrSource.CopyTo(arrDestination, 0));
         }
 
+        /// <summary>
+        /// CopyTo method should work the same as System.Array.CopyTo(), which reads:
+        /// Copies all the elements of the current one-dimensional array to the specified
+        /// one-dimensional array starting at the specified destination array index. The index is specified as a 32-bit integer.
+        ///
+        /// This test checks CopyTo correctness when copying data to structure of different type than source.
+        /// </summary>
+        /// <param name="length">Length of the array to be created</param>
+        /// <param name="index">Index of the array to start copying from</param>
         [TestMethod]
         [DataRow(6, 0)]
         [DataRow(6, 4)]
@@ -176,7 +197,13 @@ namespace TestDataStructures
             Assert.AreEqual(-1, diffIndex,
                 $"ArrayRAM and ArrayDisk objects should be the same but differ at index {diffIndex}");
         }
-
+        
+        /// <summary>
+        /// Should swap values at specified indexes in ArrayLongRAM type object.
+        /// </summary>
+        /// <param name="length">Length of the array to be created</param>
+        /// <param name="index1">First index for swapping</param>
+        /// <param name="index2">Second index for swapping</param>
         [TestMethod]
         [DataRow(1, 0, 0)]
         [DataRow(163484, 6341, 46451)]
@@ -188,6 +215,12 @@ namespace TestDataStructures
             TestSwap(arrayRAM, index1, index2);
         }
         
+        /// <summary>
+        /// Should swap values at specified indexes in ArrayLongDisk type object.
+        /// </summary>
+        /// <param name="length">Length of the array to be created</param>
+        /// <param name="index1">First index for swapping</param>
+        /// <param name="index2">Second index for swapping</param>
         [TestMethod]
         [DataRow(1, 0, 0)]
         [DataRow(163484, 6341, 46451)]
@@ -199,7 +232,13 @@ namespace TestDataStructures
 
             TestSwap(arrayDisk, index1, index2);
         }
-
+        
+        /// <summary>
+        /// Helper method for testing Swap method.
+        /// </summary>
+        /// <param name="array">Array to swap values in</param>
+        /// <param name="index1">First index for swapping</param>
+        /// <param name="index2">Second index for swapping</param>
         public void TestSwap(ArrayLong array, int index1, int index2)
         {
             var value1 = array[index1];
