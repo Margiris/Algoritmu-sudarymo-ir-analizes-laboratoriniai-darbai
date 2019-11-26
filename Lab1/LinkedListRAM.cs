@@ -6,13 +6,12 @@ namespace Lab1
     {
         public LinkedListRAM(int count, int seed)
         {
+            var temp = Util.DoublesArrayWithRandomValues(count, seed);
+
             Count = count;
-            var rand = new Random(seed);
 
             for (var i = 0; i < count; i++)
-            {
-                AddLast(rand.NextDouble());
-            }
+                AddLast(temp[i]);
         }
 
         public void AddLast(double data)

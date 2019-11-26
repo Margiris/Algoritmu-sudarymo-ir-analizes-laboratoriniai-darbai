@@ -22,7 +22,15 @@ namespace Lab1
             }
 
             Count = count;
-//            new ArrayRAM(count, seed).CopyTo(this, 0);
+
+            var temp = new ArrayRAM(count, seed);
+
+            First = new LinkedListNode(){CurrentIndex = 0, NextIndex = 1, Value = temp[0]};
+            
+            for (var i = 0; i < count; i++)
+            {
+                
+            }
         }
 
         ~LinkedListDisk()

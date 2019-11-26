@@ -7,8 +7,13 @@ namespace Lab1
     {
         public static double[] DoublesArrayWithRandomValues(int length)
         {
+            return DoublesArrayWithRandomValues(length, (int) DateTime.Now.Ticks);
+        }
+
+        public static double[] DoublesArrayWithRandomValues(int length, int seed)
+        {
             var arr = new double[length];
-            var rand = new Random((int) DateTime.Now.Ticks);
+            var rand = new Random(seed);
 
             for (var i = 0; i < length; i++)
             {
@@ -61,6 +66,22 @@ namespace Lab1
             for (var i = 0; i < array1.Length; i++)
                 if (array1[i] != array2[i])
                     return i;
+
+            return -1;
+        }
+
+        public static int FindListsDifferenceIndex(LinkedList list1, LinkedList list2)
+        {
+            var current1 = list1.GetFirstNode();
+            var current2 = list2.GetFirstNode();
+
+            for (var i = 0; i < list1.Count; i++)
+            {
+                if (Math.Abs(current1.Value - current2.Value) > 0.00001)
+                    return i;
+                current1 = list1.NextOf(current1);
+                current2 = list2.NextOf(current2);
+            }
 
             return -1;
         }

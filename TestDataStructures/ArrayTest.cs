@@ -204,7 +204,7 @@ namespace TestDataStructures
 
         /// <summary>
         /// Two arrays created with same seed should be equal
-        /// originalNumber-by-number.
+        /// number-by-number.
         /// 
         /// Given same seed, System.Random provides same random
         /// number sequence.
