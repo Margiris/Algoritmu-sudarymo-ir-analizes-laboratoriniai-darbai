@@ -102,13 +102,22 @@ namespace TestDataStructures
         [DataRow(1, 0, 0)]
         [DataRow(163484, 6341, 46451)]
         [DataRow(int.MaxValue / 40, int.MaxValue / 1354, 153)]
-        public void TestSwap(int length, int index1, int index2)
+        public void TestSwapRAM(int length, int index1, int index2)
         {
             var listRAM = new LinkedListRAM(length, 0);
+
+            TestSwap(listRAM, index1, index2);
+        }
+        
+        [TestMethod]
+        [DataRow(1, 0, 0)]
+        [DataRow(163484, 6341, 46451)]
+        [DataRow(int.MaxValue / 40, int.MaxValue / 1354, 153)]
+        public void TestSwapDisk(int length, int index1, int index2)
+        {
             var listDisk = new LinkedListDisk(Filename1, length, 0);
             _fileHandle1 = listDisk.FileStream;
 
-            TestSwap(listRAM, index1, index2);
             TestSwap(listDisk, index1, index2);
         }
 
