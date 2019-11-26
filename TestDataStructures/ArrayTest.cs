@@ -181,13 +181,22 @@ namespace TestDataStructures
         [DataRow(1, 0, 0)]
         [DataRow(163484, 6341, 46451)]
         [DataRow(int.MaxValue / 40, int.MaxValue / 1354, 153)]
-        public void TestSwap(int length, int index1, int index2)
+        public void TestSwapRAM(int length, int index1, int index2)
         {
             var arrayRAM = new ArrayRAM(length, 0);
+
+            TestSwap(arrayRAM, index1, index2);
+        }
+
+        [TestMethod]
+        [DataRow(1, 0, 0)]
+        [DataRow(163484, 6341, 46451)]
+        [DataRow(int.MaxValue / 40, int.MaxValue / 1354, 153)]
+        public void TestSwapDisk(int length, int index1, int index2)
+        {
             var arrayDisk = new ArrayDisk(Filename1, length, 0);
             _fileHandle1 = arrayDisk.FileStream;
 
-            TestSwap(arrayRAM, index1, index2);
             TestSwap(arrayDisk, index1, index2);
         }
 
@@ -215,7 +224,6 @@ namespace TestDataStructures
         [DataRow(999999, 167483521)]
         [DataRow(int.MaxValue / 40, int.MaxValue)]
         [DataRow(int.MaxValue / 40, 48)]
-        [DataRow(2, int.MaxValue)]
         [DataRow(135787, int.MaxValue)]
         [DataRow(96485, int.MinValue)]
         public void TestRandomnessWithSameSeed(int length, int seed)
@@ -239,10 +247,8 @@ namespace TestDataStructures
         [DataRow(1654, 0, 1)]
         [DataRow(96384, 164231, 64135)]
         [DataRow(999999, 1650, 41635)]
-        [DataRow(int.MaxValue / 40, 46213, 0)]
         [DataRow(int.MaxValue / 40, 1, int.MaxValue)]
         [DataRow(2, int.MaxValue, int.MaxValue - 1)]
-        [DataRow(135787, int.MaxValue - 1, int.MaxValue)]
         public void TestRandomnessWithDifferentSeeds(int length, int seed1, int seed2)
         {
             var arr1 = new ArrayRAM(length, seed1);
