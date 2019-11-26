@@ -47,13 +47,37 @@ namespace TestSorting
         [DataRow(256)]
         [DataRow(4096)]
         [DataRow(10240)]
-//        [DataRow(int.MaxValue / 40)]
-        public void TestArraySort(int length)
+        [DataRow(int.MaxValue / 40)]
+        public void TestArrayRAMSort(int length)
         {
             var arrSource1 = Util.DoublesArrayWithRandomValues(length);
             var arrSource2 = new ArrayRAM(length, 0);
-            var arrSource3 = new ArrayDisk(Filename, length, 0);
-            _fileHandles.Add(arrSource3.FileStream);
+
+            for (var i = 0; i < length; i++)
+                arrSource2[i] = arrSource1[i];
+
+            if (Util.FindArraysDifferenceIndex(arrSource1, arrSource2) != -1) return;
+
+            System.Array.Sort(arrSource1);
+            RadixSort.Sort(arrSource2, new ArrayLongRAM(length), new ArrayLongRAM(length),
+                new ArrayLongRAM(1 << RadixSort.GroupLength), new ArrayLongRAM(1 << RadixSort.GroupLength));
+
+            Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource2));
+        }
+
+        [TestMethod]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(64)]
+        [DataRow(256)]
+        [DataRow(4096)]
+        [DataRow(10240)]
+        [DataRow(int.MaxValue / 40)]
+        public void TestArrayDiskSort(int length)
+        {
+            var arrSource1 = Util.DoublesArrayWithRandomValues(length);
+            var arrSource2 = new ArrayDisk(Filename, length, 0);
+            _fileHandles.Add(arrSource2.FileStream);
 
             var a = new ArrayLongDisk(a_Filename, length);
             var t = new ArrayLongDisk(t_Filename, length);
@@ -65,27 +89,14 @@ namespace TestSorting
             _fileHandles.Add(pref.FileStream);
 
             for (var i = 0; i < length; i++)
-            {
                 arrSource2[i] = arrSource1[i];
-                arrSource3[i] = arrSource1[i];
-            }
 
-            if (Util.FindArraysDifferenceIndex(arrSource1, arrSource2) != -1 ||
-                Util.FindArraysDifferenceIndex(arrSource1, arrSource3) != -1) return;
-
-            arrSource2.Print(true);
-            arrSource3.Print(true);
-
+            if (Util.FindArraysDifferenceIndex(arrSource1, arrSource2) != -1) return;
+            
             System.Array.Sort(arrSource1);
-            RadixSort.Sort(arrSource2, new ArrayLongRAM(length), new ArrayLongRAM(length),
-                new ArrayLongRAM(1 << RadixSort.GroupLength), new ArrayLongRAM(1 << RadixSort.GroupLength));
-            RadixSort.Sort(arrSource3, a, t, count, pref);
-
-            arrSource2.Print(true);
-            arrSource3.Print(true);
-
+            RadixSort.Sort(arrSource2, a, t, count, pref);
+            
             Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource2));
-            Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource3));
         }
 
         [TestMethod]
@@ -95,7 +106,35 @@ namespace TestSorting
         [DataRow(256)]
         [DataRow(4096)]
         [DataRow(10240)]
-        public void TestLinkedListSort(int length)
+        public void TestLinkedListRAMSort(int length)
+        {
+            var listSource1 = new LinkedList<double>();
+            var listSource2 = new LinkedListRAM(length, 0);
+
+            var current2 = listSource2.First;
+
+            while (current2 != null)
+            {
+                listSource1.AddLast(current2.Value);
+                current2 = listSource2.NextOf(current2);
+            }
+
+            var sorted = new LinkedList<double>(listSource1.OrderBy(x => x));
+
+            RadixSort.Sort(listSource2, new ArrayLongRAM(length), new ArrayLongRAM(length),
+                new ArrayLongRAM(1 << RadixSort.GroupLength), new ArrayLongRAM(1 << RadixSort.GroupLength));
+
+            Assert.AreEqual(-1, Util.FindListsDifferenceIndex(sorted, listSource2));
+        }
+        
+        [TestMethod]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(64)]
+        [DataRow(256)]
+        [DataRow(4096)]
+        [DataRow(10240)]
+        public void TestLinkedListDiskSort(int length)
         {
             var listSource1 = new LinkedList<double>();
             var listSource2 = new LinkedListRAM(length, 0);
@@ -124,12 +163,8 @@ namespace TestSorting
             }
 
             var sorted = new LinkedList<double>(listSource1.OrderBy(x => x));
-
-            RadixSort.Sort(listSource2, new ArrayLongRAM(length), new ArrayLongRAM(length),
-                new ArrayLongRAM(1 << RadixSort.GroupLength), new ArrayLongRAM(1 << RadixSort.GroupLength));
             RadixSort.Sort(listSource3, a, t, count, pref);
 
-            Assert.AreEqual(-1, Util.FindListsDifferenceIndex(sorted, listSource2));
             Assert.AreEqual(-1, Util.FindListsDifferenceIndex(sorted, listSource3));
         }
     }
