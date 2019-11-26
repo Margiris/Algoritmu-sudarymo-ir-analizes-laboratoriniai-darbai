@@ -47,7 +47,6 @@ namespace TestSorting
         [DataRow(256)]
         [DataRow(4096)]
         [DataRow(10240)]
-        [DataRow(int.MaxValue / 40)]
         public void TestArrayRAMSort(int length)
         {
             var arrSource1 = Util.DoublesArrayWithRandomValues(length);
@@ -72,7 +71,6 @@ namespace TestSorting
         [DataRow(256)]
         [DataRow(4096)]
         [DataRow(10240)]
-        [DataRow(int.MaxValue / 40)]
         public void TestArrayDiskSort(int length)
         {
             var arrSource1 = Util.DoublesArrayWithRandomValues(length);
