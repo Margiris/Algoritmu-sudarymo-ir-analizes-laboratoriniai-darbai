@@ -181,13 +181,22 @@ namespace TestDataStructures
         [DataRow(1, 0, 0)]
         [DataRow(163484, 6341, 46451)]
         [DataRow(int.MaxValue / 40, int.MaxValue / 1354, 153)]
-        public void TestSwap(int length, int index1, int index2)
+        public void TestSwapRAM(int length, int index1, int index2)
         {
             var arrayRAM = new ArrayLongRAM(length);
+
+            TestSwap(arrayRAM, index1, index2);
+        }
+        
+        [TestMethod]
+        [DataRow(1, 0, 0)]
+        [DataRow(163484, 6341, 46451)]
+        [DataRow(int.MaxValue / 40, int.MaxValue / 1354, 153)]
+        public void TestSwapDisk(int length, int index1, int index2)
+        {
             var arrayDisk = new ArrayLongDisk(Filename1, length);
             _fileHandle1 = arrayDisk.FileStream;
 
-            TestSwap(arrayRAM, index1, index2);
             TestSwap(arrayDisk, index1, index2);
         }
 
