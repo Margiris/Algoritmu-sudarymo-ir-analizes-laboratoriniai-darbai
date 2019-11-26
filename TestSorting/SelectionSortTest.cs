@@ -4,7 +4,8 @@ using System.IO;
 using System.Linq;
 using Lab1;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Array = System.Array;
+
+// ReSharper disable InconsistentNaming
 
 namespace TestSorting
 {
@@ -71,14 +72,65 @@ namespace TestSorting
 
             if (Util.FindArraysDifferenceIndex(arrSource1, arrSource2) != -1 ||
                 Util.FindArraysDifferenceIndex(arrSource1, arrSource3) != -1) return;
-            
-            System.Array.Sort((Array) arrSource1);
+
+            arrSource2.Print(true);
+            arrSource3.Print(true);
+
+            System.Array.Sort(arrSource1);
             SelectionSort.Sort(arrSource2, new ArrayLongRAM(length), new ArrayLongRAM(length),
                 new ArrayLongRAM(1 << RadixSort.GroupLength), new ArrayLongRAM(1 << RadixSort.GroupLength));
             SelectionSort.Sort(arrSource3, a, t, count, pref);
-            
+
+            arrSource2.Print(true);
+            arrSource3.Print(true);
+
             Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource2));
             Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource3));
+        }
+
+        [TestMethod]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(64)]
+        [DataRow(256)]
+        [DataRow(4096)]
+        [DataRow(10240)]
+        public void TestLinkedListSort(int length)
+        {
+            var listSource1 = new LinkedList<double>();
+            var listSource2 = new LinkedListRAM(length, 0);
+            var listSource3 = new LinkedListDisk(Filename, length, 0);
+            _fileHandles.Add(listSource3.FileStream);
+
+            var a = new ArrayLongDisk(a_Filename, length);
+            var t = new ArrayLongDisk(t_Filename, length);
+            var count = new ArrayLongDisk(count_Filename, 1 << RadixSort.GroupLength);
+            var pref = new ArrayLongDisk(pref_Filename, 1 << RadixSort.GroupLength);
+            _fileHandles.Add(a.FileStream);
+            _fileHandles.Add(t.FileStream);
+            _fileHandles.Add(count.FileStream);
+            _fileHandles.Add(pref.FileStream);
+
+            var current2 = listSource2.First;
+            var current3 = listSource3.First;
+
+            while (current2 != null)
+            {
+                listSource1.AddLast(current2.Value);
+                current3.Value = current2.Value;
+
+                current2 = listSource2.NextOf(current2);
+                current3 = listSource3.NextOf(current3);
+            }
+
+            var sorted = new LinkedList<double>(listSource1.OrderBy(x => x));
+
+            SelectionSort.Sort(listSource2, new ArrayLongRAM(length), new ArrayLongRAM(length),
+                new ArrayLongRAM(1 << RadixSort.GroupLength), new ArrayLongRAM(1 << RadixSort.GroupLength));
+            SelectionSort.Sort(listSource3, a, t, count, pref);
+
+            Assert.AreEqual(-1, Util.FindListsDifferenceIndex(sorted, listSource2));
+            Assert.AreEqual(-1, Util.FindListsDifferenceIndex(sorted, listSource3));
         }
     }
 }

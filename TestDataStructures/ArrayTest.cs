@@ -137,7 +137,7 @@ namespace TestDataStructures
         {
             var arrSource = new ArrayRAM(20, 0);
             var arrDestination = new ArrayRAM(10, 0);
-            
+
             Assert.ThrowsException<NotImplementedException>(() => arrSource.CopyTo(arrDestination, 0));
         }
 

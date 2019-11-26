@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Lab1
@@ -17,7 +18,7 @@ namespace Lab1
 
             for (var i = 0; i < length; i++)
             {
-                arr[i] = rand.NextDouble() <= 0.5 ? rand.NextDouble() : 0 - rand.NextDouble();
+                arr[i] = rand.NextDouble();// <= 0.5 ? rand.NextDouble() : 0 - rand.NextDouble();
             }
 
             return arr;
@@ -80,6 +81,22 @@ namespace Lab1
                 if (Math.Abs(current1.Value - current2.Value) > 0.00001)
                     return i;
                 current1 = list1.NextOf(current1);
+                current2 = list2.NextOf(current2);
+            }
+
+            return -1;
+        }
+
+        public static int FindListsDifferenceIndex(LinkedList<double> list1, LinkedList list2)
+        {
+            var current1 = list1.First;
+            var current2 = list2.GetFirstNode();
+
+            for (var i = 0; i < list1.Count && current1 != null; i++)
+            {
+                if (Math.Abs(current1.Value - current2.Value) > 0.00001)
+                    return i;
+                current1 = current1.Next;
                 current2 = list2.NextOf(current2);
             }
 

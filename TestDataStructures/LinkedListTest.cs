@@ -97,7 +97,7 @@ namespace TestDataStructures
             Assert.AreEqual(originalNumber, current2.Value,
                 "Number value in listDisk is different from the original number");
         }
-        
+
         [TestMethod]
         [DataRow(1, 0, 0)]
         [DataRow(163484, 6341, 46451)]
@@ -118,7 +118,7 @@ namespace TestDataStructures
 
             for (var i = 0; i < index1; i++)
                 node1 = list.NextOf(node1);
-            
+
             var node2 = list.GetFirstNode();
 
             for (var i = 0; i < index2; i++)
@@ -180,7 +180,7 @@ namespace TestDataStructures
             var list2 = new LinkedListRAM(length, seed2);
 
             var equalityCoefficient = 0.0;
-            
+
             var current1 = list1.GetFirstNode();
             var current2 = list2.GetFirstNode();
 

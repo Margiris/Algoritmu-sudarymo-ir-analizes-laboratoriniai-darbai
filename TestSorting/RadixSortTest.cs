@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lab1;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable InconsistentNaming
 
-namespace SortingTest
+namespace TestSorting
 {
     [TestClass]
     public class RadixSortTest
@@ -89,13 +89,19 @@ namespace SortingTest
         }
 
         [TestMethod]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(64)]
+        [DataRow(256)]
+        [DataRow(4096)]
+        [DataRow(10240)]
         public void TestLinkedListSort(int length)
         {
             var listSource1 = new LinkedList<double>();
             var listSource2 = new LinkedListRAM(length, 0);
             var listSource3 = new LinkedListDisk(Filename, length, 0);
             _fileHandles.Add(listSource3.FileStream);
-            
+
             var a = new ArrayLongDisk(a_Filename, length);
             var t = new ArrayLongDisk(t_Filename, length);
             var count = new ArrayLongDisk(count_Filename, 1 << RadixSort.GroupLength);
@@ -105,29 +111,26 @@ namespace SortingTest
             _fileHandles.Add(count.FileStream);
             _fileHandles.Add(pref.FileStream);
 
-            var current1 = listSource1.First;
             var current2 = listSource2.First;
             var current3 = listSource3.First;
 
             while (current2 != null)
             {
-                current1.Value = current2.Value;
+                listSource1.AddLast(current2.Value);
                 current3.Value = current2.Value;
+
                 current2 = listSource2.NextOf(current2);
+                current3 = listSource3.NextOf(current3);
             }
 
-            Assert.Fail();
-//            if (Util.FindArraysDifferenceIndex(arrSource1, arrSource2) != -1 ||
-//                Util.FindArraysDifferenceIndex(arrSource1, arrSource3) != -1) return;
-//
-//            System.Array.Sort(arrSource1);
-//            RadixSort.Sort(arrSource2, new ArrayLongRAM(length), new ArrayLongRAM(length),
-//                new ArrayLongRAM(1 << RadixSort.GroupLength), new ArrayLongRAM(1 << RadixSort.GroupLength));
-//            RadixSort.Sort(arrSource3, new ArrayLongRAM(length), new ArrayLongRAM(length),
-//                new ArrayLongRAM(1 << RadixSort.GroupLength), new ArrayLongRAM(1 << RadixSort.GroupLength));
-//
-//            Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource2));
-//            Assert.AreEqual(-1, Util.FindArraysDifferenceIndex(arrSource1, arrSource3));
+            var sorted = new LinkedList<double>(listSource1.OrderBy(x => x));
+
+            RadixSort.Sort(listSource2, new ArrayLongRAM(length), new ArrayLongRAM(length),
+                new ArrayLongRAM(1 << RadixSort.GroupLength), new ArrayLongRAM(1 << RadixSort.GroupLength));
+            RadixSort.Sort(listSource3, a, t, count, pref);
+
+            Assert.AreEqual(-1, Util.FindListsDifferenceIndex(sorted, listSource2));
+            Assert.AreEqual(-1, Util.FindListsDifferenceIndex(sorted, listSource3));
         }
     }
 }
