@@ -44,3 +44,5 @@ Lab1/selectionSortlinkedListPvz.cs
 *.docx
 *.jpg
 *.url
+
+**/.sonarqube
