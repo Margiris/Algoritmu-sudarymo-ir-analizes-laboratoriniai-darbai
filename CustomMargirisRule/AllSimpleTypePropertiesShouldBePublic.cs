@@ -13,16 +13,14 @@ namespace CustomMargirisRule
 
         public override ProblemCollection Check(Parameter parameter)
         {
-            if (parameter.Type.IsPrimitive && parameter.Type.IsNonPublic)
+            if (!parameter.Type.IsPrimitive || !parameter.Type.IsNonPublic) return Problems;
+            var resolution = GetResolution(parameter.Name.Name);
+            Problems.Add(new Problem(resolution, parameter)
             {
-                var resolution = GetResolution(parameter.Name.Name);
-                Problems.Add(new Problem(resolution, parameter)
-                {
-                    Certainty = 100,
-                    FixCategory = FixCategories.NonBreaking,
-                    MessageLevel = MessageLevel.Warning
-                });
-            }
+                Certainty = 100,
+                FixCategory = FixCategories.NonBreaking,
+                MessageLevel = MessageLevel.Warning
+            });
 
             return Problems;
         }
