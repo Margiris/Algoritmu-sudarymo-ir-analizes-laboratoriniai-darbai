@@ -46,3 +46,4 @@ Lab1/selectionSortlinkedListPvz.cs
 *.url
 
 **/.sonarqube
+coverage/
