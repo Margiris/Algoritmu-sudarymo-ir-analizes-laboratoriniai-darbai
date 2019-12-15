@@ -11,16 +11,25 @@ namespace CustomMargirisRule
         {
         }
 
-        public override ProblemCollection Check(Parameter parameter)
+        public override ProblemCollection Check(Member m)
         {
-            if (!parameter.Type.IsPrimitive || !parameter.Type.IsNonPublic) return Problems;
-            var resolution = GetResolution(parameter.Name.Name);
-            Problems.Add(new Problem(resolution, parameter)
+            PropertyNode property = (PropertyNode) m;
+            if (!property.IsPublic)
             {
-                Certainty = 100,
-                FixCategory = FixCategories.NonBreaking,
-                MessageLevel = MessageLevel.Warning
-            });
+                var resolution = GetResolution(property.Name.Name);
+                Problems.Add(new Problem(resolution, property)
+                {
+                    Certainty = 10
+                });
+            }
+            if (property.Type.IsPrimitive && property.Type.IsNonPublic)
+            {
+                var resolution = GetResolution(property.Name.Name);
+                Problems.Add(new Problem(resolution, property)
+                {
+                    Certainty = 100
+                });
+            }
 
             return Problems;
         }

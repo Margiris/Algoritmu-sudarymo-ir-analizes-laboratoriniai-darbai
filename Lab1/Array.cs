@@ -7,6 +7,7 @@ namespace Lab1
     {
         public int Length;
         public abstract double this[int index] { get; set; }
+        protected int a;
 
         public void CopyTo(Array array, int index)
         {
