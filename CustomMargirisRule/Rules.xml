@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Rules>
+  <Rule TypeName="AllSimpleTypePropertiesShouldBePublic" Category="Design" CheckId="MB0001">
+    <Name>Simple class properties should be public</Name>
+    <Description>No need to hide simple things</Description>
+    <Owner>Margiris Burakauskas</Owner>
+    <Url></Url>
+    <Resolution>Make property public</Resolution>
+    <Email></Email>
+    <MessageLevel Certainty="99">Warning</MessageLevel>
+    <FixCategories>NonBreaking</FixCategories>
+  </Rule>
+</Rules>
