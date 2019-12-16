@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
@@ -8,8 +8,8 @@
 
   <PropertyGroup>
     <PackageId>MargirisRule</PackageId>
-    <PackageVersion>1.0.0.0</PackageVersion>
-    <Authors>zippe</Authors>
+    <PackageVersion>1.0.0.11</PackageVersion>
+    <Authors>marbur2</Authors>
     <PackageLicenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</PackageLicenseUrl>
     <PackageProjectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</PackageProjectUrl>
     <PackageIconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</PackageIconUrl>
@@ -20,6 +20,10 @@
     <Copyright>Copyright</Copyright>
     <PackageTags>MargirisRule, analyzers</PackageTags>
     <NoPackageAnalysis>true</NoPackageAnalysis>
+    <Version>1.0</Version>
+    <Company>KTU</Company>
+    <AssemblyVersion>1.0.0.3</AssemblyVersion>
+    <FileVersion>1.0.0.3</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

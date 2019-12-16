@@ -60,9 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Lab1.ruleset" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\CustomMargirisRule\bin\Release\CustomMargirisRule.dll" />
+    <Analyzer Include="..\packages\MargirisRule.1.0.0.11\analyzers\dotnet\cs\MargirisRule.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
