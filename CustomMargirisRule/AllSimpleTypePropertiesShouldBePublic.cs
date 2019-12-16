@@ -1,5 +1,4 @@
 ﻿using Microsoft.FxCop.Sdk;
-using Microsoft.VisualStudio.CodeAnalysis.Extensibility;
 
 namespace CustomMargirisRule
 {
@@ -13,6 +12,12 @@ namespace CustomMargirisRule
 
         public override ProblemCollection Check(Member m)
         {
+            var resolutionTest = GetResolution("test");
+            Problems.Add(new Problem(resolutionTest, m)
+            {
+                Certainty = 100
+            });
+
             PropertyNode property = (PropertyNode) m;
             if (!property.IsPublic)
             {
