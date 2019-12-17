@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace MargirisRule
@@ -16,7 +12,7 @@ namespace MargirisRule
         public const string DiagnosticId = "MargirisRule";
 
         private static readonly string Title = "Accessibility rule violation";
-        private static readonly string MessageFormat = "Primitive non-const field {0} should be public";
+        private static readonly string MessageFormat = "Primitive non-constant field {0} should be public";
         // private static readonly string MessageFormat = "{0}";
         private static readonly string Description = "No need to hide simple things";
         private const string Category = "Visibility";
@@ -43,11 +39,6 @@ namespace MargirisRule
                 var diagnostic = Diagnostic.Create(Rule, field.Locations[0], field.Name);
                 context.ReportDiagnostic(diagnostic);
             }
-
-            // var diagnostic = Diagnostic.Create(Rule, field.Locations[0],
-            //     IsFieldPrimitive(field) + ", " + field.Type.ToDisplayString());
-            //
-            // context.ReportDiagnostic(diagnostic);
         }
 
         internal static bool IsFieldPrimitive(IFieldSymbol field)
