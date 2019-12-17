@@ -12,18 +12,14 @@ namespace MargirisRule
         public const string DiagnosticId = "MargirisRule";
 
         private static readonly string Title = "Accessibility rule violation";
-        private static readonly string MessageFormat = "Primitive non-constant field {0} should be public";
-        // private static readonly string MessageFormat = "{0}";
+        private static readonly string MessageFormat = "Primitive non-constant field '{0}' should be public";
         private static readonly string Description = "No need to hide simple things";
         private const string Category = "Visibility";
 
         private static DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        {
-            get { return ImmutableArray.Create(Rule); }
-        }
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize(AnalysisContext context)
         {

@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <PackageId>MargirisRule</PackageId>
-    <PackageVersion>1.0.0.12</PackageVersion>
+    <PackageVersion>1.0.3.1</PackageVersion>
     <Authors>marbur2</Authors>
     <PackageLicenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</PackageLicenseUrl>
     <PackageProjectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</PackageProjectUrl>

@@ -10,8 +10,12 @@ namespace Lab1
     {
         private static Stopwatch _stopwatch;
 
-        protected static long ComparisonCount;
+        public static long ComparisonCount;
         protected static long SwapCount;
+        internal string nonGood;
+        protected internal double someDifficultStuff;
+        private protected readonly object moreDifficultStuff;
+
         private const int RunCount = 8;
 
         private const string Filename = @"file.dat";

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
@@ -10,9 +9,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Editing;
-using Microsoft.CodeAnalysis.Rename;
-using Microsoft.CodeAnalysis.Text;
 
 namespace MargirisRule
 {
@@ -21,48 +17,61 @@ namespace MargirisRule
     {
         private const string Title = "Make public";
 
-        public sealed override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(MargirisRuleAnalyzer.DiagnosticId); }
-        }
+        public sealed override ImmutableArray<string> FixableDiagnosticIds =>
+            ImmutableArray.Create(MargirisRuleAnalyzer.DiagnosticId);
 
-        public sealed override FixAllProvider GetFixAllProvider()
-        {
-            return WellKnownFixAllProviders.BatchFixer;
-        }
+        public sealed override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+            var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken);
             var diagnostic = context.Diagnostics.First();
             var diagnosticSpan = diagnostic.Location.SourceSpan;
 
-            var fieldDeclarationNodes = root.FindToken(diagnosticSpan.Start).Parent.ChildNodes()
-                .OfType<FieldDeclarationSyntax>();
+            var fieldDeclaration = root.FindToken(diagnosticSpan.Start).Parent.AncestorsAndSelf()
+                .OfType<FieldDeclarationSyntax>().First();
 
             // Register a code action that will invoke the fix.
-            foreach (var fieldDeclaration in fieldDeclarationNodes)
-            {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                        title: Title,
-                        createChangedDocument: c => MakeUppercaseAsync(context.Document, fieldDeclaration, c),
-                        equivalenceKey: Title),
-                    diagnostic);
-            }
+            context.RegisterCodeFix(
+                CodeAction.Create(
+                    Title,
+                    c => MakeUppercaseAsync(context.Document, fieldDeclaration, c),
+                    nameof(MargirisRuleCodeFixProvider)),
+                diagnostic);
         }
 
         private async Task<Document> MakeUppercaseAsync(Document document, FieldDeclarationSyntax fieldDeclaration,
             CancellationToken cancellationToken)
         {
-            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            var newModifiers = SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                .AddRange(fieldDeclaration.Modifiers);
-            var newFieldDeclaration = fieldDeclaration.WithModifiers(newModifiers);
-            var newRoot = root.ReplaceNode(fieldDeclaration, newFieldDeclaration);
-            var newDocument = document.WithSyntaxRoot(newRoot);
+            // Access modifiers we target
+            var accessModifiers = new[]
+            {
+                SyntaxKind.PrivateKeyword,
+                SyntaxKind.ProtectedKeyword,
+                SyntaxKind.InternalKeyword
+            };
 
-            return newDocument;
+            var token = fieldDeclaration.GetFirstToken();
+            // Save trivia to not "eat up" any newlines and indentation in front of declaration
+            var leadingTrivia = token.LeadingTrivia;
+            var trimmedModifiers = fieldDeclaration.Modifiers;
+
+            // Remove access modifiers from declaration if any
+            while (accessModifiers.Contains(token.Kind()))
+            {
+                trimmedModifiers = trimmedModifiers.RemoveAt(0);
+                token = token.GetNextToken();
+            }
+
+            // Create a public keyword modifier with leading trivia and add it to modifiers
+            var newModifiers = SyntaxFactory.TokenList(SyntaxFactory.Token(leadingTrivia, SyntaxKind.PublicKeyword,
+                SyntaxFactory.TriviaList(SyntaxFactory.ElasticMarker))).AddRange(trimmedModifiers);
+            var newFieldDeclaration = fieldDeclaration.WithModifiers(newModifiers);
+
+            var root = await document.GetSyntaxRootAsync(cancellationToken);
+            var newRoot = root.ReplaceNode(fieldDeclaration, newFieldDeclaration);
+
+            return document.WithSyntaxRoot(newRoot);
         }
     }
 }
