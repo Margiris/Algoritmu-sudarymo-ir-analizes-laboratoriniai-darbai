@@ -12,7 +12,7 @@ namespace Lab1
 
         public static long ComparisonCount;
         protected static long SwapCount;
-        internal string nonGood;
+        volatile internal string nonGood;
         protected internal double someDifficultStuff;
         private protected readonly object moreDifficultStuff;
 
